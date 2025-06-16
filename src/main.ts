@@ -1,13 +1,27 @@
 import { NestFactory } from '@nestjs/core';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger, NestApplicationOptions, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
+
 import { AppModule } from './app.module';
 
-const logger = new Logger('Main');
+const PORT = process.env.PORT || 2222;
+
+Logger.log('Starting server', 'Bootstrap');
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const options: Partial<NestApplicationOptions> = {};
+
+  if (process.env.HIDE_LOGS === 'true') {
+    options.logger = false;
+  }
+
+  if (!process.env.JWT_SECRET) {
+    Logger.fatal('JWT_SECRET is required in .env');
+    process.exit(1);
+  }
+
+  const app = await NestFactory.create(AppModule, options);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -16,7 +30,6 @@ async function bootstrap() {
     }),
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   app.use(cookieParser());
 
   app.enableCors({
@@ -45,13 +58,13 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
 
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(PORT);
 }
 
 bootstrap()
   .then(() => {
-    logger.log('Server is running on port 3000');
+    Logger.log(`Server is running on port ${PORT}`, 'Bootstrap');
   })
   .catch((error) => {
-    logger.error(error);
+    Logger.error(error, 'Bootstrap');
   });
