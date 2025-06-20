@@ -4,6 +4,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
+import { HttpExceptionFilter } from './http-exceptions.filter';
 
 const PORT = process.env.PORT || 2222;
 
@@ -31,6 +32,7 @@ async function bootstrap() {
   );
 
   app.use(cookieParser());
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   app.enableCors({
     origin: true,

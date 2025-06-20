@@ -1,0 +1,1 @@
+export { NameDto } from './name';

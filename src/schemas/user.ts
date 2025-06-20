@@ -23,13 +23,7 @@ export class User {
     required: false,
     default: '',
   })
-  customNameWhileIdle: string;
-
-  @Prop({
-    required: false,
-    default: '',
-  })
-  customNameBeforeIdle: string;
+  customGameExtraInfo: string;
 
   @Prop({
     required: false,
@@ -57,6 +51,31 @@ export class User {
     type: [Number],
   })
   gameIds: number[];
+
+  @Prop({
+    required: false,
+    default: '',
+  })
+  steamRefreshToken: string;
+
+  @Prop({
+    required: false,
+    default: '',
+  })
+  steamMachineAuthToken: string;
+
+  @Prop({
+    required: false,
+    default: '',
+  })
+  steamID: string;
+
+  @Prop({
+    required: false,
+    default: [],
+    type: [String],
+  })
+  steamCookies: string[];
 }
 
 export type UserDocument = HydratedDocument<User>;
