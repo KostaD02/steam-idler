@@ -12,15 +12,18 @@ export class ExpectionService {
     expection: StatusExceptionKeys,
     message?: string,
     errorKeys?: string | string[],
+    excludeFromLog = false,
   ): never {
     const isRateLimitExceeded = message === 'RateLimitExceeded';
     const status = this.getStatusCode(expection, isRateLimitExceeded);
     if (isRateLimitExceeded) {
       errorKeys = [StatusExceptionKeys.RateLimitExceeded];
     }
-    this.logger.error(
-      `Error: ${message} | Error Keys: ${JSON.stringify(errorKeys)}`,
-    );
+    if (!excludeFromLog) {
+      this.logger.error(
+        `Error: ${message} | Error Keys: ${JSON.stringify(errorKeys)}`,
+      );
+    }
     throw new HttpException(
       {
         status,

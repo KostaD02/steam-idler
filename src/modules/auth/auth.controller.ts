@@ -25,7 +25,6 @@ export class AuthController {
           name: '',
           password: '',
           twoFactorCode: '123456',
-          autoRelogin: true,
         },
       },
     },

@@ -106,7 +106,7 @@ export class IdleService {
 
     const user = await this.userService.getUserDocument(name);
 
-    user.customGameExtraInfo = gameExtraInfo;
+    user.gameExtraInfo = gameExtraInfo;
     this.loggerService.log(
       `User ${name} set custom game extra info to ${gameExtraInfo}`,
     );
@@ -122,7 +122,7 @@ export class IdleService {
     const { name } = nameDto;
     const user = await this.userService.getUserDocument(name);
 
-    user.customGameExtraInfo = '';
+    user.gameExtraInfo = '';
     this.loggerService.log(`User ${name} removed custom game extra info`);
     await user.save();
     this.steamUserService.idleGames(user);

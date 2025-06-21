@@ -107,14 +107,14 @@ export class SteamUserService {
     const steamUser = this.steamUsers.get(user.name);
     if (steamUser && user.idleGames) {
       const playedGames: Array<number | string> = [
-        user.customGameExtraInfo,
+        user.gameExtraInfo,
         ...user.gameIds,
       ];
-      if (user.customGameExtraInfo === '') {
+      if (user.gameExtraInfo === '') {
         playedGames.shift();
       } else {
         this.loggerService.log(
-          `User ${user.name} idling with custom text: ${user.customGameExtraInfo}`,
+          `User ${user.name} idling with custom text: ${user.gameExtraInfo}`,
         );
       }
       steamUser.gamesPlayed(playedGames, true);
@@ -155,7 +155,7 @@ export class SteamUserService {
   private handleUserInit(user: UserDocument): SteamUser {
     const steamUser = new SteamUser({
       dataDirectory: null,
-      autoRelogin: this.isAutoRelogin(user),
+      autoRelogin: true,
       renewRefreshTokens: true,
     });
 
@@ -218,13 +218,5 @@ export class SteamUserService {
     });
 
     return steamUser;
-  }
-
-  private isAutoRelogin(user: UserDocument): boolean {
-    return (
-      user.steamCookies.length > 0 &&
-      user.steamRefreshToken !== '' &&
-      user.steamMachineAuthToken !== ''
-    );
   }
 }

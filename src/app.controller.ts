@@ -29,14 +29,6 @@ export class AppController {
     res.sendFile(join(__dirname, '..', 'public', 'index.html'));
   }
 
-  @Get('users')
-  @ApiOkResponse({
-    description: 'Get all users name and steamID',
-  })
-  getUsers() {
-    return this.steamUserService.users;
-  }
-
   @Get('error-keys')
   @ApiOkResponse({
     description: 'Get all error keys',

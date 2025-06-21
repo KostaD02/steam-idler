@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { SharedModule } from './shared/modules';
-import { AuthModule, IdleModule, PersonaModule } from './modules';
+import { AuthModule, IdleModule, PersonaModule, UserModule } from './modules';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
@@ -24,6 +24,7 @@ import { join } from 'path';
     AuthModule,
     IdleModule,
     PersonaModule,
+    UserModule,
   ],
   controllers: [AppController],
 })

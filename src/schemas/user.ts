@@ -23,7 +23,7 @@ export class User {
     required: false,
     default: '',
   })
-  customGameExtraInfo: string;
+  gameExtraInfo: string;
 
   @Prop({
     required: false,
@@ -57,12 +57,6 @@ export class User {
     default: '',
   })
   steamRefreshToken: string;
-
-  @Prop({
-    required: false,
-    default: '',
-  })
-  steamMachineAuthToken: string;
 
   @Prop({
     required: false,
