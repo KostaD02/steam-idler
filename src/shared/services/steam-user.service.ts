@@ -14,6 +14,7 @@ export class SteamUserService {
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     private readonly loggerService: AppLoggerService,
   ) {
+    this.loggerService.setContext(SteamUserService.name);
     this.init().catch((error) => {
       this.loggerService.error(`Error initializing steam users: ${error}`);
     });
