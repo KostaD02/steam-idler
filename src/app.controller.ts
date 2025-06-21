@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Res } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AppLoggerService, SteamUserService } from './shared/services';
 import {
@@ -6,6 +6,8 @@ import {
   AuthExceptionKeys,
   IdleExceptionKeys,
 } from './shared/types';
+import { join } from 'path';
+import { Response } from 'express';
 
 @ApiTags('root')
 @Controller()
@@ -21,12 +23,10 @@ export class AppController {
 
   @Get()
   @ApiOkResponse({
-    description: 'Get base page',
+    description: 'Get base page html',
   })
-  getBasePage() {
-    return {
-      message: 'TODO: update me',
-    };
+  root(@Res() res: Response) {
+    res.sendFile(join(__dirname, '..', 'public', 'index.html'));
   }
 
   @Get('users')

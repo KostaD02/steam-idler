@@ -20,11 +20,19 @@ export class HttpExceptionFilter implements ExceptionFilter {
       message: string | string[];
     };
 
+    let isWrongEndpoint = false;
+
+    if (expectionResposne.message instanceof String) {
+      isWrongEndpoint = expectionResposne.message.startsWith('Cannot ');
+    }
+
     response.status(status).json({
       path: request.url,
       statusCode: status,
       error: expectionResposne.error,
-      errorKeys: expectionResposne.message,
+      errorKeys: isWrongEndpoint
+        ? 'error.wrong_endpoint'
+        : expectionResposne.message,
       timestamp: new Date().toISOString(),
       help: 'if you think this error should not happen, please create new issue at: https://github.com/kostad02/steam-idler/issues',
     });

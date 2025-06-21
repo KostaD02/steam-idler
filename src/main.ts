@@ -33,6 +33,9 @@ async function bootstrap() {
 
   app.use(cookieParser());
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.setGlobalPrefix('api', {
+    exclude: ['/'],
+  });
 
   app.enableCors({
     origin: true,
