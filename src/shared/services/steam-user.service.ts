@@ -33,7 +33,6 @@ export class SteamUserService {
     name: string,
     password: string,
     twoFactorCode: string,
-    autoRelogin: boolean,
   ): Promise<SteamUser> {
     const userExists = await this.userModel.exists({ name });
 
@@ -48,7 +47,7 @@ export class SteamUserService {
     const user = await this.userModel.create({ name });
 
     const steamUser = new SteamUser({
-      autoRelogin,
+      autoRelogin: true,
       dataDirectory: null,
       renewRefreshTokens: true,
     });

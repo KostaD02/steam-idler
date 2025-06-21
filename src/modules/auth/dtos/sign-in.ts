@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { NameDto } from 'src/shared/dtos';
 import { AuthExceptionKeys } from 'src/shared/types';
 
@@ -27,16 +27,4 @@ export class SignInDto extends NameDto {
     example: '123456',
   })
   twoFactorCode: string;
-
-  @IsBoolean({
-    message: AuthExceptionKeys.AutoReloginShouldBeBoolean,
-  })
-  @IsNotEmpty({
-    message: AuthExceptionKeys.AutoReloginIsRequired,
-  })
-  @ApiProperty({
-    description: 'Whether to automatically relogin the user',
-    example: true,
-  })
-  autoRelogin: boolean;
 }

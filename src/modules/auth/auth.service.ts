@@ -17,14 +17,9 @@ export class AuthService {
   ) {}
 
   async signIn(signInDto: SignInDto): Promise<{ accountName: string }> {
-    const { name, password, twoFactorCode, autoRelogin } = signInDto;
+    const { name, password, twoFactorCode } = signInDto;
     try {
-      await this.steamUserService.signIn(
-        name,
-        password,
-        twoFactorCode,
-        autoRelogin,
-      );
+      await this.steamUserService.signIn(name, password, twoFactorCode);
       return {
         accountName: name,
       };
