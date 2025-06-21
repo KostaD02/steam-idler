@@ -1,8 +1,8 @@
-import { Body, Controller, Patch } from '@nestjs/common';
+import { Body, Controller, Delete, Patch } from '@nestjs/common';
 import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { IdleService } from './idle.service';
 import { NameDto } from 'src/shared/dtos';
-import { GameIdsDto } from './dtos';
+import { GameExtraInfoDto, GameIdsDto } from './dtos';
 
 @ApiTags('idle')
 @Controller('idle')
@@ -53,5 +53,31 @@ export class IdleController {
   })
   async clearGames(@Body() nameDto: NameDto): Promise<{ success: boolean }> {
     return this.idleService.clearGames(nameDto);
+  }
+
+  @Patch('custom-game-name-display')
+  @ApiOkResponse({
+    description: 'Custom game name display set',
+  })
+  @ApiNotFoundResponse({
+    description: 'User not found',
+  })
+  async setCustomGameNameDisplay(
+    @Body() gameExtraInfoDto: GameExtraInfoDto,
+  ): Promise<{ success: boolean }> {
+    return this.idleService.setGameExtraInfo(gameExtraInfoDto);
+  }
+
+  @Delete('custom-game-name-display')
+  @ApiOkResponse({
+    description: 'Custom game name display removed',
+  })
+  @ApiNotFoundResponse({
+    description: 'User not found',
+  })
+  async removeCustomGameNameDisplay(
+    @Body() nameDto: NameDto,
+  ): Promise<{ success: boolean }> {
+    return this.idleService.removeGameExtraInfo(nameDto);
   }
 }

@@ -111,6 +111,10 @@ export class SteamUserService {
       ];
       if (user.customGameExtraInfo === '') {
         playedGames.shift();
+      } else {
+        this.loggerService.log(
+          `User ${user.name} idling with custom text: ${user.customGameExtraInfo}`,
+        );
       }
       steamUser.gamesPlayed(playedGames, true);
       this.loggerService.log(

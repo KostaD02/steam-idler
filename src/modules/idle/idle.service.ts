@@ -6,7 +6,7 @@ import {
   UserService,
 } from 'src/shared/services';
 import { IdleExceptionKeys, StatusExceptionKeys } from 'src/shared/types';
-import { GameIdsDto } from './dtos';
+import { GameExtraInfoDto, GameIdsDto } from './dtos';
 
 @Injectable()
 export class IdleService {
@@ -84,6 +84,35 @@ export class IdleService {
     user.gameIds = [];
     user.idleGames = false;
     await user.save();
+
+    return {
+      success: true,
+    };
+  }
+
+  async setGameExtraInfo(
+    gameExtraInfoDto: GameExtraInfoDto,
+  ): Promise<{ success: boolean }> {
+    const { name, gameExtraInfo } = gameExtraInfoDto;
+
+    const user = await this.userService.getUserDocument(name);
+
+    user.customGameExtraInfo = gameExtraInfo;
+    await user.save();
+    this.steamUserService.idleGames(user);
+
+    return {
+      success: true,
+    };
+  }
+
+  async removeGameExtraInfo(nameDto: NameDto): Promise<{ success: boolean }> {
+    const { name } = nameDto;
+    const user = await this.userService.getUserDocument(name);
+
+    user.customGameExtraInfo = '';
+    await user.save();
+    this.steamUserService.idleGames(user);
 
     return {
       success: true,
