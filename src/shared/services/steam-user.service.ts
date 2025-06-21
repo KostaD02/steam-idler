@@ -6,6 +6,7 @@ import * as SteamUser from 'steam-user';
 import { EPersonaState } from 'steam-user';
 import { AppLoggerService } from './logger.service';
 import { ExpectionService } from './expection.service';
+import { UserService } from './user.service';
 import { AuthExceptionKeys, StatusExceptionKeys } from '../types';
 
 @Injectable()
@@ -14,6 +15,7 @@ export class SteamUserService {
 
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private readonly userService: UserService,
     private readonly loggerService: AppLoggerService,
     private readonly expectionService: ExpectionService,
   ) {
@@ -189,6 +191,27 @@ export class SteamUserService {
     steamUser.on('webSession', async (_sessionID, cookies: string[]) => {
       user.steamCookies = cookies;
       await user.save();
+    });
+
+    steamUser.chat.on('friendMessage', async (message) => {
+      const { idleGames, replyMessageWhileIdle, replyMessageTemplate } =
+        await this.userService.getUserDocument(user.name);
+
+      if (!replyMessageWhileIdle && idleGames) {
+        return;
+      }
+
+      if (replyMessageTemplate === '') {
+        this.loggerService.log(
+          `User ${user.name} has no custom reply message while idle, skipping reply`,
+        );
+        return;
+      }
+
+      await steamUser.chat.sendFriendMessage(
+        message.steamid_friend,
+        replyMessageTemplate,
+      );
     });
 
     steamUser.logOn({

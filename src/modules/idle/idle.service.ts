@@ -4,17 +4,21 @@ import {
   SteamUserService,
   ExpectionService,
   UserService,
+  AppLoggerService,
 } from 'src/shared/services';
 import { IdleExceptionKeys, StatusExceptionKeys } from 'src/shared/types';
-import { GameExtraInfoDto, GameIdsDto } from './dtos';
+import { GameExtraInfoDto, GameIdsDto, ReplyMessageDto } from './dtos';
 
 @Injectable()
 export class IdleService {
   constructor(
     private readonly userService: UserService,
+    private readonly loggerService: AppLoggerService,
     private readonly steamUserService: SteamUserService,
     private readonly expectionService: ExpectionService,
-  ) {}
+  ) {
+    this.loggerService.setContext(IdleService.name);
+  }
 
   async startIdling(nameDto: NameDto): Promise<{ success: boolean }> {
     const { name } = nameDto;
@@ -70,7 +74,11 @@ export class IdleService {
     }
 
     user.gameIds = gameIdsToIdle;
+    this.loggerService.log(
+      `User ${name} set game IDs to ${gameIdsToIdle.join(', ')}`,
+    );
     await user.save();
+    this.steamUserService.idleGames(user);
 
     return {
       success: true,
@@ -83,6 +91,7 @@ export class IdleService {
 
     user.gameIds = [];
     user.idleGames = false;
+    this.loggerService.log(`User ${name} cleared game IDs`);
     await user.save();
 
     return {
@@ -98,6 +107,9 @@ export class IdleService {
     const user = await this.userService.getUserDocument(name);
 
     user.customGameExtraInfo = gameExtraInfo;
+    this.loggerService.log(
+      `User ${name} set custom game extra info to ${gameExtraInfo}`,
+    );
     await user.save();
     this.steamUserService.idleGames(user);
 
@@ -111,8 +123,59 @@ export class IdleService {
     const user = await this.userService.getUserDocument(name);
 
     user.customGameExtraInfo = '';
+    this.loggerService.log(`User ${name} removed custom game extra info`);
     await user.save();
     this.steamUserService.idleGames(user);
+
+    return {
+      success: true,
+    };
+  }
+
+  async setReplyMessage(
+    replyMessageDto: ReplyMessageDto,
+  ): Promise<{ success: boolean }> {
+    const { name, message } = replyMessageDto;
+
+    const user = await this.userService.getUserDocument(name);
+
+    user.replyMessageTemplate = message;
+    this.loggerService.log(`User ${name} set reply message template`);
+    await user.save();
+
+    return {
+      success: true,
+    };
+  }
+
+  async clearReplyMessage(nameDto: NameDto): Promise<{ success: boolean }> {
+    const { name } = nameDto;
+    const user = await this.userService.getUserDocument(name);
+
+    user.replyMessageTemplate = '';
+    user.replyMessageWhileIdle = false;
+    this.loggerService.log(`User ${name} stopped replying while idle`);
+    await user.save();
+
+    return {
+      success: true,
+    };
+  }
+
+  async setMessageWhileIdle(
+    nameDto: NameDto,
+    replyMessageWhileIdle: boolean,
+  ): Promise<{ success: boolean }> {
+    const { name } = nameDto;
+    const user = await this.userService.getUserDocument(name);
+
+    user.replyMessageWhileIdle = replyMessageWhileIdle;
+    this.loggerService.log(
+      `User ${name} ${
+        replyMessageWhileIdle ? 'started' : 'stopped'
+      } replying while idle`,
+    );
+    await user.save();
 
     return {
       success: true,

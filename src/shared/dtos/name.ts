@@ -11,7 +11,7 @@ export class NameDto {
   })
   @ApiProperty({
     description: 'The name of the user to sign in',
-    example: 'John Doe',
+    example: 'kosta',
   })
   name: string;
 }

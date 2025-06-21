@@ -1,8 +1,13 @@
 import { Body, Controller, Delete, Patch } from '@nestjs/common';
-import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { IdleService } from './idle.service';
 import { NameDto } from 'src/shared/dtos';
-import { GameExtraInfoDto, GameIdsDto } from './dtos';
+import { GameExtraInfoDto, GameIdsDto, ReplyMessageDto } from './dtos';
 
 @ApiTags('idle')
 @Controller('idle')
@@ -79,5 +84,69 @@ export class IdleController {
     @Body() nameDto: NameDto,
   ): Promise<{ success: boolean }> {
     return this.idleService.removeGameExtraInfo(nameDto);
+  }
+
+  @Patch('message/reply/start')
+  @ApiOkResponse({
+    description: 'Message while idle started',
+  })
+  @ApiNotFoundResponse({
+    description: 'User not found',
+  })
+  async startMessageWhileIdle(
+    @Body() nameDto: NameDto,
+  ): Promise<{ success: boolean }> {
+    return this.idleService.setMessageWhileIdle(nameDto, true);
+  }
+
+  @Patch('message/reply/stop')
+  @ApiOkResponse({
+    description: 'Message while idle stopped',
+  })
+  @ApiNotFoundResponse({
+    description: 'User not found',
+  })
+  async stopMessageWhileIdle(
+    @Body() nameDto: NameDto,
+  ): Promise<{ success: boolean }> {
+    return this.idleService.setMessageWhileIdle(nameDto, false);
+  }
+
+  @Patch('message/reply/template-set')
+  @ApiBody({
+    type: ReplyMessageDto,
+    description: 'Set reply message template',
+    examples: {
+      'application/json': {
+        value: {
+          name: 'kosta',
+          message: 'Hello, My name is Inigo Montoya',
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: 'Message while idle template set',
+  })
+  @ApiNotFoundResponse({
+    description: 'User not found',
+  })
+  async setReplyMessageTemplate(
+    @Body() replyMessageDto: ReplyMessageDto,
+  ): Promise<{ success: boolean }> {
+    return this.idleService.setReplyMessage(replyMessageDto);
+  }
+
+  @Delete('message/reply/template-clear')
+  @ApiOkResponse({
+    description: 'Message while idle template cleared',
+  })
+  @ApiNotFoundResponse({
+    description: 'User not found',
+  })
+  async clearReplyMessageTemplate(
+    @Body() nameDto: NameDto,
+  ): Promise<{ success: boolean }> {
+    return this.idleService.clearReplyMessage(nameDto);
   }
 }

@@ -6,4 +6,6 @@ export enum IdleExceptionKeys {
   NoGamesToIdle = 'error.no_games_to_idle',
   GameExtraInfoIsRequired = 'error.game_extra_info_is_required',
   GameExtraInfoShouldBeString = 'error.game_extra_info_should_be_string',
+  ReplyMessageIsRequired = 'error.reply_message_is_required',
+  ReplyMessageShouldBeString = 'error.reply_message_should_be_string',
 }
