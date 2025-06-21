@@ -17,11 +17,6 @@ async function bootstrap() {
     options.logger = false;
   }
 
-  if (!process.env.JWT_SECRET) {
-    Logger.fatal('JWT_SECRET is required in .env');
-    process.exit(1);
-  }
-
   const app = await NestFactory.create(AppModule, options);
 
   app.useGlobalPipes(
