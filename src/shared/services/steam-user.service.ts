@@ -10,7 +10,7 @@ import { AuthExceptionKeys, StatusExceptionKeys } from '../types';
 
 @Injectable()
 export class SteamUserService {
-  private readonly steamUsers = new Map<string, SteamUser>();
+  readonly steamUsers = new Map<string, SteamUser>();
 
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
@@ -18,15 +18,12 @@ export class SteamUserService {
     private readonly expectionService: ExpectionService,
   ) {
     this.loggerService.setContext(SteamUserService.name);
-    this.init().catch((error) => {
-      this.loggerService.error(`Error initializing steam users: ${error}`);
-    });
   }
 
   get users() {
-    return Array.from(this.steamUsers.values()).map((user) => ({
-      name: user.accountInfo?.name || '',
-      steamID: user.steamID?.getSteamID64() || '',
+    return Array.from(this.steamUsers.entries()).map(([name, user]) => ({
+      accountName: name,
+      profileName: user.accountInfo?.name || '',
     }));
   }
 
@@ -54,16 +51,16 @@ export class SteamUserService {
       renewRefreshTokens: true,
     });
 
+    this.steamUsers.set(name, steamUser);
+
     steamUser.once('loggedOn', async () => {
-      this.steamUsers.set(name, steamUser);
       user.steamID = steamUser.steamID?.getSteamID64() || '';
       await user.save();
+      this.updatePersona(user);
     });
 
-    steamUser.once('error', async () => {
-      steamUser.removeAllListeners();
+    steamUser.once('error', () => {
       this.steamUsers.delete(name);
-      await user.deleteOne().exec();
     });
 
     steamUser.on('refreshToken', async (refreshToken: string) => {
@@ -89,28 +86,23 @@ export class SteamUserService {
   }
 
   async logOut(user: UserDocument): Promise<void> {
-    const userExists = await this.userModel.exists({ name: user.name });
     const steamUser = this.steamUsers.get(user.name);
-
-    if (!userExists) {
-      this.expectionService.throwException(
-        StatusExceptionKeys.NotFound,
-        'User not found',
-        AuthExceptionKeys.UserNotFound,
-      );
-    }
 
     if (steamUser) {
       steamUser.logOff();
-      steamUser.removeAllListeners();
       this.steamUsers.delete(user.name);
     }
 
-    await user.deleteOne().exec();
+    await this.userModel.findByIdAndDelete(user._id);
     this.loggerService.log(`User ${user.name} logged out`);
   }
 
   idleGames(user: UserDocument): void {
+    if (user.gameIds.length === 0) {
+      this.loggerService.log(`User ${user.name} has no games to idle`);
+      return;
+    }
+
     const steamUser = this.steamUsers.get(user.name);
     if (steamUser && user.idleGames) {
       const playedGames: Array<number | string> = [
@@ -145,9 +137,9 @@ export class SteamUserService {
     }
   }
 
-  private async init(): Promise<void> {
+  async init(): Promise<void> {
     const users = await this.userModel.find({
-      steamID: { $exists: true, $ne: null },
+      steamID: { $exists: true, $ne: '' },
     });
 
     for (const user of users) {

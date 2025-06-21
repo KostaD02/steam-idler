@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Post } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -43,7 +43,7 @@ export class AuthController {
     return this.authService.signIn(signInDto);
   }
 
-  @Post('sign-out')
+  @Delete('sign-out')
   @ApiOkResponse({
     description: 'User signed out successfully',
   })

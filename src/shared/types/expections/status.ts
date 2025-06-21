@@ -9,4 +9,5 @@ export enum StatusExceptionKeys {
   ContentTooLarge = 'error.content_too_large',
   UnsupportedMediaType = 'error.unsupported_media_type',
   EnhanceYourCalm = 'error.enhance_your_calm',
+  RateLimitExceeded = 'error.rate_limit_exceeded',
 }

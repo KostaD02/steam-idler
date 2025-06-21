@@ -13,7 +13,11 @@ export class ExpectionService {
     message?: string,
     errorKeys?: string | string[],
   ): never {
-    const status = this.getStatusCode(expection);
+    const isRateLimitExceeded = message === 'RateLimitExceeded';
+    const status = this.getStatusCode(expection, isRateLimitExceeded);
+    if (isRateLimitExceeded) {
+      errorKeys = [StatusExceptionKeys.RateLimitExceeded];
+    }
     this.logger.error(
       `Error: ${message} | Error Keys: ${JSON.stringify(errorKeys)}`,
     );
@@ -72,7 +76,13 @@ export class ExpectionService {
     ];
   }
 
-  private getStatusCode(key: StatusExceptionKeys): number {
+  private getStatusCode(
+    key: StatusExceptionKeys,
+    isRateLimitExceeded: boolean,
+  ): number {
+    if (isRateLimitExceeded) {
+      return 429;
+    }
     switch (key) {
       case StatusExceptionKeys.BadRequest:
         return HttpStatus.BAD_REQUEST;

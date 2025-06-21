@@ -1,12 +1,23 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { StatusExceptionKeys, AuthExceptionKeys } from './shared/types';
-import { SteamUserService } from './shared/services';
+import { AppLoggerService, SteamUserService } from './shared/services';
+import {
+  StatusExceptionKeys,
+  AuthExceptionKeys,
+  IdleExceptionKeys,
+} from './shared/types';
 
 @ApiTags('Root')
 @Controller()
 export class AppController {
-  constructor(private readonly steamUserService: SteamUserService) {}
+  constructor(
+    private readonly steamUserService: SteamUserService,
+    private readonly loggerService: AppLoggerService,
+  ) {
+    this.steamUserService.init().catch((error) => {
+      this.loggerService.error(`Error initializing steam users: ${error}`);
+    });
+  }
 
   @Get()
   @ApiOkResponse({
@@ -34,6 +45,7 @@ export class AppController {
     return Object.values({
       ...StatusExceptionKeys,
       ...AuthExceptionKeys,
+      ...IdleExceptionKeys,
     });
   }
 }
