@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule, IdleModule } from './modules';
+import { AppController } from './app.controller';
 import { SharedModule } from './shared/modules';
+import { AuthModule, IdleModule, PersonaModule } from './modules';
 
 @Module({
   imports: [
@@ -16,6 +16,7 @@ import { SharedModule } from './shared/modules';
     SharedModule,
     AuthModule,
     IdleModule,
+    PersonaModule,
   ],
   controllers: [AppController],
 })

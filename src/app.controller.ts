@@ -7,7 +7,7 @@ import {
   IdleExceptionKeys,
 } from './shared/types';
 
-@ApiTags('Root')
+@ApiTags('root')
 @Controller()
 export class AppController {
   constructor(

@@ -3,4 +3,5 @@ export {
   StatusExceptionKeys,
   AuthExceptionKeys,
   IdleExceptionKeys,
+  PersonaExceptionKeys,
 } from './expections';
