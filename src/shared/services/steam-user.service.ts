@@ -3,21 +3,31 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/schemas';
 import * as SteamUser from 'steam-user';
-import { AppLoggerService } from './logger.service';
 import { EPersonaState } from 'steam-user';
+import { AppLoggerService } from './logger.service';
+import { ExpectionService } from './expection.service';
+import { AuthExceptionKeys, StatusExceptionKeys } from '../types';
 
 @Injectable()
 export class SteamUserService {
-  readonly steamUsers = new Map<string, SteamUser>();
+  private readonly steamUsers = new Map<string, SteamUser>();
 
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     private readonly loggerService: AppLoggerService,
+    private readonly expectionService: ExpectionService,
   ) {
     this.loggerService.setContext(SteamUserService.name);
     this.init().catch((error) => {
       this.loggerService.error(`Error initializing steam users: ${error}`);
     });
+  }
+
+  get users() {
+    return Array.from(this.steamUsers.values()).map((user) => ({
+      name: user.accountInfo?.name || '',
+      steamID: user.steamID?.getSteamID64() || '',
+    }));
   }
 
   async signIn(
@@ -29,7 +39,11 @@ export class SteamUserService {
     const userExists = await this.userModel.exists({ name });
 
     if (userExists) {
-      throw new Error('User already exists');
+      this.expectionService.throwException(
+        StatusExceptionKeys.Conflict,
+        'User already exists with this name',
+        AuthExceptionKeys.UserAlreadyExists,
+      );
     }
 
     const user = await this.userModel.create({ name });
@@ -46,10 +60,10 @@ export class SteamUserService {
       await user.save();
     });
 
-    steamUser.once('error', (err) => {
+    steamUser.once('error', async () => {
       steamUser.removeAllListeners();
       this.steamUsers.delete(name);
-      throw err;
+      await user.deleteOne().exec();
     });
 
     steamUser.on('refreshToken', async (refreshToken: string) => {
@@ -75,14 +89,25 @@ export class SteamUserService {
   }
 
   async logOut(user: UserDocument): Promise<void> {
+    const userExists = await this.userModel.exists({ name: user.name });
     const steamUser = this.steamUsers.get(user.name);
+
+    if (!userExists) {
+      this.expectionService.throwException(
+        StatusExceptionKeys.NotFound,
+        'User not found',
+        AuthExceptionKeys.UserNotFound,
+      );
+    }
+
     if (steamUser) {
       steamUser.logOff();
       steamUser.removeAllListeners();
       this.steamUsers.delete(user.name);
-      await user.deleteOne().exec();
-      this.loggerService.log(`User ${user.name} logged out`);
     }
+
+    await user.deleteOne().exec();
+    this.loggerService.log(`User ${user.name} logged out`);
   }
 
   idleGames(user: UserDocument): void {

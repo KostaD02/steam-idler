@@ -1,5 +1,11 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiConflictResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dtos';
 import { NameDto } from 'src/shared/dtos';
@@ -24,11 +30,23 @@ export class AuthController {
       },
     },
   })
+  @ApiOkResponse({
+    description: 'User signed in successfully',
+  })
+  @ApiBadRequestResponse({
+    description: 'Invalid credentials',
+  })
+  @ApiConflictResponse({
+    description: 'User already exists with this name',
+  })
   signIn(@Body() signInDto: SignInDto) {
     return this.authService.signIn(signInDto);
   }
 
   @Post('sign-out')
+  @ApiOkResponse({
+    description: 'User signed out successfully',
+  })
   signOut(@Body() nameDto: NameDto) {
     return this.authService.signOut(nameDto);
   }

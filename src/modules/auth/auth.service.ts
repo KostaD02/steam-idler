@@ -1,46 +1,59 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/schemas';
 import { SignInDto } from './dtos';
-import { SteamUserService } from 'src/shared/services';
+import { ExpectionService, SteamUserService } from 'src/shared/services';
 import { NameDto } from 'src/shared/dtos';
+import { AuthExceptionKeys, StatusExceptionKeys } from 'src/shared/types';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     private readonly steamUserService: SteamUserService,
+    private readonly expectionService: ExpectionService,
   ) {}
 
-  async signIn(signInDto: SignInDto): Promise<void> {
+  async signIn(
+    signInDto: SignInDto,
+  ): Promise<{ name: string; steamID: string }> {
     const { name, password, twoFactorCode, autoRelogin } = signInDto;
     try {
-      await this.steamUserService.signIn(
+      const result = await this.steamUserService.signIn(
         name,
         password,
         twoFactorCode,
         autoRelogin,
       );
+      return {
+        name: result.accountInfo?.name || '',
+        steamID: result.steamID?.getSteamID64() || '',
+      };
     } catch (error) {
-      const err = error as Error;
-      console.log(err.message);
-      throw new UnauthorizedException(err.message);
+      this.expectionService.throwException(
+        StatusExceptionKeys.BadRequest,
+        error.message as string,
+        AuthExceptionKeys.InvalidCredentials,
+      );
     }
   }
 
-  async signOut(nameDto: NameDto): Promise<void> {
+  async signOut(nameDto: NameDto): Promise<{ success: boolean }> {
     const { name } = nameDto;
     const user = await this.userModel.findOne({ name });
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      this.expectionService.throwException(
+        StatusExceptionKeys.NotFound,
+        'User not found',
+        AuthExceptionKeys.UserNotFound,
+      );
     }
 
     await this.steamUserService.logOut(user);
+    return {
+      success: true,
+    };
   }
 }

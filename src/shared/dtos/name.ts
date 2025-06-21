@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty } from 'class-validator';
-import { AuthExceptions } from '../types';
+import { AuthExceptionKeys } from '../types';
 
 export class NameDto {
   @IsString({
-    message: AuthExceptions.NameShouldBeString,
+    message: AuthExceptionKeys.NameShouldBeString,
   })
   @IsNotEmpty({
-    message: AuthExceptions.NameIsRequired,
+    message: AuthExceptionKeys.NameIsRequired,
   })
   @ApiProperty({
     description: 'The name of the user to sign in',

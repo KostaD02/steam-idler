@@ -14,12 +14,19 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
 
-    // TODO: add custom error message keys
+    const expectionResposne = exception.getResponse() as {
+      error: string;
+      statusCode: number;
+      message: string | string[];
+    };
 
     response.status(status).json({
-      statusCode: status,
-      timestamp: new Date().toISOString(),
       path: request.url,
+      statusCode: status,
+      error: expectionResposne.error,
+      errorKeys: expectionResposne.message,
+      timestamp: new Date().toISOString(),
+      help: 'if you think this error should not happen, please create new issue at: https://github.com/kostad02/steam-idler/issues',
     });
   }
 }

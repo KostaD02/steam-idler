@@ -1,3 +1,2 @@
 export { UserPersonaState } from './user';
-
-export { AuthExceptions } from './expections';
+export { StatusExceptionKeys, AuthExceptionKeys } from './expections';

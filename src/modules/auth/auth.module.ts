@@ -2,9 +2,13 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/schemas';
-import { SteamUserService, AppLoggerService } from 'src/shared/services';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
+import {
+  SteamUserService,
+  AppLoggerService,
+  ExpectionService,
+} from 'src/shared/services';
 
 @Module({
   imports: [
@@ -17,6 +21,11 @@ import { AuthController } from './auth.controller';
     ]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, SteamUserService, AppLoggerService],
+  providers: [
+    AuthService,
+    SteamUserService,
+    AppLoggerService,
+    ExpectionService,
+  ],
 })
 export class AuthModule {}

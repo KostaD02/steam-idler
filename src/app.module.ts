@@ -3,8 +3,12 @@ import { AppController } from './app.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules';
-import { SteamUserService, AppLoggerService } from './shared/services';
 import { User, UserSchema } from './schemas';
+import {
+  ExpectionService,
+  SteamUserService,
+  AppLoggerService,
+} from './shared/services';
 
 @Module({
   imports: [
@@ -21,6 +25,6 @@ import { User, UserSchema } from './schemas';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [SteamUserService, AppLoggerService],
+  providers: [SteamUserService, AppLoggerService, ExpectionService],
 })
 export class AppModule {}

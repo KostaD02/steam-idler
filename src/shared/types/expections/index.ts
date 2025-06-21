@@ -1,1 +1,2 @@
-export { AuthExceptions } from './auth';
+export { AuthExceptionKeys } from './auth';
+export { StatusExceptionKeys } from './status';

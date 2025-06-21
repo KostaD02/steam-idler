@@ -13,6 +13,7 @@ export class AppLoggerService implements LoggerService {
   }
 
   error(message: unknown): void {
+    // TODO: save it in db?
     this.logger.error(message);
   }
 
@@ -29,6 +30,7 @@ export class AppLoggerService implements LoggerService {
   }
 
   fatal(message: unknown): void {
+    // TODO: save it in db?
     this.logger.fatal(message);
   }
 }
