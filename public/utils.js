@@ -32,7 +32,7 @@ class HttpService {
 
   httpRequest(url, method, body) {
     const xhr = new XMLHttpRequest();
-    xhr.open(method, `${BASE_URL}/${url}`);
+    xhr.open(method, `${this.baseUrl}/${url}`);
     if (body) {
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.setRequestHeader('Accept', 'application/json');
@@ -40,7 +40,7 @@ class HttpService {
     xhr.onloadstart = () => {
       console.log(
         `[${this.currentTime}] Start request to `,
-        `${BASE_URL}/${url}`,
+        `${this.baseUrl}/${url}`,
       );
     };
     xhr.send(JSON.stringify(body));
@@ -48,7 +48,7 @@ class HttpService {
       xhr.onloadend = () => {
         console.log(
           `[${this.currentTime}] End request to `,
-          `${BASE_URL}/${url}`,
+          `${this.baseUrl}/${url}`,
           `with status ${xhr.status}`,
         );
         if (xhr.status === 200 || xhr.status === 201) {

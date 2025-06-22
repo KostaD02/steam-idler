@@ -3,8 +3,7 @@ const hero = document.getElementById('hero');
 const afterUserAction = document.querySelectorAll('.hide-before-user-action');
 const usersContainer = document.getElementById('users');
 
-const BASE_URL = 'http://localhost:2222/api';
-const httpService = new HttpService(BASE_URL);
+const httpService = new HttpService();
 
 main();
 
