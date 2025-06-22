@@ -2,3 +2,12 @@ body {
   margin: 0;
   padding: 0;
 }
+
+main {
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+}
+
+.hide-before-user-action {
+  display: none;
+}

@@ -22,8 +22,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     let isWrongEndpoint = false;
 
-    if (expectionResposne.message instanceof String) {
-      isWrongEndpoint = expectionResposne.message.startsWith('Cannot ');
+    if (typeof expectionResposne.message === 'string') {
+      isWrongEndpoint = expectionResposne.message.includes('Cannot');
     }
 
     response.status(status).json({

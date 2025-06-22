@@ -196,7 +196,7 @@ export class SteamUserService {
       const { idleGames, replyMessageWhileIdle, replyMessageTemplate } =
         await this.userService.getUserDocument(user.name);
 
-      if (!replyMessageWhileIdle && idleGames) {
+      if (!replyMessageWhileIdle || !idleGames) {
         return;
       }
 
