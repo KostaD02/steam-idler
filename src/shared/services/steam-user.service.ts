@@ -60,8 +60,9 @@ export class SteamUserService {
       this.updatePersona(user);
     });
 
-    steamUser.once('error', () => {
+    steamUser.once('error', async () => {
       this.steamUsers.delete(name);
+      await user.deleteOne().exec();
     });
 
     steamUser.on('refreshToken', async (refreshToken: string) => {
@@ -83,6 +84,13 @@ export class SteamUserService {
     return new Promise((resolve, reject) => {
       steamUser.once('loggedOn', resolve);
       steamUser.once('error', reject);
+      steamUser.on('steamGuard', async (domain, callback, lastCodeWrong) => {
+        if (lastCodeWrong) {
+          this.steamUsers.delete(name);
+          await user.deleteOne().exec();
+          reject(new Error('Two factor code is invalid'));
+        }
+      });
     });
   }
 

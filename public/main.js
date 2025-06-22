@@ -177,6 +177,17 @@ function createActionButtons(user, userInfoList) {
         ),
     },
     {
+      key: 'clearGameExtraInfo',
+      text: 'Clear Game Extra Info',
+      className: 'btn-warning',
+      handler: () =>
+        clearGameExtraInfo(
+          user,
+          cardActions.querySelector('[data-key="clearGameExtraInfo"]'),
+          userInfoList.querySelector('[data-key="gameExtraInfo"]'),
+        ),
+    },
+    {
       key: 'toggleReplyMessageWhileIdle',
       text: user.replyMessageWhileIdle
         ? 'Stop Reply Message While Idle'
@@ -418,7 +429,68 @@ async function signOut(user) {
     .delete(endpoint, { name: user.name })
     .then((response) => {
       if (response.success) {
-        initUsers();
+        location.reload();
+      }
+    })
+    .catch(handleErrorPopUp);
+}
+
+async function clearGameExtraInfo(user, btn, listItem) {
+  const result = await createDynamicPopUpConfirmation(
+    'Clear Game Extra Info',
+    'Are you sure you want to clear game extra info? <br /> This will clear the game extra info for this user.',
+    'Yes',
+    'No',
+  );
+  if (!result) {
+    return;
+  }
+  const endpoint = `idle/custom-game-name-display`;
+  httpService
+    .delete(endpoint, { name: user.name })
+    .then((response) => {
+      if (response.success) {
+        user.gameExtraInfo = null;
+        listItem.textContent = `Game extra info:`;
+      }
+    })
+    .catch(handleErrorPopUp);
+}
+
+async function addUser() {
+  const result = await createDynamicPopUpMultipleForm(
+    'Add User',
+    'Add a new user to the server.',
+    [
+      {
+        type: 'text',
+        placeholder: 'Enter account name',
+      },
+      {
+        type: 'password',
+        placeholder: 'Enter account password',
+      },
+      {
+        type: 'text',
+        placeholder: 'Enter steam guard code (twoFactorCode)',
+      },
+    ],
+  );
+
+  if (!result) {
+    return;
+  }
+  const [name, password, twoFactorCode] = result;
+  const endpoint = `auth/sign-in`;
+  httpService
+    .post(endpoint, {
+      name,
+      password,
+      twoFactorCode,
+    })
+    .then((response) => {
+      if (response.accountName) {
+        location.reload();
       }
     })
     .catch(handleErrorPopUp);

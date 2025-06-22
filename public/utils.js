@@ -51,7 +51,7 @@ class HttpService {
           `${BASE_URL}/${url}`,
           `with status ${xhr.status}`,
         );
-        if (xhr.status === 200) {
+        if (xhr.status === 200 || xhr.status === 201) {
           resolve(JSON.parse(xhr.response));
         } else {
           reject(JSON.parse(xhr.response));
@@ -259,6 +259,100 @@ async function handleErrorPopUp(err) {
     `Error ${err.statusCode || ''}`,
     `${message} (${keys})`,
   );
+}
+
+function createDynamicPopUpMultipleForm(
+  title = 'Enter Information',
+  description = null,
+  fields = [],
+) {
+  return new Promise((resolve) => {
+    const modalId = `dynamicMultiModal_${Date.now()}`;
+
+    const fieldsHTML = fields
+      .map((field, index) => {
+        const fieldId = `${modalId}Input_${index}`;
+        return `
+        <div class="mb-3">
+          <input type="${field.type || 'text'}" class="form-control" id="${fieldId}" placeholder="${field.placeholder || ''}" required>
+        </div>
+      `;
+      })
+      .join('');
+
+    const modalHTML = `
+      <div class="modal fade" id="${modalId}" tabindex="-1" aria-labelledby="${modalId}Label" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="${modalId}Label">${title}</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="${modalId}Form">
+                ${description ? `<p class="mb-3">${description}</p>` : ''}
+                ${fieldsHTML}
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" form="${modalId}Form" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    const modalElement = document.getElementById(modalId);
+    const formElement = document.getElementById(`${modalId}Form`);
+
+    const modal = new bootstrap.Modal(modalElement);
+    let isResolved = false;
+
+    modalElement.addEventListener('hide.bs.modal', () => {
+      document.activeElement.blur();
+    });
+
+    formElement.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const values = fields.map((field, index) => {
+        const inputElement = document.getElementById(
+          `${modalId}Input_${index}`,
+        );
+        return inputElement.value.trim();
+      });
+
+      const allFieldsFilled = values.every((value) => value !== '');
+
+      if (allFieldsFilled) {
+        isResolved = true;
+        document.activeElement.blur();
+        modal.hide();
+        resolve(values);
+      }
+    });
+
+    modalElement.addEventListener('hidden.bs.modal', () => {
+      modalElement.remove();
+
+      if (!isResolved) {
+        resolve(null);
+      }
+    });
+
+    modalElement.addEventListener('shown.bs.modal', () => {
+      const firstInput = document.getElementById(`${modalId}Input_0`);
+      if (firstInput) {
+        firstInput.focus();
+        document.activeElement.blur();
+      }
+    });
+
+    modal.show();
+  });
 }
 
 function setTheme(mode = 'auto') {
