@@ -92,9 +92,18 @@
   },
   "release-it": {
     "$schema": "https://unpkg.com/release-it/schema/release-it.json",
+    "git": {
+      "commit": true,
+      "commitMessage": "chore(release): ${version}",
+      "tag": true,
+      "tagName": "v${version}",
+      "push": true,
+      "requireCleanWorkingDir": false
+    },
     "github": {
       "release": true
     },
+    "npm": false,
     "plugins": {
       "@release-it/conventional-changelog": {
         "infile": "CHANGELOG.md",
