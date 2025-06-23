@@ -7,6 +7,7 @@ COPY package*.json ./
 RUN npm ci --only=production
 
 COPY dist ./steam-idler-dist
+COPY public ./public
 
 RUN mkdir -p /app/data /app/logs
 
