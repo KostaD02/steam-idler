@@ -26,7 +26,7 @@
 
 Steam-Idler is a self-hosted application for Steam game idling.
 It can idle as many games as you want on as many accounts as you want.
-It’s great for farming cards or increasing game hours.
+It's great for farming cards or increasing game hours.
 
 ## Features
 
@@ -148,10 +148,9 @@ The application is built using the [NestJS](https://nestjs.com/).
 ## Contributing
 
 I will add new features when I have time, but you don't have to wait feel free to add them yourself! Fork the project and submit [pull requests](https://github.com/KostaD02/steam-idler/pulls).
+Check more details at [contributing page](https://github.com/KostaD02/steam-idler/blob/main/CONTRIBUTING.md).
 
 ## Issues
-
-Check more details at [contributing page](https://github.com/KostaD02/steam-idler/blob/main/CONTRIBUTING.md).
 
 If you see any [issues](https://github.com/KostaD02/steam-idler/issues), feel free to open an issue or suggest a [pull request](https://github.com/KostaD02/steam-idler/pulls).
 
