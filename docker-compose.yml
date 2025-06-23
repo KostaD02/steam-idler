@@ -1,0 +1,37 @@
+services:
+  mongo:
+    container_name: steam-idler-db
+    image: mongo:latest
+    restart: always
+    volumes:
+      - mongo_db:/data/db
+    networks:
+      - steam-idler-network
+
+  steam-idler:
+    container_name: steam-idler
+    image: kostad02/steam-idler:latest
+    restart: always
+    ports:
+      - "2222:2222"
+    depends_on:
+      - mongo
+    environment:
+      PORT: 2222
+      HIDE_NEST_LOGS: false
+      DATABASE_URL: mongodb://mongo:27017/steam-idler
+      NODE_ENV: production
+    networks:
+      - steam-idler-network
+    volumes:
+      - steam-idler-data:/app/data
+      - steam-idler-logs:/app/logs
+
+networks:
+  steam-idler-network:
+    driver: bridge
+
+volumes:
+  mongo_db: {}
+  steam-idler-data: {}
+  steam-idler-logs: {}

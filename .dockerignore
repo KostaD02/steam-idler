@@ -1,0 +1,14 @@
+node_modules
+npm-debug.log
+.git/
+.gitignore
+.env
+.prettierrc
+eslint.config.mjs
+README.md
+jest-cli.json
+Dockerfile*
+docker-compose.yml
+steam-idler.png
+screenshots/
+test/
