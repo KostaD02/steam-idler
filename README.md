@@ -19,6 +19,7 @@
 - [Project Architecture](#project-architecture)
 - [Contributing](#contributing)
 - [Issues](#issues)
+- [Logs](#logs)
 - [To Do](#to-do)
 
 ## Introduction
@@ -153,6 +154,14 @@ I will add new features when I have time, but you don't have to wait feel free t
 Check more details at [contributing page](https://github.com/KostaD02/steam-idler/blob/main/CONTRIBUTING.md).
 
 If you see any [issues](https://github.com/KostaD02/steam-idler/issues), feel free to open an issue or suggest a [pull request](https://github.com/KostaD02/steam-idler/pulls).
+
+## Logs
+
+If you didn't hide logs from the `.env` file, you can easily check what's happening in background processes by running this script:
+
+```
+docker logs steam-idler --follow
+```
 
 ## To Do
 
