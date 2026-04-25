@@ -5,6 +5,16 @@
   "projectType": "library",
   "tags": ["type:types", "scope:server"],
   "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/server/infra/types",
+        "main": "libs/server/infra/types/src/index.ts",
+        "tsConfig": "libs/server/infra/types/tsconfig.lib.json",
+        "assets": ["libs/server/infra/types/*.md"]
+      }
+    },
     "lint": {
       "executor": "@nx/eslint:lint",
       "options": {

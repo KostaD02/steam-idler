@@ -1,2 +1,2 @@
-pnpm exec nx format:check
+pnpm exec lint-staged
 pnpm exec nx affected -t lint

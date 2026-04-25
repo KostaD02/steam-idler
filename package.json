@@ -17,6 +17,15 @@
     "db:down": "docker compose -f docker-compose.dev.yml down"
   },
   "private": true,
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,cjs,mjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml,html,css,scss}": [
+      "prettier --write"
+    ]
+  },
   "dependencies": {
     "@angular/common": "~21.2.0",
     "@angular/compiler": "~21.2.0",
@@ -73,6 +82,8 @@
     "commit-and-tag-version": "^12.7.1",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-playwright": "^1.6.2",
     "husky": "^9.1.7",
     "jest": "^30.0.2",
@@ -81,6 +92,7 @@
     "jest-preset-angular": "~16.0.0",
     "jest-util": "^30.0.2",
     "jsonc-eslint-parser": "^2.1.0",
+    "lint-staged": "^16.4.0",
     "nx": "22.6.5",
     "prettier": "~3.6.2",
     "ts-jest": "^29.4.0",
