@@ -18,6 +18,9 @@
       "@steam-idler/generators": ["tools/generators/src/index.ts"],
       "@steam-idler/server/infra/types": [
         "libs/server/infra/types/src/index.ts"
+      ],
+      "@steam-idler/server/infra/services": [
+        "libs/server/infra/services/src/index.ts"
       ]
     }
   },

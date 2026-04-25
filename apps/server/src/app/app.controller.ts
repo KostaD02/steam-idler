@@ -1,12 +1,14 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
   @Get()
   getData() {
-    return this.appService.getData();
+    // TODO: Later redirect to directly on FE
+    return {
+      message: 'Welcome to Steam-Idler Server!',
+      timestamp: new Date().toISOString(),
+      swagger: '/api/swagger',
+    };
   }
 }
