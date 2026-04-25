@@ -44,3 +44,10 @@ Thumbs.db
 .claude/settings.local.json
 
 .angular
+
+# Local env files (root for docker compose, apps/* for app runtime config)
+.env
+.env.local
+.env.*.local
+**/.env
+!**/.env.example

@@ -1,0 +1,22 @@
+# Local development dependencies only.
+#
+# Spins up services that the app needs at dev time (MongoDB) so contributors
+# don't have to install them on their host. Not used for shipping or
+# production — purely `up` once when you start working, `down` when done.
+#
+# Usage:
+#   pnpm db:up      # start
+#   pnpm db:down    # stop (data preserved in named volume)
+
+services:
+  steam-idler-mongodb:
+    image: mongo:7
+    container_name: steam-idler-mongodb
+    ports:
+      - '27018:27017'
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongo_data:

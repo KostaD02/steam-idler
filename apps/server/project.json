@@ -43,11 +43,18 @@
       "dependsOn": ["prune-lockfile", "copy-workspace-modules"],
       "executor": "nx:noop"
     },
+    "db-up": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm db:up",
+        "cwd": "{workspaceRoot}"
+      }
+    },
     "serve": {
       "continuous": true,
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
-      "dependsOn": ["build"],
+      "dependsOn": ["build", "db-up"],
       "options": {
         "buildTarget": "server:build",
         "runBuildTargetDependencies": false
