@@ -1,5 +1,2 @@
-export class <%= className %>Entity {
-  constructor() {
-  }
-}
+export class <%= className %>Entity { }
 

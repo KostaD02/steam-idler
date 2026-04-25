@@ -1,0 +1,15 @@
+{
+  "name": "server-auth-domain",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/server/auth/domain/src",
+  "projectType": "library",
+  "tags": ["type:domain", "scope:server"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["libs/server/auth/domain/**/*.ts"]
+      }
+    }
+  }
+}

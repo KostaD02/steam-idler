@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { <%= className %>Controller } from './<%= fileName %>.controller';
-import { <%= className %>Service } from './<%= fileName %>.application-service';
+import { <%= className %>Service } from './<%= fileName %>.service';
 
 @Module({
   imports: [],

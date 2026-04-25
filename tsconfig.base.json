@@ -22,7 +22,15 @@
       "@steam-idler/server/infra/services": [
         "libs/server/infra/services/src/index.ts"
       ],
-      "@steam-idler/infra": ["libs/infra/src/index.ts"]
+      "@steam-idler/infra": ["libs/infra/src/index.ts"],
+      "@steam-idler/server/auth/core": ["libs/server/auth/core/src/index.ts"],
+      "@steam-idler/server/auth/domain": [
+        "libs/server/auth/domain/src/index.ts"
+      ],
+      "@steam-idler/server/auth/feature": [
+        "libs/server/auth/feature/src/index.ts"
+      ],
+      "@steam-idler/server/auth/types": ["libs/server/auth/types/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
