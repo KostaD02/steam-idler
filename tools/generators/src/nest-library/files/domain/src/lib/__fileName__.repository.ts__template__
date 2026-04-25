@@ -1,0 +1,4 @@
+import { <%= className %>Entity } from './<%= fileName %>.entity';
+
+export class <%= className %>Repository {
+}

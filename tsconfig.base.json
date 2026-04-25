@@ -14,7 +14,12 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@steam-idler/generators": ["tools/generators/src/index.ts"],
+      "@steam-idler/server/infra/types": [
+        "libs/server/infra/types/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

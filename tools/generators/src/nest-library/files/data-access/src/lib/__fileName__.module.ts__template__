@@ -1,0 +1,11 @@
+import { Module } from '@nestjs/common';
+
+/**
+ * Data Access module for <%= name %>
+ */
+@Module({
+  providers: [],
+  exports: [],
+})
+export class <%= className %>Module {}
+

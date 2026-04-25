@@ -1,0 +1,23 @@
+import { EdEvent } from '@steam-idler/server/common/types';
+
+export const NS = '<%= fileName %>';
+
+export enum <%= className %>Events {
+  <%= className %>Created = `${NS}.<%= fileName %>_created`,
+}
+
+interface <%= className %>EventPayloadTypes {
+  [<%= className %>Events.<%= className %>Created]: undefined;
+}
+
+export type <%= className %>EventName = (typeof <%= className %>Events)[keyof typeof <%= className %>Events];
+export type <%= className %>EventPayload<EventName extends keyof <%= className %>EventPayloadTypes> =
+  <%= className %>EventPayloadTypes[EventName];
+
+export class <%= className %>Event<EventName extends <%= className %>EventName> extends EdEvent<
+  <%= className %>EventPayload<EventName>
+> {
+  constructor(name: EventName, payload?: <%= className %>EventPayload<EventName>) {
+    super(name, payload);
+  }
+}

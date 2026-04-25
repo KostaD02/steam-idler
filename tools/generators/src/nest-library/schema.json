@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "NestLibrary",
+  "title": "Create a NestJS Library",
+  "description": "Create a NestJS library with pre-defined types for better organization",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Library name",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the library?",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9-]*$"
+    },
+    "type": {
+      "type": "string",
+      "description": "Library type",
+      "enum": [
+        "core",
+        "domain",
+        "data-access",
+        "feature",
+        "util",
+        "types",
+        "events"
+      ],
+      "x-prompt": {
+        "message": "What type of library would you like to create?",
+        "type": "list",
+        "items": [
+          {
+            "value": "core",
+            "label": "Core - Global foundational modules and shared infrastructure"
+          },
+          {
+            "value": "domain",
+            "label": "Domain - Pure business logic and domain models"
+          },
+          {
+            "value": "data-access",
+            "label": "Data Access - Persistence, repositories, and API integrations"
+          },
+          {
+            "value": "feature",
+            "label": "Feature - NestJS modules and orchestrating services"
+          },
+          {
+            "value": "util",
+            "label": "Util - Small reusable helper functions"
+          },
+          {
+            "value": "types",
+            "label": "Types - Shared TypeScript types and interfaces"
+          },
+          {
+            "value": "events",
+            "label": "Events - Event producer logic"
+          }
+        ]
+      }
+    },
+    "directory": {
+      "type": "string",
+      "description": "A directory where the library is placed (e.g., 'server' for libs/server/my-lib)",
+      "x-prompt": "Which directory should the library be placed in? (optional, press enter to skip)",
+      "default": "server"
+    },
+    "tags": {
+      "type": "string",
+      "description": "Add tags to the library (comma-separated)",
+      "x-prompt": "Add additional tags (comma-separated, optional)"
+    },
+    "buildable": {
+      "type": "boolean",
+      "description": "Generate a buildable library",
+      "default": false
+    },
+    "publishable": {
+      "type": "boolean",
+      "description": "Generate a publishable library",
+      "default": false
+    },
+    "importPath": {
+      "type": "string",
+      "description": "The library name used to import it, like @steam-idler/my-awesome-lib"
+    },
+    "skipFormat": {
+      "type": "boolean",
+      "description": "Skip formatting files",
+      "default": false
+    },
+    "useProjectJson": {
+      "type": "boolean",
+      "description": "Use project.json for the library",
+      "default": true
+    }
+  },
+  "required": ["name", "type"]
+}

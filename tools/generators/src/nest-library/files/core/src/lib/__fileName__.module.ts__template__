@@ -1,0 +1,10 @@
+import { Global, Module } from '@nestjs/common';
+import { <%= className %>Config } from './<%= fileName %>.config';
+
+@Global()
+@Module({
+  providers: [<%= className %>Config],
+  exports: [<%= className %>Config],
+})
+export class <%= className %>Module {}
+

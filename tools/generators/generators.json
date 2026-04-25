@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "name": "@steam-idler/generators",
+  "version": "0.0.1",
+  "generators": {
+    "nest-library": {
+      "factory": "./src/nest-library/index",
+      "schema": "./src/nest-library/schema.json",
+      "description": "Create a NestJS library with pre-defined types for better organization"
+    }
+  }
+}
