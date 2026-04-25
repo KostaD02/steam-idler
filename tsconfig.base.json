@@ -21,7 +21,8 @@
       ],
       "@steam-idler/server/infra/services": [
         "libs/server/infra/services/src/index.ts"
-      ]
+      ],
+      "@steam-idler/infra": ["libs/infra/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
