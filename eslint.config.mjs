@@ -68,22 +68,22 @@ export default [
               position: 'before',
             },
             {
-              pattern: '@builder.io/**',
+              pattern: '@angular/**',
               group: 'external',
               position: 'before',
             },
             {
-              pattern: '@educata/core',
+              pattern: '@steam-idler/infra',
               group: 'internal',
               position: 'before',
             },
             {
-              pattern: '@educata/*/common/**',
+              pattern: '@steam-idler/*/infra/**',
               group: 'internal',
               position: 'before',
             },
             {
-              pattern: '@educata/**',
+              pattern: '@steam-idler/**',
               group: 'internal',
               position: 'after',
             },
