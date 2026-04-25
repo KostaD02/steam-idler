@@ -1,6 +1,12 @@
-# Add files here to ignore them from prettier formatting
 /dist
 /coverage
 /.nx/cache
 /.nx/workspace-data
+
 .angular
+.vscode/settings.json
+
+pnpm-lock.yaml
+CONTRIBUTING.md
+PRIVACY_POLICY.md
+SECURITY.md
