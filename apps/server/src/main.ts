@@ -2,6 +2,8 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
+import cookieParser from 'cookie-parser';
+
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
@@ -49,6 +51,3 @@ async function bootstrap() {
 }
 
 bootstrap();
-function cookieParser(): any {
-  throw new Error('Function not implemented.');
-}
