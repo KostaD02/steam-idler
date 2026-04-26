@@ -4,12 +4,16 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import cookieParser from 'cookie-parser';
 
+import { LoggingInterceptor } from '@steam-idler/server/infra/interceptors';
+import { EnvironmentService } from '@steam-idler/server/infra/services';
+
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const globalPrefix = 'api';
   const logger = new Logger(bootstrap.name);
   const app = await NestFactory.create(AppModule);
+  const env = app.get(EnvironmentService);
 
   app.use(cookieParser());
   app.setGlobalPrefix(globalPrefix);
@@ -28,6 +32,10 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+
+  if (env.get('SERVER_LOG_ENABLED')) {
+    app.useGlobalInterceptors(new LoggingInterceptor());
+  }
 
   const port = process.env.PORT || 3000;
   const config = new DocumentBuilder()

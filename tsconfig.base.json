@@ -30,7 +30,10 @@
       "@steam-idler/server/auth/feature": [
         "libs/server/auth/feature/src/index.ts"
       ],
-      "@steam-idler/server/auth/types": ["libs/server/auth/types/src/index.ts"]
+      "@steam-idler/server/auth/types": ["libs/server/auth/types/src/index.ts"],
+      "@steam-idler/server/infra/interceptors": [
+        "libs/server/infra/interceptors/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

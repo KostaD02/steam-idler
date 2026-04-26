@@ -1,0 +1,19 @@
+{
+  "name": "server-infra-interceptors",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/server/infra/interceptors/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/server/infra/interceptors",
+        "main": "libs/server/infra/interceptors/src/index.ts",
+        "tsConfig": "libs/server/infra/interceptors/tsconfig.lib.json",
+        "assets": ["libs/server/infra/interceptors/*.md"]
+      }
+    }
+  }
+}

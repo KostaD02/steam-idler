@@ -9,3 +9,11 @@ export const API_PAGINATION = {
   MINIMUM_SIZE: 1,
   MAXIMUM_SIZE: 100,
 } as const;
+
+export const API_SENSITIVE_KEYS = [
+  'password',
+  'oldPassword',
+  'newPassword',
+  'access_token',
+  'refresh_token',
+];

@@ -5,6 +5,7 @@ export default [
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
+  importPlugin.flatConfigs.recommended,
   {
     ignores: ['**/dist', '**/out-tsc', '**/.angular', '**/coverage'],
   },
@@ -27,6 +28,20 @@ export default [
     },
   },
   {
+    settings: {
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: [
+            './tsconfig.base.json',
+            './apps/**/tsconfig.json',
+            './libs/**/tsconfig.json',
+          ],
+        },
+      },
+    },
+  },
+  {
     files: [
       '**/*.ts',
       '**/*.tsx',
@@ -37,18 +52,6 @@ export default [
       '**/*.cjs',
       '**/*.mjs',
     ],
-    plugins: {
-      import: importPlugin,
-    },
-    settings: {
-      'import/resolver': {
-        typescript: {
-          alwaysTryTypes: true,
-          project: ['tsconfig.base.json', 'tsconfig.json'],
-        },
-        node: true,
-      },
-    },
     rules: {
       'import/no-unresolved': ['warn'],
       'import/order': [
@@ -78,7 +81,7 @@ export default [
               position: 'before',
             },
             {
-              pattern: '@steam-idler/*/infra/**',
+              pattern: '@steam-idler/{server,client}/infra/**',
               group: 'internal',
               position: 'before',
             },
@@ -99,14 +102,6 @@ export default [
           'newlines-between': 'always',
         },
       ],
-    },
-  },
-  {
-    files: ['**/*.json'],
-    // Override or add rules here
-    rules: {},
-    languageOptions: {
-      parser: await import('jsonc-eslint-parser'),
     },
   },
 ];
