@@ -5,7 +5,7 @@ export function getISOString(date: Date | string = new Date()) {
     date = new Date(date);
   }
   const tzOffsetDate = getTzOffsetDate(date);
-  return tzOffsetDate.toISOString().replace('Z', '+04:00');
+  return tzOffsetDate.toISOString();
 }
 
 export function getTzOffsetDate(date: Date | string = new Date()) {

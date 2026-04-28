@@ -8,6 +8,7 @@ import { LoggingInterceptor } from '@steam-idler/server/infra/interceptors';
 import { EnvironmentService } from '@steam-idler/server/infra/services';
 
 import { AppModule } from './app/app.module';
+import { HttpExceptionsFilter } from './app/http-exceptions.filter';
 
 async function bootstrap() {
   const globalPrefix = 'api';
@@ -33,6 +34,8 @@ async function bootstrap() {
     }),
   );
 
+  app.useGlobalFilters(new HttpExceptionsFilter());
+
   if (env.get('SERVER_LOG_ENABLED')) {
     app.useGlobalInterceptors(new LoggingInterceptor());
   }
@@ -41,6 +44,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Steam Idler')
     .setDescription('The Steam Idler API description')
+    .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   const swaggerPath = `${globalPrefix}/swagger`;

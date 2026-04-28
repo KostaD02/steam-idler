@@ -1,2 +1,2 @@
-export * from './lib/auth.module';
 export * from './lib/auth.constants';
+export { hashText, compareToHash } from './lib/encryption';

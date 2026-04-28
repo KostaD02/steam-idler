@@ -8,9 +8,9 @@ interface Console {
   warn(message: MessageType, ...optionalParams: MessageType[]): void;
 }
 
-export type LogType = 'log' | 'error' | 'warn';
+export type SteamIdlerLogType = 'log' | 'error' | 'warn';
 
-export class Logger implements Console {
+export class SteamIdlerLogger implements Console {
   readonly console: Console;
 
   readonly timeFormat: Record<string, '2-digit' | 'numeric'> = {
@@ -43,7 +43,7 @@ export class Logger implements Console {
   }
 
   private logger(
-    type: LogType,
+    type: SteamIdlerLogType,
     message: MessageType,
     ...optionalParams: MessageType[]
   ): void {

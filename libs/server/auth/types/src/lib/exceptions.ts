@@ -1,0 +1,33 @@
+export const AuthExpectionKeys = {
+  IncorrectEmailOrPassword: 'errors.auth.incorrect_email_or_password',
+  EmailInUse: 'errors.auth.email_in_use',
+  PhoneNumberInUse: 'errors.auth.phone_number_in_use',
+  TokenInvalid: 'errors.auth.token_invalid',
+  TokenExpired: 'errors.auth.token_expired',
+  TokenNotFound: 'errors.auth.token_not_found',
+  InvalidEmail: 'errors.auth.invalid_email',
+  InvalidPassword: 'errors.auth.invalid_password',
+  InvalidOldPassword: 'errors.auth.invalid_old_password',
+  InvalidChangePassword: 'errors.auth.invalid_change_password',
+  InvalidCredentials: 'errors.auth.invalid_credentials',
+  InvalidToken: 'errors.auth.invalid_token',
+  DisplayNameTooShort: 'errors.auth.display_name_too_short',
+  DisplayNameTooLong: 'errors.auth.display_name_too_long',
+  DisplayNameShouldBeString: 'errors.auth.display_name_should_be_string',
+  PasswordTooShort: 'errors.auth.password_too_short',
+  PasswordTooLong: 'errors.auth.password_too_long',
+  PasswordShouldBeString: 'errors.auth.password_should_be_string',
+  OldPasswordTooShort: 'errors.auth.old_password_too_short',
+  OldPasswordTooLong: 'errors.auth.old_password_too_long',
+  OldPasswordShouldBeString: 'errors.auth.old_password_should_be_string',
+  NewPasswordTooShort: 'errors.auth.new_password_too_short',
+  NewPasswordTooLong: 'errors.auth.new_password_too_long',
+  NewPasswordShouldBeString: 'errors.auth.new_password_should_be_string',
+  ShouldProvideEmail: 'errors.auth.should_provide_email',
+  ShouldProvidePassword: 'errors.auth.should_provide_password',
+} as const;
+
+export const UserExceptionKeys = {
+  NotFound: 'errors.auth.user_not_found',
+  RoleNotSufficient: 'errors.auth.role_not_sufficient',
+} as const;
