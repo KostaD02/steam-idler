@@ -5,11 +5,16 @@ import { Response } from 'express';
 import { ExceptionService } from '@steam-idler/server/infra/services';
 import { ExceptionStatusKeys } from '@steam-idler/server/infra/types';
 
-import { compareToHash, hashText } from '@steam-idler/server/auth/core';
-import { AuthRepository } from '@steam-idler/server/auth/domain';
+import {
+  compareToHash,
+  hashText,
+  UPDATABLE_USER_FIELDS,
+} from '@steam-idler/server/auth/core';
+import { AuthRepository, UserUpdateDto } from '@steam-idler/server/auth/domain';
 import {
   AuthExpectionKeys,
   ChangePasswordDto,
+  UpdateUserDto,
   User,
   UserExceptionKeys,
 } from '@steam-idler/server/auth/types';
@@ -88,5 +93,30 @@ export class AuthAccountService {
     this.authValidationService.checkUserExistence(updated);
 
     return this.authTokenService.signIn(updated.toObject<User>(), response);
+  }
+
+  async updateUser(user: User, dto: UpdateUserDto) {
+    const sanitized: UserUpdateDto = {};
+    for (const field of UPDATABLE_USER_FIELDS) {
+      const value = dto[field];
+      if (value !== undefined) {
+        sanitized[field] = value;
+      }
+    }
+
+    if (Object.keys(sanitized).length === 0) {
+      this.exceptionService.throw(
+        ExceptionStatusKeys.BadRequest,
+        'No fields provided to update',
+        [AuthExpectionKeys.NoUpdateFieldsProvided],
+      );
+    }
+
+    const updated = await this.authRepository.updateById(
+      String(user._id),
+      sanitized,
+    );
+    this.authValidationService.checkUserExistence(updated);
+    return updated.toObject<User>();
   }
 }

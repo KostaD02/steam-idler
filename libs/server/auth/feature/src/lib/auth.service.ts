@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { Response } from 'express';
 
-import { User } from '@steam-idler/server/auth/types';
+import { UpdateUserDto, User } from '@steam-idler/server/auth/types';
 
 import { ChangePasswordDto, SignUpDto } from './dto';
 import { AuthAccountService, AuthTokenService } from './services';
@@ -40,5 +40,9 @@ export class AuthService {
 
   changePassword(user: User, dto: ChangePasswordDto, response: Response) {
     return this.authAccountService.changePassword(user, dto, response);
+  }
+
+  updateUser(user: User, dto: UpdateUserDto) {
+    return this.authAccountService.updateUser(user, dto);
   }
 }

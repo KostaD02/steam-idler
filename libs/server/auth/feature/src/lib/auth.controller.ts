@@ -27,7 +27,7 @@ import { User } from '@steam-idler/server/auth/types';
 
 import { AuthService } from './auth.service';
 import { Auth, CurrentUser } from './decorators';
-import { ChangePasswordDto, SignInDto, SignUpDto } from './dto';
+import { ChangePasswordDto, SignInDto, SignUpDto, UpdateUserDto } from './dto';
 import { LocalAuthGuard, RefreshJwtGuard } from './guards';
 
 @ApiTags('Auth')
@@ -58,6 +58,31 @@ export class AuthController {
   })
   getCurrentUser(@CurrentUser() user: User) {
     return this.authService.getSerializedUser(user);
+  }
+
+  @Patch()
+  @Auth()
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Update the currently authenticated user',
+    description:
+      'Patches whitelisted fields on the user resolved from the access token. Unknown fields are rejected by the global validation pipe; the body must contain at least one updatable field. Currently updatable: `displayName`.',
+  })
+  @ApiOkResponse({ description: 'Updated user profile.' })
+  @ApiBadRequestResponse({
+    description:
+      'Body validation failed or no updatable fields were provided. Possible errorKeys: `errors.auth.no_update_fields_provided`, `errors.auth.display_name_should_be_string`, `errors.auth.display_name_too_short`, `errors.auth.display_name_too_long`, `errors.auth.invalid_token`, `errors.common.property_should_not_exist`.',
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'Access token expired (`errors.auth.token_expired`), missing/invalid (`errors.auth.invalid_credentials`), or issued before the latest password change (`errors.auth.password_changed`).',
+  })
+  @ApiNotFoundResponse({
+    description:
+      'User referenced by the token no longer exists. errorKey: `errors.auth.user_not_found`.',
+  })
+  updateUser(@CurrentUser() user: User, @Body() dto: UpdateUserDto) {
+    return this.authService.updateUser(user, dto);
   }
 
   @Delete()
