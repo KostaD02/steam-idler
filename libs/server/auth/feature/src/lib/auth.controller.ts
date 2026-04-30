@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Post,
   Req,
@@ -56,6 +57,36 @@ export class AuthController {
   })
   getCurrentUser(@CurrentUser() user: User) {
     return this.authService.getSerializedUser(user);
+  }
+
+  @Delete()
+  @Auth()
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Delete the currently authenticated user',
+    description:
+      'Removes the user resolved from the `access_token` cookie or `Authorization: Bearer <jwt>` header from the database, clears the `access_token` and `refresh_token` cookies, and returns `{ success: true }`.',
+  })
+  @ApiOkResponse({
+    description: 'User deleted and signed out. Body: `{ success: true }`.',
+  })
+  @ApiBadRequestResponse({
+    description:
+      'Access token is malformed or its signature does not verify (`errors.auth.invalid_token`), or the delete operation was not acknowledged by the database (`errors.auth.user_not_found`).',
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'Access token expired (`errors.auth.token_expired`) or no `req.user` resolved by the guard (`errors.auth.invalid_credentials`).',
+  })
+  @ApiNotFoundResponse({
+    description:
+      'User referenced by the token no longer exists in the database. errorKey: `errors.auth.user_not_found`.',
+  })
+  deleteUser(
+    @CurrentUser() user: User,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    return this.authService.deleteUser(user, response);
   }
 
   @Post('sign-up')

@@ -1,15 +1,23 @@
 import { Injectable } from '@nestjs/common';
 
+import { Response } from 'express';
+
+import { ExceptionService } from '@steam-idler/server/infra/services';
+import { ExceptionStatusKeys } from '@steam-idler/server/infra/types';
+
 import { compareToHash } from '@steam-idler/server/auth/core';
 import { AuthRepository } from '@steam-idler/server/auth/domain';
-import { User } from '@steam-idler/server/auth/types';
+import { User, UserExceptionKeys } from '@steam-idler/server/auth/types';
 
+import { AuthTokenService } from './auth-token.service';
 import { AuthValidationService } from './auth-validation.service';
 
 @Injectable()
 export class AuthAccountService {
   constructor(
+    private readonly exceptionService: ExceptionService,
     private readonly authRepository: AuthRepository,
+    private readonly authTokenService: AuthTokenService,
     private readonly authValidationService: AuthValidationService,
   ) {}
 
@@ -25,5 +33,17 @@ export class AuthAccountService {
     const user = await this.authRepository.getById(String(payload._id));
     this.authValidationService.checkUserExistence(user);
     return user.toObject<User>();
+  }
+
+  async deleteUser(user: User, response: Response) {
+    const acknowledged = await this.authRepository.deleteById(String(user._id));
+    if (!acknowledged) {
+      this.exceptionService.throw(
+        ExceptionStatusKeys.BadRequest,
+        'Failed to delete user',
+        [UserExceptionKeys.NotFound],
+      );
+    }
+    return this.authTokenService.signOut(response);
   }
 }

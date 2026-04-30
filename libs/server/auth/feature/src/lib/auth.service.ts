@@ -33,4 +33,8 @@ export class AuthService {
   refreshToken(request: Request, response: Response) {
     return this.authTokenService.refreshToken(request, response);
   }
+
+  deleteUser(user: User, response: Response) {
+    return this.authAccountService.deleteUser(user, response);
+  }
 }
