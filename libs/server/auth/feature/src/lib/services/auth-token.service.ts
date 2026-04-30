@@ -86,7 +86,7 @@ export class AuthTokenService {
 
     this.authValidationService.checkRefreshToken(refreshToken);
 
-    let decoded: User;
+    let decoded: AuthenticatedUser;
 
     try {
       decoded = this.jwtService.verify<AuthenticatedUser>(refreshToken);
@@ -96,6 +96,11 @@ export class AuthTokenService {
 
     const user = await this.authRepository.getById(String(decoded._id));
     this.authValidationService.checkUserExistence(user);
+    this.authValidationService.checkTokenFreshness(
+      decoded,
+      user.passwordChangedAt,
+      response,
+    );
     return this.signIn(user.toObject<User>(), response);
   }
 

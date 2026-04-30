@@ -8,6 +8,7 @@ export interface BaseUser extends MongoObject {
   displayName: string;
   role: UserRole;
   steamAccounts: MongoId[];
+  passwordChangedAt: string;
 }
 
 export type UserNotSelectedFields = 'password';
