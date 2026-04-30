@@ -1,2 +1,11 @@
-<app-nx-welcome></app-nx-welcome>
 <router-outlet></router-outlet>
+
+@if (errorKeys | async; as keys) {
+<ul>
+  @for (key of keys; track key) {
+  <li>{{ key }}</li>
+  }
+</ul>
+} @else {
+<p>No keys found</p>
+}

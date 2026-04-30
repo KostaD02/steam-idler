@@ -5,6 +5,7 @@
   "author": "Konstantine datunishvili",
   "scripts": {
     "prepare": "husky",
+    "start": "nx run client:serve-with-server",
     "start:client": "nx serve client",
     "start:server": "nx serve server",
     "build:client": "nx build client",

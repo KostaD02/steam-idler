@@ -1,14 +1,21 @@
-import { Component } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { NxWelcome } from './nx-welcome';
+import { AppConfig } from './config/app-config';
 
 @Component({
-  imports: [NxWelcome, RouterModule],
+  imports: [RouterModule, AsyncPipe],
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
-  protected title = 'client';
+  private readonly httpClient = inject(HttpClient);
+  private readonly config = inject(AppConfig);
+
+  readonly errorKeys = this.httpClient.get<string[]>(
+    `${this.config.apiBase}/error-keys`,
+  );
 }

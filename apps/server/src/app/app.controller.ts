@@ -6,6 +6,11 @@ import {
   CommonExpectionsKeys,
 } from '@steam-idler/server/infra/types';
 
+import {
+  AuthExpectionKeys,
+  UserExceptionKeys,
+} from '@steam-idler/server/auth/types';
+
 @ApiTags('App')
 @Controller()
 export class AppController {
@@ -38,6 +43,11 @@ export class AppController {
     description: 'Array of error key strings.',
   })
   getErrorKeys() {
-    return Object.values({ ...ExceptionStatusKeys, ...CommonExpectionsKeys });
+    return Object.values({
+      ...ExceptionStatusKeys,
+      ...CommonExpectionsKeys,
+      ...AuthExpectionKeys,
+      ...UserExceptionKeys,
+    });
   }
 }

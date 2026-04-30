@@ -59,6 +59,14 @@
       },
       "defaultConfiguration": "development"
     },
+    "serve-with-server": {
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "buildTarget": "client:build",
+        "port": 4200
+      },
+      "dependsOn": ["server:serve"]
+    },
     "lint": {
       "executor": "@nx/eslint:lint"
     },
