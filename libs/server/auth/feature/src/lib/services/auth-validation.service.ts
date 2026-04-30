@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
+import { Response } from 'express';
+
 import { ExceptionService } from '@steam-idler/server/infra/services';
 import { ExceptionStatusKeys } from '@steam-idler/server/infra/types';
 
+import { AUTH_CONFIG } from '@steam-idler/server/auth/core';
 import { UserDocument } from '@steam-idler/server/auth/domain';
 import {
+  AuthenticatedUser,
   AuthExpectionKeys,
   UserExceptionKeys,
 } from '@steam-idler/server/auth/types';
@@ -64,5 +68,25 @@ export class AuthValidationService {
       'Invalid refresh token',
       [AuthExpectionKeys.InvalidToken],
     );
+  }
+
+  checkTokenFreshness(
+    decoded: AuthenticatedUser,
+    passwordChangedAt: string,
+    response: Response,
+  ): void {
+    const passwordChangedAtSec = Math.floor(
+      new Date(passwordChangedAt).getTime() / 1000,
+    );
+
+    if (decoded.iat < passwordChangedAtSec) {
+      response.clearCookie(AUTH_CONFIG.ACCESS_TOKEN_KEY);
+      response.clearCookie(AUTH_CONFIG.REFRESH_TOKEN_KEY);
+      this.exceptionService.throw(
+        ExceptionStatusKeys.Unauthorized,
+        'Token issued before password change',
+        [AuthExpectionKeys.PasswordChanged],
+      );
+    }
   }
 }

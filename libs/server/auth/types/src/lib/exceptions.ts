@@ -25,6 +25,8 @@ export const AuthExpectionKeys = {
   NewPasswordShouldBeString: 'errors.auth.new_password_should_be_string',
   ShouldProvideEmail: 'errors.auth.should_provide_email',
   ShouldProvidePassword: 'errors.auth.should_provide_password',
+  PasswordChanged: 'errors.auth.password_changed',
+  NoUpdateFieldsProvided: 'errors.auth.no_update_fields_provided',
 } as const;
 
 export const UserExceptionKeys = {

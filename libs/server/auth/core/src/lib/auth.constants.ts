@@ -1,5 +1,3 @@
-import { BaseUser } from '@steam-idler/server/auth/types';
-
 export const AUTH_CONFIG = {
   SALT_ROUNDS: 10,
   ACCESS_TOKEN_KEY: 'access_token',
@@ -21,4 +19,5 @@ export const AUTH_TOKENS = {
   IS_PUBLIC: Symbol('IS_PUBLIC'),
 } as const;
 
-export const UPDATABLE_USER_FIELDS: (keyof BaseUser)[] = ['displayName'];
+export const UPDATABLE_USER_FIELDS = ['displayName'] as const;
+export type UpdatableUserField = (typeof UPDATABLE_USER_FIELDS)[number];

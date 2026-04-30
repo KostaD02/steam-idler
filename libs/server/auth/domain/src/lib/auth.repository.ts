@@ -3,12 +3,14 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
 
+import { getISOString } from '@steam-idler/infra';
+
 import { ExceptionService } from '@steam-idler/server/infra/services';
 import { ExceptionStatusKeys } from '@steam-idler/server/infra/types';
 
 import { UserExceptionKeys } from '@steam-idler/server/auth/types';
 
-import { UserCreateDto } from './auth.repository-types';
+import { UserCreateDto, UserUpdateDto } from './auth.repository-types';
 import { UserDocument, UserEntity } from './auth.schema';
 
 @Injectable()
@@ -49,6 +51,23 @@ export class AuthRepository {
 
   create(dto: UserCreateDto) {
     return this.userModel.create(dto);
+  }
+
+  updateById(id: string, dto: UserUpdateDto) {
+    return this.userModel.findByIdAndUpdate(id, dto, { new: true }).exec();
+  }
+
+  updatePassword(id: string, hashedPassword: string) {
+    return this.userModel
+      .findByIdAndUpdate(
+        id,
+        {
+          password: hashedPassword,
+          passwordChangedAt: getISOString(),
+        },
+        { new: true },
+      )
+      .exec();
   }
 
   async deleteById(id: string) {

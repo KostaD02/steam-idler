@@ -70,6 +70,12 @@ export class JwtAuthMiddleware implements NestMiddleware {
       this.authValidationService.checkUserExistence(user);
     }
 
+    this.authValidationService.checkTokenFreshness(
+      decoded,
+      user.passwordChangedAt,
+      res,
+    );
+
     req.user = user.toObject<User>();
     return next();
   }
