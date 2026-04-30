@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
 
+import { getISOString } from '@steam-idler/infra';
+
 import { ExceptionService } from '@steam-idler/server/infra/services';
 import { ExceptionStatusKeys } from '@steam-idler/server/infra/types';
 
@@ -53,7 +55,14 @@ export class AuthRepository {
 
   updatePassword(id: string, hashedPassword: string) {
     return this.userModel
-      .findByIdAndUpdate(id, { password: hashedPassword }, { new: true })
+      .findByIdAndUpdate(
+        id,
+        {
+          password: hashedPassword,
+          passwordChangedAt: getISOString(),
+        },
+        { new: true },
+      )
       .exec();
   }
 

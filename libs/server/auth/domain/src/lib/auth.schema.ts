@@ -2,6 +2,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 import { HydratedDocument, ValidatorProps } from 'mongoose';
 
+import { getISOString } from '@steam-idler/infra';
+
 import { MongoId, StrippedMongoObject } from '@steam-idler/server/infra/types';
 
 import { USER_API_CONFIG } from '@steam-idler/server/auth/core';
@@ -58,6 +60,12 @@ export class UserEntity implements StrippedMongoObject<BaseUser> {
     type: [String],
   })
   steamAccounts!: MongoId[];
+
+  @Prop({
+    type: String,
+    default: () => getISOString(),
+  })
+  passwordChangedAt!: string;
 }
 
 export type UserDocument = HydratedDocument<UserEntity>;
