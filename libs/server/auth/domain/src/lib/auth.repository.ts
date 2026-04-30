@@ -51,6 +51,12 @@ export class AuthRepository {
     return this.userModel.create(dto);
   }
 
+  updatePassword(id: string, hashedPassword: string) {
+    return this.userModel
+      .findByIdAndUpdate(id, { password: hashedPassword }, { new: true })
+      .exec();
+  }
+
   async deleteById(id: string) {
     const user = await this.getById(id);
 

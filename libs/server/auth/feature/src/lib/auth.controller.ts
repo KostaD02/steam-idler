@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Patch,
   Post,
   Req,
   Res,
@@ -26,7 +27,7 @@ import { User } from '@steam-idler/server/auth/types';
 
 import { AuthService } from './auth.service';
 import { Auth, CurrentUser } from './decorators';
-import { SignInDto, SignUpDto } from './dto';
+import { ChangePasswordDto, SignInDto, SignUpDto } from './dto';
 import { LocalAuthGuard, RefreshJwtGuard } from './guards';
 
 @ApiTags('Auth')
@@ -192,5 +193,37 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
   ) {
     return this.authService.refreshToken(request, response);
+  }
+
+  @Patch('change-password')
+  @Auth()
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Change the current user password',
+    description:
+      'Verifies the old password, hashes the new one, persists it, then re-issues `access_token` and `refresh_token` so the active session continues with fresh credentials.',
+  })
+  @ApiCreatedResponse({
+    description:
+      'Password changed and tokens rotated. Body: `{ access_token, refresh_token }`. Cookies are updated on the response.',
+  })
+  @ApiBadRequestResponse({
+    description:
+      'Body validation failed, the old password did not match, or the new password equals the old. Possible errorKeys: `errors.auth.old_password_should_be_string`, `errors.auth.old_password_too_short`, `errors.auth.old_password_too_long`, `errors.auth.new_password_should_be_string`, `errors.auth.new_password_too_short`, `errors.auth.new_password_too_long`, `errors.auth.invalid_old_password`, `errors.auth.invalid_change_password`, `errors.auth.invalid_token`.',
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'Access token expired (`errors.auth.token_expired`) or no `req.user` resolved by the guard (`errors.auth.invalid_credentials`).',
+  })
+  @ApiNotFoundResponse({
+    description:
+      'User referenced by the token no longer exists. errorKey: `errors.auth.user_not_found`.',
+  })
+  changePassword(
+    @CurrentUser() user: User,
+    @Body() dto: ChangePasswordDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    return this.authService.changePassword(user, dto, response);
   }
 }
