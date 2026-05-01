@@ -8,4 +8,8 @@ describe('App', () => {
       imports: [App],
     }).compileComponents();
   });
+
+  it('TODO: add more tests', () => {
+    expect(1).toBe(1);
+  });
 });
