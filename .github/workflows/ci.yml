@@ -32,12 +32,10 @@ jobs:
 
       - uses: nrwl/nx-set-shas@v4
 
-      - name: Lint affected (PR)
-        if: github.event_name == 'pull_request'
+      - name: Lint affected
         run: pnpm exec nx affected -t lint --parallel=3
 
-      - name: Lint all (push)
-        if: github.event_name == 'push'
+      - name: Lint all
         run: pnpm exec nx run-many -t lint --parallel=3
 
   test:
@@ -61,10 +59,8 @@ jobs:
 
       - uses: nrwl/nx-set-shas@v4
 
-      - name: Test affected (PR)
-        if: github.event_name == 'pull_request'
+      - name: Test affected
         run: pnpm exec nx affected -t test --parallel=3 --ci
 
-      - name: Test all (push)
-        if: github.event_name == 'push'
+      - name: Test all
         run: pnpm exec nx run-many -t test --parallel=3 --ci
