@@ -1,0 +1,17 @@
+FROM node:22-alpine AS deps
+WORKDIR /app
+COPY dist/apps/server/package.json ./
+RUN npm install --omit=dev --no-fund --no-audit --no-package-lock
+
+FROM node:22-alpine AS runtime
+ENV NODE_ENV=production
+WORKDIR /app
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY --chown=node:node dist/apps/server ./
+
+USER node
+
+EXPOSE 2201
+
+CMD ["node", "main.js"]

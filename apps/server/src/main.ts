@@ -40,7 +40,7 @@ async function bootstrap() {
     app.useGlobalInterceptors(new LoggingInterceptor());
   }
 
-  const port = process.env.PORT || 3000;
+  const port = env.get('SERVER_PORT', 2201);
   const config = new DocumentBuilder()
     .setTitle('Steam Idler')
     .setDescription('The Steam Idler API description')

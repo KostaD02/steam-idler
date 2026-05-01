@@ -1,0 +1,56 @@
+services:
+  steam-idler-mongo:
+    image: mongo:7
+    container_name: steam-idler-mongo
+    ports:
+      - '27018:27017'
+    volumes:
+      - steam-idler-mongo-data:/data/db
+    networks:
+      - steam-idler-net
+    logging:
+      driver: none
+    restart: unless-stopped
+
+  steam-idler-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    image: steam-idler-server:local
+    container_name: steam-idler-server
+    depends_on:
+      - steam-idler-mongo
+    ports:
+      - '${SERVER_PORT:-2201}:${SERVER_PORT:-2201}'
+    environment:
+      SERVER_PORT: ${SERVER_PORT:-2201}
+      SERVER_LOG_ENABLED: ${SERVER_LOG_ENABLED:-true}
+      JWT_SECRET: ${JWT_SECRET:-dev-only-secret-please-override-1234567890}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1}
+      DATABASE_URL: mongodb://steam-idler-mongo:27017/steam-idler
+    networks:
+      - steam-idler-net
+    restart: unless-stopped
+
+  steam-idler-client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    image: steam-idler-client:local
+    container_name: steam-idler-client
+    depends_on:
+      - steam-idler-server
+    ports:
+      - '${CLIENT_PORT:-2222}:${CLIENT_PORT:-2222}'
+    environment:
+      CLIENT_PORT: ${CLIENT_PORT:-2222}
+    networks:
+      - steam-idler-net
+    restart: unless-stopped
+
+networks:
+  steam-idler-net:
+    driver: bridge
+
+volumes:
+  steam-idler-mongo-data:
