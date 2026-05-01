@@ -8,6 +8,7 @@
     "start": "nx run client:serve-with-server",
     "start:client": "nx serve client",
     "start:server": "nx serve server",
+    "build": "nx run-many --target=build --all",
     "build:client": "nx build client",
     "build:server": "nx build server",
     "release": "commit-and-tag-version",
@@ -16,7 +17,12 @@
     "release:major": "commit-and-tag-version --release-as major",
     "db:up": "docker compose -f docker-compose.dev.yml up -d",
     "db:down": "docker compose -f docker-compose.dev.yml down",
-    "g:secret": "node -e console.log(require('crypto').randomBytes(64).toString('hex'))"
+    "g:secret": "node -e \"console.log(require('crypto').randomBytes(64).toString('hex'))\"",
+    "docker:build:client": "pnpm build:client && docker build --no-cache -f Dockerfile.client -t kostad02/steam-idler-client:$npm_package_version .",
+    "docker:build:server": "pnpm build:server && docker build --no-cache -f Dockerfile.server -t kostad02/steam-idler-server:$npm_package_version .",
+    "docker:build": "pnpm run docker:build:client && pnpm run docker:build:server",
+    "docker:local:up": "pnpm db:down && pnpm build && docker compose -f docker-compose.local.yml up --build --attach steam-idler-server --attach steam-idler-client",
+    "docker:local:down": "docker compose -f docker-compose.local.yml down"
   },
   "private": true,
   "lint-staged": {

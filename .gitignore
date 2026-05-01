@@ -45,7 +45,7 @@ Thumbs.db
 
 .angular
 
-# Local env files (root for docker compose, apps/* for app runtime config)
+# Local env files (root .env is the single source of truth for compose + server runtime)
 .env
 .env.local
 .env.*.local

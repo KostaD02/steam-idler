@@ -1,0 +1,70 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Dependencies (reinstalled inside the image)
+node_modules
+**/node_modules
+
+# Source not copied into the image (only built artifacts and the static server file are used)
+libs
+tools
+apps/server
+apps/client/src
+apps/client/public
+apps/client-e2e
+apps/server-e2e
+
+# Build/cache state
+.nx
+.angular
+tmp
+out-tsc
+coverage
+.cache
+
+# Tests
+**/*.spec.ts
+**/*.test.ts
+playwright.config.*
+
+# Editor / IDE
+.husky
+*.swp
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log
+yarn-error.log
+
+# Env / secrets
+.env
+.env.*
+!**/.env.example
+
+# Docs
+*.md
+LICENSE
+
+# Docker / compose
+docker-compose*.yml
+Dockerfile.*
+.dockerignore
+
+# Tooling configs not used at runtime
+commitlint.config.*
+eslint.config.*
+jest.config.*
+jest.preset.*
+nx.json
+tsconfig*.json
+.editorconfig
+.prettierrc*
+.prettierignore
+.npmrc

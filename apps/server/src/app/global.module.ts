@@ -1,5 +1,3 @@
-import { join } from 'path';
-
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -11,10 +9,6 @@ import { EnvironmentService } from '@steam-idler/server/infra/services';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [
-        join(__dirname, '..', '..', '.env'),
-        join(__dirname, '..', '..', '.env.development'),
-      ],
     }),
     JwtModule.registerAsync({
       useFactory: (env: EnvironmentService) => ({
