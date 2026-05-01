@@ -64,3 +64,30 @@ jobs:
 
       - name: Test all
         run: pnpm exec nx run-many -t test --parallel=3 --ci
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - uses: nrwl/nx-set-shas@v4
+
+      - name: Build affected
+        run: pnpm exec nx affected -t build --parallel=3
+
+      - name: Build all
+        run: pnpm exec nx run-many -t build --parallel=3
