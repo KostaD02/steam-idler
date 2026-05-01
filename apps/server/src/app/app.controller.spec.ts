@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
 describe('AppController', () => {
   let app: TestingModule;
@@ -9,14 +8,25 @@ describe('AppController', () => {
   beforeAll(async () => {
     app = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
     }).compile();
   });
 
-  describe('getData', () => {
-    it('should return "Hello API"', () => {
+  describe('base', () => {
+    it('should return a welcome payload', () => {
       const appController = app.get<AppController>(AppController);
-      expect(appController.getData()).toEqual({ message: 'Hello API' });
+      const result = appController.base();
+      expect(result).toHaveProperty('message');
+      expect(result).toHaveProperty('timestamp');
+      expect(result).toHaveProperty('swagger');
+    });
+  });
+
+  describe('getErrorKeys', () => {
+    it('should return an array of error keys', () => {
+      const appController = app.get<AppController>(AppController);
+      const result = appController.getErrorKeys();
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBeGreaterThan(0);
     });
   });
 });
