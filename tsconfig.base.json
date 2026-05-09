@@ -33,6 +33,18 @@
       "@steam-idler/server/auth/types": ["libs/server/auth/types/src/index.ts"],
       "@steam-idler/server/infra/interceptors": [
         "libs/server/infra/interceptors/src/index.ts"
+      ],
+      "@steam-idler/server/steam-account/core": [
+        "libs/server/steam-account/core/src/index.ts"
+      ],
+      "@steam-idler/server/steam-account/domain": [
+        "libs/server/steam-account/domain/src/index.ts"
+      ],
+      "@steam-idler/server/steam-account/feature": [
+        "libs/server/steam-account/feature/src/index.ts"
+      ],
+      "@steam-idler/server/steam-account/types": [
+        "libs/server/steam-account/types/src/index.ts"
       ]
     }
   },
