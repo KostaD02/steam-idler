@@ -125,7 +125,7 @@ jobs:
       - name: Upload artifact
         if: github.event_name == 'pull_request'
         id: upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Steam-Idler-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
           path: dist
@@ -158,7 +158,7 @@ jobs:
       - name: Upload client image
         if: github.event_name == 'pull_request'
         id: upload-client
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Steam-Idler-Client-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
           path: /tmp/steam-idler-client.tar
@@ -167,7 +167,7 @@ jobs:
       - name: Upload server image
         if: github.event_name == 'pull_request'
         id: upload-server
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Steam-Idler-Server-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
           path: /tmp/steam-idler-server.tar
