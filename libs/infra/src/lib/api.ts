@@ -16,4 +16,7 @@ export const API_SENSITIVE_KEYS = [
   'newPassword',
   'access_token',
   'refresh_token',
+  'twoFactorCode',
+  'cookies',
+  'refreshToken',
 ];

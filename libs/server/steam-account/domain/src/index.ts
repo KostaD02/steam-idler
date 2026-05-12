@@ -1,2 +1,6 @@
-export * from './lib/steam-account.schema';
-export * from './lib/steam-account.repository';
+export {
+  SteamAccountEntity,
+  SteamAccountDocument,
+  SteamAccountSchema,
+} from './lib/steam-account.schema';
+export { SteamAccountRepository } from './lib/steam-account.repository';

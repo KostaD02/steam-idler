@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 
-import { StrippedMongoObject } from '@steam-idler/server/infra/types';
+import { MongoId, StrippedMongoObject } from '@steam-idler/server/infra/types';
 
 import { STEAM_ACCOUNT_API_CONFIG } from '@steam-idler/server/steam-account/core';
 import {
@@ -18,6 +18,19 @@ import {
 })
 export class SteamAccountEntity implements StrippedMongoObject<SteamAccount> {
   @Prop({
+    required: true,
+    type: Types.ObjectId,
+  })
+  userId!: MongoId;
+
+  @Prop({
+    required: true,
+    unique: true,
+    trim: true,
+  })
+  accountName!: string;
+
+  @Prop({
     required: false,
     trim: true,
     default: '',
@@ -27,6 +40,8 @@ export class SteamAccountEntity implements StrippedMongoObject<SteamAccount> {
   displayedGameName!: string;
 
   @Prop({
+    _id: false,
+    required: true,
     type: {
       idleEnabled: {
         type: Boolean,
@@ -41,11 +56,21 @@ export class SteamAccountEntity implements StrippedMongoObject<SteamAccount> {
         default: SteamPersonaStatusEnum.Online,
       },
       autoReply: {
-        type: Object,
-        default: {
-          enabled: false,
-          whileIdling: false,
-          template: '',
+        _id: false,
+        required: true,
+        type: {
+          enabled: {
+            type: Boolean,
+            default: false,
+          },
+          whileIdling: {
+            type: Boolean,
+            default: false,
+          },
+          template: {
+            type: String,
+            default: '',
+          },
         },
       },
     },
@@ -53,19 +78,20 @@ export class SteamAccountEntity implements StrippedMongoObject<SteamAccount> {
   idleSettings!: SteamAccountIdleSettings;
 
   @Prop({
+    _id: false,
     required: true,
     type: {
       id: {
         type: String,
-        required: true,
+        default: '',
       },
       cookies: {
         type: [String],
-        required: true,
+        default: [],
       },
       refreshToken: {
         type: String,
-        required: true,
+        default: '',
       },
     },
   })

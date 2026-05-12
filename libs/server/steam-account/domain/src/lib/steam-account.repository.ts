@@ -4,10 +4,22 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { ExceptionService } from '@steam-idler/server/infra/services';
+import {
+  ExceptionStatusKeys,
+  MongoId,
+  StrippedMongoObject,
+} from '@steam-idler/server/infra/types';
 
-import { SteamAccountCredentials } from '@steam-idler/server/steam-account/types';
+import {
+  SteamAccount,
+  SteamAccountExceptionKeys,
+  SteamPersonaStatusEnum,
+} from '@steam-idler/server/steam-account/types';
 
-import { SteamAccountEntity } from './steam-account.schema';
+import {
+  SteamAccountDocument,
+  SteamAccountEntity,
+} from './steam-account.schema';
 
 @Injectable()
 export class SteamAccountRepository {
@@ -17,11 +29,80 @@ export class SteamAccountRepository {
     private readonly exceptionService: ExceptionService,
   ) {}
 
-  create(steamCredentials: SteamAccountCredentials) {
-    return this.steamAccountModel.create({
-      credentials: steamCredentials,
-    });
+  getAll() {
+    return this.steamAccountModel.find({}).exec();
   }
 
-  // TODO: finish rest methods
+  getById(id: string) {
+    return this.steamAccountModel.findById(id).exec();
+  }
+
+  getByName(accountName: string) {
+    return this.steamAccountModel.findOne({ accountName }).exec();
+  }
+
+  existsByName(accountName: string) {
+    return this.steamAccountModel.exists({ accountName });
+  }
+
+  create(accountName: string, userId: MongoId) {
+    const steamAccount: StrippedMongoObject<SteamAccount> = {
+      userId,
+      accountName,
+      displayedGameName: '',
+      credentials: {
+        id: '',
+        cookies: [],
+        refreshToken: '',
+      },
+      idleSettings: {
+        idleEnabled: false,
+        personaStatus: SteamPersonaStatusEnum.Online,
+        idleGameIds: [],
+        autoReply: {
+          enabled: false,
+          template: '',
+          whileIdling: false,
+        },
+      },
+    };
+    return this.steamAccountModel.create(steamAccount);
+  }
+
+  updateById(
+    id: string,
+    steamAccount: Partial<StrippedMongoObject<SteamAccount>>,
+  ) {
+    return this.steamAccountModel.findByIdAndUpdate(id, steamAccount);
+  }
+
+  async deleteById(id: string) {
+    const steamAccount = await this.getById(id);
+    this.checkSteamAccountExists(steamAccount);
+    const deleteAction = await steamAccount.deleteOne().exec();
+    return {
+      success: deleteAction.acknowledged,
+    };
+  }
+
+  async deleteByAccountName(accountName: string) {
+    const steamAccount = await this.getByName(accountName);
+    this.checkSteamAccountExists(steamAccount);
+    const deleteAction = await steamAccount.deleteOne().exec();
+    return {
+      success: deleteAction.acknowledged,
+    };
+  }
+
+  private checkSteamAccountExists(
+    steamAccount: SteamAccountDocument | null,
+  ): asserts steamAccount is SteamAccountDocument {
+    if (!steamAccount) {
+      this.exceptionService.throw(
+        ExceptionStatusKeys.BadRequest,
+        'Steam account not found',
+        [SteamAccountExceptionKeys.NotFound],
+      );
+    }
+  }
 }
