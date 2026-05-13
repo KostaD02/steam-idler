@@ -1,6 +1,6 @@
 import { SafeAny } from './safe-any';
 
-const MONGOOSE_KEYS = ['_id', 'id', 'createdAt', 'updatedAt'];
+const MONGOOSE_KEYS = ['_id', 'id', 'userId', 'createdAt', 'updatedAt'];
 
 export function sanitizeObject<T extends Record<string, SafeAny>>(
   obj: T,

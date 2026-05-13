@@ -15,4 +15,6 @@ export const SteamAccountExceptionKeys = {
   GuardCodeIsInvalid: 'errors.steam_account.guard_code_is_invalid',
   InvalidCredentials: 'errors.steam_account.invalid_credentials',
   RateLimitExceeded: 'errors.steam_account.rate_limit_exceeded',
+  GamesIdsShouldBeArray: 'errors.steam_account.games_ids_should_be_array',
+  GamesIdsMustBeNumbers: 'errors.steam_account.games_ids_must_be_numbers',
 } as const;

@@ -37,6 +37,14 @@ export class SteamAccountRepository {
     return this.steamAccountModel.findById(id).exec();
   }
 
+  getByUserId(id: MongoId) {
+    return this.steamAccountModel
+      .find({ userId: id })
+      .select('-credentials')
+      .lean()
+      .exec();
+  }
+
   getByName(accountName: string) {
     return this.steamAccountModel.findOne({ accountName }).exec();
   }

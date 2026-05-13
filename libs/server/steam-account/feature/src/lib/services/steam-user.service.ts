@@ -11,7 +11,7 @@ import {
 } from '@steam-idler/server/steam-account/domain';
 import { SteamAccountExceptionKeys } from '@steam-idler/server/steam-account/types';
 
-import { SteamSignInDto } from '../dto';
+import { GamesToIdleDto, SteamSignInDto } from '../dto';
 
 @Injectable()
 export class SteamUserService {
@@ -23,6 +23,10 @@ export class SteamUserService {
     private readonly exceptionService: ExceptionService,
   ) {
     this.init();
+  }
+
+  getByUserId(userId: MongoId) {
+    return this.steamAccountRepository.getByUserId(userId);
   }
 
   async addSteamAccount(steamSignInDto: SteamSignInDto, userId: MongoId) {
@@ -141,6 +145,124 @@ export class SteamUserService {
     return this.steamAccountRepository.deleteByAccountName(name);
   }
 
+  async idleGames(accountName: string, forceIdle = false) {
+    const steamUser = this.usersMap.get(accountName);
+
+    if (!steamUser) {
+      this.exceptionService.throw(
+        ExceptionStatusKeys.BadRequest,
+        'Steam account not found',
+        [SteamAccountExceptionKeys.NotFound],
+      );
+    }
+
+    const steamUserAccount =
+      await this.steamAccountRepository.getByName(accountName);
+
+    if (!steamUserAccount) {
+      this.exceptionService.throw(
+        ExceptionStatusKeys.BadRequest,
+        'Steam account not found',
+        [SteamAccountExceptionKeys.NotFound],
+      );
+    }
+
+    if (forceIdle) {
+      steamUserAccount.idleSettings.idleEnabled = true;
+      await steamUserAccount.save();
+    }
+
+    if (!steamUserAccount.idleSettings.idleEnabled) {
+      return;
+    }
+
+    if (steamUserAccount.idleSettings.idleGameIds.length === 0) {
+      this.logger.warn(
+        `No games found to idle for ${steamUserAccount.accountName}, updating idle enabled to false`,
+      );
+      steamUserAccount.idleSettings.idleEnabled = false;
+      await steamUserAccount.save();
+      return this.returnSteamAccountObject(steamUserAccount, false);
+    }
+
+    const gamesIdsToIdle: Array<number | string> = [
+      ...steamUserAccount.idleSettings.idleGameIds,
+    ];
+
+    if (steamUserAccount.displayedGameName) {
+      gamesIdsToIdle.unshift(steamUserAccount.displayedGameName);
+    }
+
+    steamUser.gamesPlayed(gamesIdsToIdle, true);
+    this.logger.log(
+      `Steam user ${steamUserAccount.accountName} is now idling, following games: ${gamesIdsToIdle.join(', ')}`,
+    );
+    return this.returnSteamAccountObject(steamUserAccount);
+  }
+
+  async stopIdling(accountName: string) {
+    const steamUser = this.usersMap.get(accountName);
+
+    if (!steamUser) {
+      this.exceptionService.throw(
+        ExceptionStatusKeys.BadRequest,
+        'Steam account not found',
+        [SteamAccountExceptionKeys.NotFound],
+      );
+    }
+
+    const steamUserAccount =
+      await this.steamAccountRepository.getByName(accountName);
+
+    if (!steamUserAccount) {
+      this.exceptionService.throw(
+        ExceptionStatusKeys.BadRequest,
+        'Steam account not found',
+        [SteamAccountExceptionKeys.NotFound],
+      );
+    }
+    steamUserAccount.idleSettings.idleEnabled = false;
+    await steamUserAccount.save();
+    steamUser.gamesPlayed([], true);
+    this.logger.log(
+      `Steam user ${steamUserAccount.accountName} is no longer idling`,
+    );
+    return this.returnSteamAccountObject(steamUserAccount);
+  }
+
+  async updateIdlingGames(accountName: string, dto: GamesToIdleDto) {
+    const steamUser = this.usersMap.get(accountName);
+
+    if (!steamUser) {
+      this.exceptionService.throw(
+        ExceptionStatusKeys.BadRequest,
+        'Steam account not found',
+        [SteamAccountExceptionKeys.NotFound],
+      );
+    }
+
+    const steamUserAccount =
+      await this.steamAccountRepository.getByName(accountName);
+
+    if (!steamUserAccount) {
+      this.exceptionService.throw(
+        ExceptionStatusKeys.BadRequest,
+        'Steam account not found',
+        [SteamAccountExceptionKeys.NotFound],
+      );
+    }
+
+    steamUserAccount.idleSettings.idleGameIds = dto.gamesIds;
+    await steamUserAccount.save();
+
+    this.logger.log(
+      `Steam user ${steamUserAccount.accountName} has updated idling games`,
+    );
+
+    this.stopIdling(accountName);
+    return this.returnSteamAccountObject(steamUserAccount);
+  }
+
   private async init() {
     const users = await this.steamAccountRepository.getAll();
 
@@ -191,5 +313,16 @@ export class SteamUserService {
     steamUser.logOn({
       refreshToken: user.credentials.refreshToken,
     });
+  }
+
+  private returnSteamAccountObject(
+    steamUserAccount: SteamAccountDocument,
+    success = true,
+  ) {
+    const { credentials, ...rest } = steamUserAccount.toObject();
+    return {
+      ...rest,
+      success,
+    };
   }
 }

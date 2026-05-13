@@ -7,7 +7,7 @@ import {
   MongoId,
 } from '@steam-idler/server/infra/types';
 
-import { SteamSignInDto } from './dto';
+import { GamesToIdleDto, SteamSignInDto } from './dto';
 import { SteamUserService } from './services/steam-user.service';
 
 @Injectable()
@@ -16,6 +16,10 @@ export class SteamAccountService {
     private readonly steamUserService: SteamUserService,
     private readonly exceptionService: ExceptionService,
   ) {}
+
+  async getSteamAccounts(userId: MongoId) {
+    return this.steamUserService.getByUserId(userId);
+  }
 
   async addSteamAccount(steamSignInDto: SteamSignInDto, userId: MongoId) {
     try {
@@ -50,5 +54,17 @@ export class SteamAccountService {
 
   removeSteamAccount(name: string) {
     return this.steamUserService.removeSteamAccount(name);
+  }
+
+  idleGames(accountName: string) {
+    return this.steamUserService.idleGames(accountName, true);
+  }
+
+  stopIdling(accountName: string) {
+    return this.steamUserService.stopIdling(accountName);
+  }
+
+  updateIdlingGames(name: string, dto: GamesToIdleDto) {
+    return this.steamUserService.updateIdlingGames(name, dto);
   }
 }
