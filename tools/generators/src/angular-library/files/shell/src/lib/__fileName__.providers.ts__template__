@@ -1,0 +1,8 @@
+import {
+  EnvironmentProviders,
+  makeEnvironmentProviders,
+} from '@angular/core';
+
+export function provide<%= className %>(): EnvironmentProviders {
+  return makeEnvironmentProviders([]);
+}

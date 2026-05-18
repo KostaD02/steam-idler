@@ -1,0 +1,2 @@
+export * from './lib/<%= fileName %>.component';
+export * from './lib/<%= fileName %>.routes';

@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "AngularLibrary",
+  "title": "Create an Angular Library",
+  "description": "Create an Angular library with pre-defined types for better organization",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Domain name (e.g. 'auth' for libs/client/auth/...)",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What domain name would you like to use for the library?",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9-]*$"
+    },
+    "type": {
+      "type": "string",
+      "description": "Library type",
+      "enum": [
+        "core",
+        "data-access",
+        "types",
+        "ui",
+        "util",
+        "shell",
+        "feature"
+      ],
+      "x-prompt": {
+        "message": "What type of library would you like to create?",
+        "type": "list",
+        "items": [
+          {
+            "value": "core",
+            "label": "Core - Cross-cutting Angular pieces (tokens, base classes, error handlers)"
+          },
+          {
+            "value": "data-access",
+            "label": "Data Access - Services, HTTP clients, stores, interceptors"
+          },
+          {
+            "value": "types",
+            "label": "Types - Shared TypeScript types and interfaces"
+          },
+          {
+            "value": "ui",
+            "label": "UI - Presentational components, pipes, directives"
+          },
+          {
+            "value": "util",
+            "label": "Util - Pure helpers, validators, framework-free utilities"
+          },
+          {
+            "value": "shell",
+            "label": "Shell - Domain routes, providers, lazy-load entrypoint"
+          },
+          {
+            "value": "feature",
+            "label": "Feature - Smart components / page-level containers"
+          }
+        ]
+      }
+    },
+    "subname": {
+      "type": "string",
+      "description": "Optional sub-name to append to the type folder (e.g. 'login' produces 'feature-login'). Use when a domain has multiple features or ui libs.",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9-]*$"
+    },
+    "directory": {
+      "type": "string",
+      "description": "Top-level directory under libs/ (e.g., 'client' for libs/client/<name>/<type>)",
+      "default": "client"
+    },
+    "tags": {
+      "type": "string",
+      "description": "Additional tags (comma-separated)",
+      "x-prompt": "Add additional tags (comma-separated, optional)"
+    },
+    "prefix": {
+      "type": "string",
+      "description": "Selector prefix for generated components",
+      "default": "app"
+    },
+    "buildable": {
+      "type": "boolean",
+      "description": "Generate a buildable library",
+      "default": false
+    },
+    "publishable": {
+      "type": "boolean",
+      "description": "Generate a publishable library",
+      "default": false
+    },
+    "importPath": {
+      "type": "string",
+      "description": "Custom import path (defaults to @steam-idler/<directory>/<name>/<type>[-<subname>])"
+    },
+    "skipFormat": {
+      "type": "boolean",
+      "description": "Skip formatting files",
+      "default": false
+    }
+  },
+  "required": ["name", "type"]
+}

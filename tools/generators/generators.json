@@ -7,6 +7,11 @@
       "factory": "./src/nest-library/index",
       "schema": "./src/nest-library/schema.json",
       "description": "Create a NestJS library with pre-defined types for better organization"
+    },
+    "angular-library": {
+      "factory": "./src/angular-library/index",
+      "schema": "./src/angular-library/schema.json",
+      "description": "Create an Angular library with pre-defined types for better organization"
     }
   }
 }
