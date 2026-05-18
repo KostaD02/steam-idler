@@ -1,0 +1,9 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+
+@Component({
+  selector: '<%= prefix %>-<%= fileName %>',
+  templateUrl: './<%= fileName %>.component.html',
+  styleUrl: './<%= fileName %>.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class <%= className %>Component {}

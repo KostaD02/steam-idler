@@ -1,0 +1,7 @@
+# <%= projectName %>
+
+**Type:** <%= type %>
+
+## Tags
+
+<%= parsedTags.join(', ') %>
