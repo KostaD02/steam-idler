@@ -14,7 +14,9 @@ export class ExceptionService {
     message?: string,
     errorKeys?: string[],
   ): never {
-    const status = ExceptionStatusCodesKeys[exception];
+    const status =
+      ExceptionStatusCodesKeys[exception] ||
+      ExceptionStatusCodesKeys[ExceptionStatusKeys.EnhanceYourCalm];
     const body: HttpExceptionResponse = {
       status,
       message,

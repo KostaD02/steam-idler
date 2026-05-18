@@ -2,7 +2,7 @@
 #
 # Spins up services that the app needs at dev time (MongoDB) so contributors
 # don't have to install them on their host. Not used for shipping or
-# production — purely `up` once when you start working, `down` when done.
+# production purely `up` once when you start working, `down` when done.
 #
 # Usage:
 #   pnpm db:up      # start

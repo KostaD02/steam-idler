@@ -7,6 +7,7 @@ import {
 } from '@steam-idler/server/infra/services';
 
 import { AuthModule } from '@steam-idler/server/auth/feature';
+import { SteamAccountModule } from '@steam-idler/server/steam-account/feature';
 
 import { AppController } from './app.controller';
 import { GlobalModule } from './global.module';
@@ -30,6 +31,7 @@ import { GlobalModule } from './global.module';
       inject: [EnvironmentService],
     }),
     AuthModule,
+    SteamAccountModule,
   ],
   controllers: [AppController],
 })

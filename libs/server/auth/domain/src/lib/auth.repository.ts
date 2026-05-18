@@ -25,10 +25,6 @@ export class AuthRepository {
     return this.userModel.countDocuments({}).exec();
   }
 
-  getAll() {
-    return this.userModel.find({}).lean().exec();
-  }
-
   getByEmail(email: string, includePassword = false) {
     const query = this.userModel.findOne({ email });
     if (includePassword) {
