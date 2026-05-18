@@ -11,6 +11,7 @@ import {
   SteamAccountSchema,
 } from '@steam-idler/server/steam-account/domain';
 
+import { SteamAccountOwnershipGuard } from './guards';
 import { SteamUserService } from './services/steam-user.service';
 import { SteamAccountController } from './steam-account.controller';
 import { SteamAccountService } from './steam-account.service';
@@ -26,7 +27,12 @@ import { SteamAccountService } from './steam-account.service';
     ]),
   ],
   controllers: [SteamAccountController],
-  providers: [SteamAccountService, SteamAccountRepository, SteamUserService],
+  providers: [
+    SteamAccountService,
+    SteamAccountRepository,
+    SteamUserService,
+    SteamAccountOwnershipGuard,
+  ],
 })
 export class SteamAccountModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

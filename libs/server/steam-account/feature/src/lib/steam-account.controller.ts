@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -13,9 +14,9 @@ import { Auth, CurrentUser } from '@steam-idler/server/auth/feature';
 import { User } from '@steam-idler/server/auth/types';
 
 import { GamesToIdleDto, SteamSignInDto } from './dto';
+import { SteamAccountOwnershipGuard } from './guards';
 import { SteamAccountService } from './steam-account.service';
 
-// TODO: Create guard to check if user owns the steam account (This will be checked through the steamid)
 @Auth()
 @Controller('steam-account')
 @ApiTags('Steam Account')
@@ -36,21 +37,25 @@ export class SteamAccountController {
   }
 
   @Delete('remove/:name')
+  @UseGuards(SteamAccountOwnershipGuard)
   removeSteamAccount(@Param('name') name: string) {
     return this.steamAccountService.removeSteamAccount(name);
   }
 
   @Post('idle/start/:name')
+  @UseGuards(SteamAccountOwnershipGuard)
   startIdling(@Param('name') name: string) {
     return this.steamAccountService.idleGames(name);
   }
 
   @Post('idle/stop/:name')
+  @UseGuards(SteamAccountOwnershipGuard)
   stopIdling(@Param('name') name: string) {
     return this.steamAccountService.stopIdling(name);
   }
 
   @Patch('idle/games/:name')
+  @UseGuards(SteamAccountOwnershipGuard)
   updateIdlingGames(@Param('name') name: string, @Body() dto: GamesToIdleDto) {
     return this.steamAccountService.updateIdlingGames(name, dto);
   }
