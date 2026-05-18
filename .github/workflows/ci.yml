@@ -33,10 +33,10 @@ jobs:
       - uses: nrwl/nx-set-shas@v5
 
       - name: Lint affected
-        run: pnpm exec nx affected -t lint --parallel=3
+        run: pnpm run lint
 
       - name: Lint all
-        run: pnpm exec nx run-many -t lint --parallel=3
+        run: pnpm run lint:all
 
   format:
     name: Format
