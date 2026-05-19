@@ -10,6 +10,14 @@ interface Console {
 
 export type SteamIdlerLogType = 'log' | 'error' | 'warn';
 
+export const SteamIdlerEnvironmentEnum = {
+  Clinet: 'Angular',
+  Server: 'Nest',
+} as const;
+
+export type SteamIdlerEnvironment =
+  (typeof SteamIdlerEnvironmentEnum)[keyof typeof SteamIdlerEnvironmentEnum];
+
 export class SteamIdlerLogger implements Console {
   readonly console: Console;
 
@@ -23,7 +31,7 @@ export class SteamIdlerLogger implements Console {
   };
 
   constructor(
-    public environment: string,
+    public environment: SteamIdlerEnvironment,
     public namespace = '',
     private consoleInstance: Console = console,
   ) {

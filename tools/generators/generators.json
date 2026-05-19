@@ -1,17 +1,16 @@
 {
-  "$schema": "http://json-schema.org/schema",
-  "name": "@steam-idler/generators",
-  "version": "0.0.1",
   "generators": {
     "nest-library": {
       "factory": "./src/nest-library/index",
       "schema": "./src/nest-library/schema.json",
-      "description": "Create a NestJS library with pre-defined types for better organization"
+      "description": "Create a NestJS library with pre-defined types for better organization",
+      "aliases": ["nest-lib"]
     },
     "angular-library": {
       "factory": "./src/angular-library/index",
       "schema": "./src/angular-library/schema.json",
-      "description": "Create an Angular library with pre-defined types for better organization"
+      "description": "Create an Angular library with pre-defined types for better organization",
+      "aliases": ["angular-lib"]
     }
   }
 }

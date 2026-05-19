@@ -2,7 +2,7 @@
   "name": "client",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "app",
+  "prefix": "si",
   "sourceRoot": "apps/client/src",
   "tags": [],
   "targets": {

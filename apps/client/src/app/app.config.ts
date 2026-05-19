@@ -7,14 +7,15 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
+import { ConfigService } from '@steam-idler/client/infra/data-access';
+
 import { appRoutes } from './app.routes';
-import { AppConfig } from './config/app-config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(appRoutes),
     provideHttpClient(withFetch()),
-    provideAppInitializer(() => inject(AppConfig).load()),
+    provideAppInitializer(() => inject(ConfigService).load()),
   ],
 };

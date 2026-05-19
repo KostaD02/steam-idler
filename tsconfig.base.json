@@ -46,6 +46,9 @@
       ],
       "@steam-idler/server/steam-account/types": [
         "libs/server/steam-account/types/src/index.ts"
+      ],
+      "@steam-idler/client/infra/data-access": [
+        "libs/client/infra/data-access/src/index.ts"
       ]
     }
   },

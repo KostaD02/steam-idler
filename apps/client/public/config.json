@@ -1,3 +1,6 @@
 {
-  "apiBase": "http://localhost:3000/api"
+  "//": "Generate this based on .env file",
+  "///": "Replace logEnabled later with logType",
+  "apiBase": "http://localhost:3000/api",
+  "logEnabled": true
 }
