@@ -3,9 +3,8 @@ export { type SafeAny } from './lib/safe-any';
 export { generateUuid } from './lib/uuid';
 export {
   SteamIdlerLogger,
-  SteamIdlerEnvironmentEnum,
   type SteamIdlerLogType,
-  type SteamIdlerEnvironment,
+  type SteamIdlerMessageType,
 } from './lib/logger';
 export { getISOString, getTzOffsetDate } from './lib/iso';
 export { sanitizeObject } from './lib/sanitize';

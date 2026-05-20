@@ -3,10 +3,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { firstValueFrom } from 'rxjs';
 
-import {
-  SteamIdlerEnvironmentEnum,
-  SteamIdlerLogger,
-} from '@steam-idler/infra';
+import { LoggerService } from '@steam-idler/client/infra/util';
 
 export interface ConfigSchema {
   apiBase: string;
@@ -15,12 +12,8 @@ export interface ConfigSchema {
 
 @Injectable({ providedIn: 'root' })
 export class ConfigService {
-  // TODO: move logger to different service or injection token
-  private readonly logger = new SteamIdlerLogger(
-    SteamIdlerEnvironmentEnum.Clinet,
-    ConfigService.name,
-  );
   private readonly httpClient = inject(HttpClient);
+  private readonly logger = inject(LoggerService);
 
   config: Readonly<ConfigSchema> | null = null;
 
@@ -31,9 +24,9 @@ export class ConfigService {
       );
       this.config = config;
       Object.freeze(this.config);
-      this.logger.log('Config loaded', this.config);
+      this.logger.log(ConfigService.name, 'Config loaded', this.config);
     } catch {
-      this.logger.error('Failed to load config');
+      this.logger.error(ConfigService.name, 'Failed to load config');
     }
   }
 }

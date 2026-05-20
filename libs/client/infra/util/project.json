@@ -1,0 +1,27 @@
+{
+  "name": "client-infra-util",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/client/infra/util/src",
+  "prefix": "si",
+  "projectType": "library",
+  "tags": ["type:util", "scope:client"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/client/infra/util/jest.config.cts",
+        "tsConfig": "libs/client/infra/util/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/client/infra/util/**/*.ts",
+          "libs/client/infra/util/**/*.html"
+        ]
+      }
+    }
+  }
+}
