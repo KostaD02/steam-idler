@@ -1,1 +1,116 @@
-<button (click)="toggleTheme()">asdf</button>
+<header class="header">
+  <nav class="header__inner">
+    <a
+      routerLink="/"
+      class="header__logo kd-header-anchor"
+      (click)="isSideNavOpen.set(false)"
+    >
+      Steam Idler
+    </a>
+
+    <div class="header__actions">
+      @if (!isMobileView()) {
+        <ng-container *ngTemplateOutlet="navigation"></ng-container>
+      }
+      <ng-container *ngTemplateOutlet="themeToggle"></ng-container>
+      @if (isMobileView()) {
+        <ng-container *ngTemplateOutlet="burger"></ng-container>
+      }
+    </div>
+  </nav>
+</header>
+
+@if (isMobileView()) {
+  <div
+    class="header-backdrop"
+    [class.header-backdrop--open]="isSideNavOpen()"
+    aria-hidden="true"
+    (click)="isSideNavOpen.set(false)"
+  ></div>
+
+  <aside
+    class="header-drawer"
+    [class.header-drawer--open]="isSideNavOpen()"
+    [attr.aria-hidden]="!isSideNavOpen()"
+  >
+    <ng-container *ngTemplateOutlet="navigation"></ng-container>
+  </aside>
+}
+
+<ng-template #navigation>
+  <ul class="header__nav">
+    @for (item of navigationItems; track item.path) {
+      <li>
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="kd-active"
+          [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+          class="kd-header-anchor"
+          (click)="isSideNavOpen.set(false)"
+        >
+          {{ item.label }}
+        </a>
+      </li>
+    }
+  </ul>
+</ng-template>
+
+<ng-template #themeToggle>
+  <button
+    class="header__theme-toggle"
+    type="button"
+    [attr.aria-label]="
+      isDarkTheme() ? 'Switch to light theme' : 'Switch to dark theme'
+    "
+    (click)="toggleTheme()"
+  >
+    @if (isDarkTheme()) {
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2" />
+        <path d="M12 20v2" />
+        <path d="m4.93 4.93 1.41 1.41" />
+        <path d="m17.66 17.66 1.41 1.41" />
+        <path d="M2 12h2" />
+        <path d="M20 12h2" />
+        <path d="m6.34 17.66-1.41 1.41" />
+        <path d="m19.07 4.93-1.41 1.41" />
+      </svg>
+    } @else {
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+      </svg>
+    }
+  </button>
+</ng-template>
+
+<ng-template #burger>
+  <button
+    class="header__burger"
+    [class.header__burger--open]="isSideNavOpen()"
+    type="button"
+    [attr.aria-label]="isSideNavOpen() ? 'Close menu' : 'Open menu'"
+    [attr.aria-expanded]="isSideNavOpen()"
+    (click)="isSideNavOpen.set(!isSideNavOpen())"
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</ng-template>
