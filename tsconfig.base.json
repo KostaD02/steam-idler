@@ -55,6 +55,21 @@
       "@steam-idler/client/infra/core": ["libs/client/infra/core/src/index.ts"],
       "@steam-idler/client/infra/types": [
         "libs/client/infra/types/src/index.ts"
+      ],
+      "@steam-idler/client/api/feature": [
+        "libs/client/api/feature/src/index.ts"
+      ],
+      "@steam-idler/client/dashboard/feature": [
+        "libs/client/dashboard/feature/src/index.ts"
+      ],
+      "@steam-idler/client/not-found/feature": [
+        "libs/client/not-found/feature/src/index.ts"
+      ],
+      "@steam-idler/client/header/core": [
+        "libs/client/header/core/src/index.ts"
+      ],
+      "@steam-idler/client/header/types": [
+        "libs/client/header/types/src/index.ts"
       ]
     }
   },

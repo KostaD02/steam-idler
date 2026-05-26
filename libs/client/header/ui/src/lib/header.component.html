@@ -1,4 +1,10 @@
-<header class="header">
+<header
+  class="header"
+  [style]="{
+    '--header-height': sizing.header + 'px',
+    '--header-padding': sizing.innerPadding + 'px',
+  }"
+>
   <nav class="header__inner">
     <a
       routerLink="/"

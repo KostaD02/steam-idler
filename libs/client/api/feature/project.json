@@ -1,0 +1,27 @@
+{
+  "name": "client-api-feature",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/client/api/feature/src",
+  "prefix": "si",
+  "projectType": "library",
+  "tags": ["type:feature", "scope:client"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/client/api/feature/jest.config.cts",
+        "tsConfig": "libs/client/api/feature/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/client/api/feature/**/*.ts",
+          "libs/client/api/feature/**/*.html"
+        ]
+      }
+    }
+  }
+}

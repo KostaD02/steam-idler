@@ -1,16 +1,12 @@
-$header-height: 70px;
-
 :host {
   display: block;
 }
 
-:target {
-  scroll-margin-top: calc(#{$header-height} + 15px);
-}
-
 .header {
+  --header-height: 70px;
+  --header-padding: 32px;
   width: 100%;
-  height: $header-height;
+  height: var(--header-height);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -27,7 +23,7 @@ $header-height: 70px;
     align-items: center;
     width: 100%;
     height: 100%;
-    padding: 0 32px;
+    padding: 0 var(--header-padding);
 
     @media (max-width: 600px) {
       padding: 0 20px;
@@ -169,11 +165,11 @@ $header-height: 70px;
 
 .header-drawer {
   position: fixed;
-  top: $header-height;
+  top: var(--header-height);
   right: 0;
   z-index: 99;
   width: min(70vw, 320px);
-  height: calc(100dvh - #{$header-height});
+  height: calc(100dvh - var(--header-height));
   background-color: var(--kd-bg-elevated);
   box-shadow: -10px 0 30px -15px rgba(2, 12, 27, 0.7);
   transform: translateX(100%);

@@ -16,7 +16,7 @@ body {
   line-height: 1.5;
   color: var(--kd-text-primary);
   background-color: var(--kd-bg);
-  min-height: 100vh;
+  min-height: 100dvh;
   transition:
     background-color 0.25s var(--kd-easing),
     color 0.25s var(--kd-easing);

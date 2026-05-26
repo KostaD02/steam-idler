@@ -15,4 +15,12 @@ export class LayoutService {
     .pipe(map((result) => result.matches));
 
   readonly isMobileView = toSignal(this.isMobile$);
+
+  readonly sizing = {
+    header: 70,
+    innerPadding: 32,
+    innerContentHeight: function () {
+      return `calc(100dvh - ${this.header + this.innerPadding * 2}px)`;
+    },
+  } as const;
 }

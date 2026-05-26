@@ -1,0 +1,7 @@
+<section [style]="{ height: sizing.innerContentHeight() }">
+  @if (swaggerUrl) {
+    <iframe [src]="swaggerUrl"></iframe>
+  } @else {
+    <p>API base URL is not configured.</p>
+  }
+</section>

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+
+import { LayoutService } from '@steam-idler/client/infra/core';
 
 import { HeaderComponent } from '@steam-idler/client/header/ui';
 
@@ -9,4 +11,8 @@ import { HeaderComponent } from '@steam-idler/client/header/ui';
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {}
+export class App {
+  private readonly layoutService = inject(LayoutService);
+
+  readonly sizing = this.layoutService.sizing;
+}
