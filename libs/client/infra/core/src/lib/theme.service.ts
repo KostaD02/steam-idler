@@ -5,6 +5,7 @@ import {
   Theme,
   ThemeEnum,
 } from '@steam-idler/client/infra/types';
+import { LoggerService } from '@steam-idler/client/infra/util';
 
 import { LocalStorageService } from './storage.service';
 
@@ -14,14 +15,24 @@ import { LocalStorageService } from './storage.service';
 export class ThemeService {
   private readonly document = inject(DOCUMENT);
   private readonly localStorageService = inject(LocalStorageService);
+  private readonly logger = inject(LoggerService);
 
-  private readonly _selectedTheme = signal<Theme>(ThemeEnum.Dark);
+  private readonly defaultTheme = ThemeEnum.Dark;
+  private readonly prefersDarkQuery = '(prefers-color-scheme: dark)';
+
+  private readonly _selectedTheme = signal<Theme>(this.defaultTheme);
   readonly selectedTheme = this._selectedTheme.asReadonly();
 
   constructor() {
-    const storedTheme =
-      this.localStorageService.getItem(StorageKeysEnum.Theme) || ThemeEnum.Dark;
-    this.setTheme(storedTheme);
+    const query = this.document.defaultView?.matchMedia(this.prefersDarkQuery);
+    const preferedTheme = query?.matches ? ThemeEnum.Dark : this.defaultTheme;
+    const storedTheme = this.localStorageService.getItem(StorageKeysEnum.Theme);
+    const initialTheme = storedTheme || preferedTheme;
+    this.logger.log(
+      ThemeService.name,
+      `Initializing theme: ${initialTheme} (preferred: ${preferedTheme}, stored: ${storedTheme})`,
+    );
+    this.setTheme(initialTheme);
   }
 
   toggleTheme(): void {
@@ -29,12 +40,14 @@ export class ThemeService {
       this._selectedTheme() === ThemeEnum.Dark
         ? ThemeEnum.Light
         : ThemeEnum.Dark;
-    this.setTheme(newTheme);
+    this.setTheme(newTheme, true);
   }
 
-  private setTheme(theme: Theme): void {
+  private setTheme(theme: Theme, setManually = false): void {
     this._selectedTheme.set(theme);
     this.document.documentElement.setAttribute('data-theme', theme);
-    this.localStorageService.setItem(StorageKeysEnum.Theme, theme);
+    if (setManually) {
+      this.localStorageService.setItem(StorageKeysEnum.Theme, theme);
+    }
   }
 }
