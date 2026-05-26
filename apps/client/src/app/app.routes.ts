@@ -19,6 +19,11 @@ export const appRoutes: Route[] = [
       import('@steam-idler/client/api/feature').then((m) => m.apiRoutes),
   },
   {
+    path: 'auth',
+    loadChildren: () =>
+      import('@steam-idler/client/auth/feature').then((m) => m.authRoutes),
+  },
+  {
     path: '**',
     loadChildren: () =>
       import('@steam-idler/client/not-found/feature').then(

@@ -70,7 +70,14 @@
       ],
       "@steam-idler/client/header/types": [
         "libs/client/header/types/src/index.ts"
-      ]
+      ],
+      "@steam-idler/client/auth/feature": [
+        "libs/client/auth/feature/src/index.ts"
+      ],
+      "@steam-idler/client/auth/data-access": [
+        "libs/client/auth/data-access/src/index.ts"
+      ],
+      "@steam-idler/client/auth/core": ["libs/client/auth/core/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
