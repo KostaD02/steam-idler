@@ -1,5 +1,7 @@
 import { Route } from '@angular/router';
 
+import { guestGuard } from '@steam-idler/client/auth/data-access';
+
 export const appRoutes: Route[] = [
   {
     path: '',
@@ -20,6 +22,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'auth',
+    canActivate: [guestGuard],
     loadChildren: () =>
       import('@steam-idler/client/auth/feature').then((m) => m.authRoutes),
   },
