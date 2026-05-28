@@ -18,10 +18,10 @@ import { AuthApiService } from './auth-api.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private readonly document = inject(DOCUMENT);
   private readonly loggerService = inject(LoggerService);
   private readonly authApiService = inject(AuthApiService);
   private readonly localStorageService = inject(LocalStorageService);
-  private readonly document = inject(DOCUMENT);
 
   private readonly _user = signal<User | null>(null);
 
