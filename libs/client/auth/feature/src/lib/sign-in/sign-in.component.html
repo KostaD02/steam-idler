@@ -1,0 +1,56 @@
+<header class="auth-form__header">
+  <h2>Sign in</h2>
+</header>
+
+@if (errorMessage(); as message) {
+  <div class="auth-form__error" role="alert">{{ message }}</div>
+}
+
+<form class="auth-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+  <div class="kd-field-group">
+    <label class="kd-field-label" for="sign-in-email">Email</label>
+    <input
+      id="sign-in-email"
+      type="email"
+      class="kd-field-input"
+      [class.kd-invalid]="isInvalid('email')"
+      formControlName="email"
+      autocomplete="email"
+      placeholder="vigac@vigacashvili.ge"
+    />
+    @if (isInvalid('email')) {
+      <span class="kd-field-error">Enter a valid email address.</span>
+    }
+  </div>
+
+  <div class="kd-field-group">
+    <label class="kd-field-label" for="sign-in-password">Password</label>
+    <input
+      id="sign-in-password"
+      type="password"
+      class="kd-field-input"
+      [class.kd-invalid]="isInvalid('password')"
+      formControlName="password"
+      autocomplete="current-password"
+      placeholder="••••••••"
+    />
+    @if (isInvalid('password')) {
+      <span class="kd-field-error"
+        >Password must be at least 8 characters.</span
+      >
+    }
+  </div>
+
+  <button
+    type="submit"
+    class="kd-btn kd-btn--block auth-form__submit"
+    [disabled]="submitting()"
+  >
+    {{ submitting() ? 'Signing in…' : 'Sign in' }}
+  </button>
+</form>
+
+<footer class="auth-form__switch">
+  <span>No account yet?</span>
+  <a routerLink="/auth/sign-up">Create one</a>
+</footer>

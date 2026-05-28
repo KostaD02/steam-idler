@@ -1,6 +1,12 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 
+import { SteamIdlerLogger } from '@steam-idler/infra';
+
 import { App } from './app/app';
 import { appConfig } from './app/app.config';
 
-bootstrapApplication(App, appConfig).catch((err) => console.error(err));
+const logger = new SteamIdlerLogger();
+
+bootstrapApplication(App, appConfig).catch((err) => {
+  logger.error('Bootstrap', 'Failed to bootstrap application', err);
+});

@@ -1,4 +1,95 @@
-import { Injectable } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
+
+import { catchError, Observable, of, switchMap, tap } from 'rxjs';
+
+import { LoggerService } from '@steam-idler/client/infra/util';
+
+import {
+  ChangePasswordDto,
+  SignInDto,
+  SignUpDto,
+  UpdateUserDto,
+  User,
+} from '@steam-idler/server/auth/types';
+
+import { AuthApiService } from './auth-api.service';
 
 @Injectable({ providedIn: 'root' })
-export class AuthService {}
+export class AuthService {
+  private readonly loggerService = inject(LoggerService);
+  private readonly authApiService = inject(AuthApiService);
+
+  private readonly _user = signal<User | null>(null);
+  private readonly _sessionKnownInvalid = signal(false);
+
+  readonly user = this._user.asReadonly();
+  readonly isAuthenticated = computed(() => this._user() !== null);
+  readonly sessionKnownInvalid = this._sessionKnownInvalid.asReadonly();
+
+  loadCurrentUser(): Observable<User | null> {
+    return this.authApiService.getCurrentUser().pipe(
+      tap((user) => {
+        this.setUser(user);
+        this.loggerService.log(AuthService.name, 'Loaded current user', user);
+      }),
+      catchError(() => {
+        this._user.set(null);
+        return of(null);
+      }),
+    );
+  }
+
+  signUp(signUpDto: SignUpDto): Observable<User> {
+    return this.authApiService
+      .signUp(signUpDto)
+      .pipe(switchMap(() => this.fetchAndStoreUser()));
+  }
+
+  signIn(signInDto: SignInDto): Observable<User> {
+    return this.authApiService
+      .signIn(signInDto)
+      .pipe(switchMap(() => this.fetchAndStoreUser()));
+  }
+
+  signOut(): Observable<{ success: true }> {
+    return this.authApiService.signOut().pipe(tap(() => this.clearUser()));
+  }
+
+  clearUser(): void {
+    this._user.set(null);
+    this._sessionKnownInvalid.set(true);
+  }
+
+  refresh() {
+    return this.authApiService
+      .refresh()
+      .pipe(tap(() => this._sessionKnownInvalid.set(false)));
+  }
+
+  updateUser(dto: UpdateUserDto): Observable<User> {
+    return this.authApiService
+      .updateUser(dto)
+      .pipe(tap((user) => this.setUser(user)));
+  }
+
+  deleteUser(): Observable<{ success: true }> {
+    return this.authApiService.deleteUser().pipe(tap(() => this.clearUser()));
+  }
+
+  changePassword(dto: ChangePasswordDto): Observable<User> {
+    return this.authApiService
+      .changePassword(dto)
+      .pipe(switchMap(() => this.fetchAndStoreUser()));
+  }
+
+  private setUser(user: User): void {
+    this._user.set(user);
+    this._sessionKnownInvalid.set(false);
+  }
+
+  private fetchAndStoreUser(): Observable<User> {
+    return this.authApiService
+      .getCurrentUser()
+      .pipe(tap((user) => this.setUser(user)));
+  }
+}
