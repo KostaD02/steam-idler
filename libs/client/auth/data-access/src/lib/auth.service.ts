@@ -33,6 +33,9 @@ export class AuthService {
       if (event.key === StorageKeysEnum.HasSession && event.newValue === null) {
         this._user.set(null);
       }
+      if (event.key === StorageKeysEnum.HasSession && event.newValue !== null) {
+        this.loadCurrentUser().subscribe();
+      }
     });
   }
 
