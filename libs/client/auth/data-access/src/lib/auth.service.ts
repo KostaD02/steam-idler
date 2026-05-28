@@ -1,6 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 
-import { catchError, Observable, of, switchMap, tap } from 'rxjs';
+import { catchError, finalize, Observable, of, switchMap, tap } from 'rxjs';
 
 import { LocalStorageService } from '@steam-idler/client/infra/core';
 import { StorageKeysEnum } from '@steam-idler/client/infra/types';
@@ -23,13 +23,9 @@ export class AuthService {
   private readonly localStorageService = inject(LocalStorageService);
 
   private readonly _user = signal<User | null>(null);
-  private readonly _sessionKnownInvalid = signal(
-    !this.localStorageService.getItem(StorageKeysEnum.HasSession),
-  );
 
   readonly user = this._user.asReadonly();
   readonly isAuthenticated = computed(() => this._user() !== null);
-  readonly sessionKnownInvalid = this._sessionKnownInvalid.asReadonly();
 
   loadCurrentUser(): Observable<User | null> {
     if (!this.localStorageService.getItem(StorageKeysEnum.HasSession)) {
@@ -60,19 +56,12 @@ export class AuthService {
   }
 
   signOut(): Observable<{ success: true }> {
-    return this.authApiService.signOut().pipe(tap(() => this.clearUser()));
+    return this.authApiService.signOut().pipe(finalize(() => this.clearUser()));
   }
 
   clearUser(): void {
     this._user.set(null);
-    this._sessionKnownInvalid.set(true);
     this.localStorageService.removeItem(StorageKeysEnum.HasSession);
-  }
-
-  refresh() {
-    return this.authApiService
-      .refresh()
-      .pipe(tap(() => this._sessionKnownInvalid.set(false)));
   }
 
   updateUser(dto: UpdateUserDto): Observable<User> {
@@ -93,7 +82,6 @@ export class AuthService {
 
   private setUser(user: User): void {
     this._user.set(user);
-    this._sessionKnownInvalid.set(false);
     this.localStorageService.setItem(StorageKeysEnum.HasSession, true);
   }
 
