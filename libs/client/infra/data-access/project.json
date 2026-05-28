@@ -1,0 +1,27 @@
+{
+  "name": "client-infra-data-access",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/client/infra/data-access/src",
+  "prefix": "si",
+  "projectType": "library",
+  "tags": ["type:data-access", "scope:client"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/client/infra/data-access/jest.config.cts",
+        "tsConfig": "libs/client/infra/data-access/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/client/infra/data-access/**/*.ts",
+          "libs/client/infra/data-access/**/*.html"
+        ]
+      }
+    }
+  }
+}

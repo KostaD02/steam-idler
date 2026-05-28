@@ -33,9 +33,11 @@ jobs:
       - uses: nrwl/nx-set-shas@v5
 
       - name: Lint affected
+        if: github.event_name == 'pull_request'
         run: pnpm run lint
 
       - name: Lint all
+        if: github.ref_name == 'main'
         run: pnpm run lint:all
 
   format:
@@ -80,9 +82,11 @@ jobs:
       - uses: nrwl/nx-set-shas@v5
 
       - name: Test affected
+        if: github.event_name == 'pull_request'
         run: pnpm exec nx affected -t test --parallel=3 --ci
 
       - name: Test all
+        if: github.ref_name == 'main'
         run: pnpm exec nx run-many -t test --parallel=3 --ci
 
   build:
@@ -115,9 +119,6 @@ jobs:
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: node .github/scripts/append-pr-version.cjs
-
-      - name: Build affected
-        run: pnpm exec nx affected -t build --parallel=3
 
       - name: Build all
         run: pnpm exec nx run-many -t build --parallel=3

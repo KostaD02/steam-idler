@@ -1,11 +1,20 @@
 import { SafeAny } from './safe-any';
 
-type MessageType = SafeAny;
+export type SteamIdlerMessageType = SafeAny;
 
 interface Console {
-  log(message: MessageType, ...optionalParams: MessageType[]): void;
-  error(message: MessageType, ...optionalParams: MessageType[]): void;
-  warn(message: MessageType, ...optionalParams: MessageType[]): void;
+  log(
+    message: SteamIdlerMessageType,
+    ...optionalParams: SteamIdlerMessageType[]
+  ): void;
+  error(
+    message: SteamIdlerMessageType,
+    ...optionalParams: SteamIdlerMessageType[]
+  ): void;
+  warn(
+    message: SteamIdlerMessageType,
+    ...optionalParams: SteamIdlerMessageType[]
+  ): void;
 }
 
 export type SteamIdlerLogType = 'log' | 'error' | 'warn';
@@ -22,30 +31,39 @@ export class SteamIdlerLogger implements Console {
     second: '2-digit',
   };
 
-  constructor(
-    public environment: string,
-    public namespace = '',
-    private consoleInstance: Console = console,
-  ) {
+  constructor(private consoleInstance: Console = console) {
     this.console = consoleInstance;
   }
 
-  log(message: MessageType, ...optionalParams: MessageType[]): void {
-    this.logger('log', message, ...optionalParams);
+  log(
+    namespace: string,
+    message: SteamIdlerMessageType,
+    ...optionalParams: SteamIdlerMessageType[]
+  ): void {
+    this.logger('log', namespace, message, ...optionalParams);
   }
 
-  error(message: MessageType, ...optionalParams: MessageType[]): void {
-    this.logger('error', message, ...optionalParams);
+  error(
+    namespace: string,
+    message: SteamIdlerMessageType,
+    ...optionalParams: SteamIdlerMessageType[]
+  ): void {
+    this.logger('error', namespace, message, ...optionalParams);
   }
 
-  warn(message: MessageType, ...optionalParams: MessageType[]): void {
-    this.logger('warn', message, ...optionalParams);
+  warn(
+    namespace: string,
+    message: SteamIdlerMessageType,
+    ...optionalParams: SteamIdlerMessageType[]
+  ): void {
+    this.logger('warn', namespace, message, ...optionalParams);
   }
 
   private logger(
     type: SteamIdlerLogType,
-    message: MessageType,
-    ...optionalParams: MessageType[]
+    namespace: string,
+    message: SteamIdlerMessageType,
+    ...optionalParams: SteamIdlerMessageType[]
   ): void {
     const date = new Date();
     const timestamp = date
@@ -53,9 +71,7 @@ export class SteamIdlerLogger implements Console {
       .replace(/\//g, '.');
 
     this.console[type](
-      `[${this.environment}] - ${timestamp} ${type.toUpperCase()} [${
-        this.namespace
-      }]`,
+      `${timestamp} ${type.toUpperCase()} [${namespace}]`,
       message,
       ...optionalParams,
     );

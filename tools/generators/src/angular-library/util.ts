@@ -20,7 +20,6 @@ export function removeDefaultFiles(tree: Tree, projectRoot: string): void {
   const pathsToRemove = [
     `${projectRoot}/src/index.ts`,
     `${projectRoot}/src/lib`,
-    `${projectRoot}/src/test-setup.ts`,
   ];
 
   for (const path of pathsToRemove) {

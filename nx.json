@@ -25,7 +25,8 @@
         "buildDepsTargetName": "build-deps",
         "watchDepsTargetName": "watch-deps",
         "serveStaticTargetName": "serve-static"
-      }
+      },
+      "exclude": ["tools/generators/**/*"]
     },
     {
       "plugin": "@nx/eslint/plugin",
@@ -38,13 +39,14 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": ["apps/server-e2e/**/*"]
+      "exclude": ["apps/server-e2e/**/*", "tools/generators/**/*"]
     },
     {
       "plugin": "@nx/playwright/plugin",
       "options": {
         "targetName": "e2e"
-      }
+      },
+      "exclude": ["tools/generators/**/*"]
     }
   ],
   "targetDefaults": {
@@ -65,6 +67,13 @@
       "linter": "eslint",
       "style": "scss",
       "unitTestRunner": "jest"
+    },
+    "@nx/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nx/angular:component": {
+      "style": "scss"
     }
   }
 }

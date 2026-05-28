@@ -13,7 +13,7 @@ export default [
         'error',
         {
           type: 'attribute',
-          prefix: 'app',
+          prefix: 'si',
           style: 'camelCase',
         },
       ],
@@ -21,15 +21,10 @@ export default [
         'error',
         {
           type: 'element',
-          prefix: 'app',
+          prefix: 'si',
           style: 'kebab-case',
         },
       ],
     },
-  },
-  {
-    files: ['**/*.html'],
-    // Override or add rules here
-    rules: {},
   },
 ];

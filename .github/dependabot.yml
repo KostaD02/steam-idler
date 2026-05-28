@@ -45,6 +45,12 @@ updates:
           - '@types/*'
         exclude-patterns:
           - '@types/jest'
+    ignore:
+      # TODO: remove once eslint-plugin-import supports ESLint 10
+      - dependency-name: 'eslint'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@eslint/js'
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: github-actions
     directory: /

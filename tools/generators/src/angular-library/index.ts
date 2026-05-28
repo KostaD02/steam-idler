@@ -32,7 +32,7 @@ function normalizeOptions(
   options: AngularLibraryGeneratorSchema,
 ): NormalizedSchema {
   const directory = options.directory ?? 'client';
-  const prefix = options.prefix ?? 'app';
+  const prefix = options.prefix ?? 'si';
 
   const domainNames = names(options.name);
   const subNames = options.subname ? names(options.subname) : null;

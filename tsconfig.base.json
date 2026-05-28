@@ -46,7 +46,38 @@
       ],
       "@steam-idler/server/steam-account/types": [
         "libs/server/steam-account/types/src/index.ts"
-      ]
+      ],
+      "@steam-idler/client/infra/data-access": [
+        "libs/client/infra/data-access/src/index.ts"
+      ],
+      "@steam-idler/client/infra/util": ["libs/client/infra/util/src/index.ts"],
+      "@steam-idler/client/header/ui": ["libs/client/header/ui/src/index.ts"],
+      "@steam-idler/client/infra/core": ["libs/client/infra/core/src/index.ts"],
+      "@steam-idler/client/infra/types": [
+        "libs/client/infra/types/src/index.ts"
+      ],
+      "@steam-idler/client/api/feature": [
+        "libs/client/api/feature/src/index.ts"
+      ],
+      "@steam-idler/client/dashboard/feature": [
+        "libs/client/dashboard/feature/src/index.ts"
+      ],
+      "@steam-idler/client/not-found/feature": [
+        "libs/client/not-found/feature/src/index.ts"
+      ],
+      "@steam-idler/client/header/core": [
+        "libs/client/header/core/src/index.ts"
+      ],
+      "@steam-idler/client/header/types": [
+        "libs/client/header/types/src/index.ts"
+      ],
+      "@steam-idler/client/auth/feature": [
+        "libs/client/auth/feature/src/index.ts"
+      ],
+      "@steam-idler/client/auth/data-access": [
+        "libs/client/auth/data-access/src/index.ts"
+      ],
+      "@steam-idler/client/auth/core": ["libs/client/auth/core/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

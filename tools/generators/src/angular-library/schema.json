@@ -80,7 +80,7 @@
     "prefix": {
       "type": "string",
       "description": "Selector prefix for generated components",
-      "default": "app"
+      "default": "si"
     },
     "buildable": {
       "type": "boolean",

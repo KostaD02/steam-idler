@@ -1,0 +1,27 @@
+{
+  "name": "client-header-types",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/client/header/types/src",
+  "prefix": "si",
+  "projectType": "library",
+  "tags": ["type:types", "scope:client"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/client/header/types/jest.config.cts",
+        "tsConfig": "libs/client/header/types/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/client/header/types/**/*.ts",
+          "libs/client/header/types/**/*.html"
+        ]
+      }
+    }
+  }
+}

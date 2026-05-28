@@ -1,0 +1,72 @@
+<header class="auth-form__header">
+  <h2>Create account</h2>
+</header>
+
+@if (errorMessage(); as message) {
+  <div class="auth-form__error" role="alert">{{ message }}</div>
+}
+
+<form class="auth-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+  <div class="kd-field-group">
+    <label class="kd-field-label" for="sign-up-display-name"
+      >Display name</label
+    >
+    <input
+      id="sign-up-display-name"
+      type="text"
+      class="kd-field-input"
+      [class.kd-invalid]="isInvalid('displayName')"
+      formControlName="displayName"
+      autocomplete="nickname"
+      placeholder="InigoMontoya"
+    />
+    @if (isInvalid('displayName')) {
+      <span class="kd-field-error">Display name must be 2–30 characters.</span>
+    }
+  </div>
+
+  <div class="kd-field-group">
+    <label class="kd-field-label" for="sign-up-email">Email</label>
+    <input
+      id="sign-up-email"
+      type="email"
+      class="kd-field-input"
+      [class.kd-invalid]="isInvalid('email')"
+      formControlName="email"
+      autocomplete="email"
+      placeholder="vigac@vigacashvili.ge"
+    />
+    @if (isInvalid('email')) {
+      <span class="kd-field-error">Enter a valid email address.</span>
+    }
+  </div>
+
+  <div class="kd-field-group">
+    <label class="kd-field-label" for="sign-up-password">Password</label>
+    <input
+      id="sign-up-password"
+      type="password"
+      class="kd-field-input"
+      [class.kd-invalid]="isInvalid('password')"
+      formControlName="password"
+      autocomplete="new-password"
+      placeholder="At least 8 characters"
+    />
+    @if (isInvalid('password')) {
+      <span class="kd-field-error">Password must be 8–64 characters.</span>
+    }
+  </div>
+
+  <button
+    type="submit"
+    class="kd-btn kd-btn--block auth-form__submit"
+    [disabled]="submitting()"
+  >
+    {{ submitting() ? 'Creating account…' : 'Create account' }}
+  </button>
+</form>
+
+<footer class="auth-form__switch">
+  <span>Already have an account?</span>
+  <a routerLink="/auth/sign-in">Sign in</a>
+</footer>

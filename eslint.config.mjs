@@ -81,7 +81,7 @@ export default [
               position: 'before',
             },
             {
-              pattern: '@steam-idler/{server,client}/infra/**',
+              pattern: '@steam-idler/*/infra/**',
               group: 'internal',
               position: 'before',
             },

@@ -1,0 +1,59 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--kd-font-secondary);
+  font-size: var(--kd-font-size-sm);
+  line-height: 1.5;
+  color: var(--kd-text-primary);
+  background-color: var(--kd-bg);
+  min-height: 100dvh;
+  transition:
+    background-color 0.25s var(--kd-easing),
+    color 0.25s var(--kd-easing);
+}
+
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px dashed var(--kd-accent);
+  outline-offset: 3px;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+*::selection {
+  color: var(--kd-selection-fg);
+  background-color: var(--kd-selection-bg);
+}
+
+*::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: var(--kd-bg);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--kd-scrollbar-thumb);
+  border: 3px solid var(--kd-bg);
+  border-radius: 10px;
+}

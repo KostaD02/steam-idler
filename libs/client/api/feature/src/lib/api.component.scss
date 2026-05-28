@@ -1,0 +1,15 @@
+section {
+  width: 100%;
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  p {
+    font-family: var(--kd-font-primary);
+    font-size: var(--kd-font-size-heading);
+    color: var(--kd-text-secondary);
+  }
+}
