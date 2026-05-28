@@ -4,7 +4,7 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
   {
     label: 'Dashboard',
     path: '/',
-    requiresLogin: true,
+    requiresLogin: false,
     displayAfterLogin: true,
   },
   {
@@ -18,6 +18,12 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     path: '/auth',
     requiresLogin: false,
     displayAfterLogin: false,
+  },
+  {
+    label: 'Settings',
+    path: '/settings',
+    requiresLogin: true,
+    displayAfterLogin: true,
   },
   {
     label: 'API',

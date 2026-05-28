@@ -24,10 +24,15 @@ export const appRoutes: Route[] = [
       import('@steam-idler/client/auth/feature').then((m) => m.authRoutes),
   },
   {
-    path: '**',
+    path: 'not-found',
     loadChildren: () =>
       import('@steam-idler/client/not-found/feature').then(
         (m) => m.notFoundRoutes,
       ),
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    redirectTo: 'not-found',
   },
 ];

@@ -6,11 +6,14 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+
+import { catchError, EMPTY, finalize } from 'rxjs';
 
 import { LayoutService, ThemeService } from '@steam-idler/client/infra/core';
 import { ThemeEnum } from '@steam-idler/client/infra/types';
 
+import { AuthService } from '@steam-idler/client/auth/data-access';
 import { NAVIGATION_ITEMS } from '@steam-idler/client/header/core';
 
 @Component({
@@ -23,6 +26,8 @@ import { NAVIGATION_ITEMS } from '@steam-idler/client/header/core';
 export class HeaderComponent {
   private readonly themeService = inject(ThemeService);
   private readonly layoutService = inject(LayoutService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   readonly sizing = this.layoutService.sizing;
   readonly isMobileView = this.layoutService.isMobileView;
@@ -30,10 +35,27 @@ export class HeaderComponent {
   readonly isDarkTheme = computed(
     () => this.themeService.selectedTheme() === ThemeEnum.Dark,
   );
+  readonly isAuthenticated = this.authService.isAuthenticated;
 
-  readonly navigationItems = NAVIGATION_ITEMS;
+  readonly navigationItems = computed(() => {
+    const isAuthenticated = this.authService.isAuthenticated();
+    return NAVIGATION_ITEMS.filter((item) =>
+      isAuthenticated ? item.displayAfterLogin : !item.requiresLogin,
+    );
+  });
 
   toggleTheme(): void {
     this.themeService.toggleTheme();
+  }
+
+  signOut(): void {
+    this.isSideNavOpen.set(false);
+    this.authService
+      .signOut()
+      .pipe(
+        catchError(() => EMPTY),
+        finalize(() => this.router.navigateByUrl('/auth/sign-in')),
+      )
+      .subscribe();
   }
 }

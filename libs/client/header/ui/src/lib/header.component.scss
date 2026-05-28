@@ -57,7 +57,8 @@
     }
   }
 
-  &__theme-toggle {
+  &__theme-toggle,
+  &__sign-out {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -85,6 +86,13 @@
       border-color: var(--kd-accent-line);
       background-color: var(--kd-accent-soft);
     }
+  }
+
+  &__sign-out:hover,
+  &__sign-out:focus-visible {
+    color: var(--kd-danger);
+    border-color: var(--kd-danger);
+    background-color: var(--kd-danger-soft);
   }
 
   &__burger {
