@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, DOCUMENT, inject, Injectable, signal } from '@angular/core';
 
 import { catchError, finalize, Observable, of, switchMap, tap } from 'rxjs';
 
@@ -21,11 +21,20 @@ export class AuthService {
   private readonly loggerService = inject(LoggerService);
   private readonly authApiService = inject(AuthApiService);
   private readonly localStorageService = inject(LocalStorageService);
+  private readonly document = inject(DOCUMENT);
 
   private readonly _user = signal<User | null>(null);
 
   readonly user = this._user.asReadonly();
   readonly isAuthenticated = computed(() => this._user() !== null);
+
+  constructor() {
+    this.document.defaultView?.addEventListener('storage', (event) => {
+      if (event.key === StorageKeysEnum.HasSession && event.newValue === null) {
+        this._user.set(null);
+      }
+    });
+  }
 
   loadCurrentUser(): Observable<User | null> {
     if (!this.localStorageService.getItem(StorageKeysEnum.HasSession)) {
