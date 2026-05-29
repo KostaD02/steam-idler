@@ -1,0 +1,26 @@
+name: Setup
+description: Install pnpm + Node, restore node_modules cache, install deps on miss. Assumes the repo is already checked out.
+
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@v6
+      with:
+        version: 9
+
+    - uses: actions/setup-node@v6
+      with:
+        node-version: 20
+        cache: pnpm
+
+    - name: Cache node_modules
+      id: cache-node-modules
+      uses: actions/cache@v4
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-modules-${{ hashFiles('pnpm-lock.yaml') }}
+
+    - name: Install dependencies
+      if: steps.cache-node-modules.outputs.cache-hit != 'true'
+      shell: bash
+      run: pnpm install --frozen-lockfile

@@ -1,0 +1,44 @@
+name: Build
+
+on:
+  workflow_call:
+    outputs:
+      dist-artifact:
+        description: Name of the internal dist artifact uploaded by this workflow
+        value: ${{ jobs.build.outputs.dist-artifact }}
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    outputs:
+      dist-artifact: ${{ steps.dist-name.outputs.name }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup
+
+      - uses: nrwl/nx-set-shas@v5
+
+      - name: Append PR version
+        if: github.event_name == 'pull_request'
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: node .github/scripts/append-pr-version.cjs
+
+      - name: Build all
+        run: pnpm exec nx run-many -t build --parallel=3
+
+      - name: Compute dist artifact name
+        id: dist-name
+        run: echo "name=dist-${{ github.run_id }}-${{ github.run_attempt }}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload dist (internal)
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.dist-name.outputs.name }}
+          path: dist
+          if-no-files-found: error
+          retention-days: 1
