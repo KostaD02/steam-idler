@@ -1,6 +1,6 @@
 {
   "name": "@steam-idler/infra",
-  "version": "0.0.1",
+  "version": "2.1.0",
   "private": true,
   "type": "commonjs",
   "main": "./src/index.js",

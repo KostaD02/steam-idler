@@ -96,6 +96,7 @@
       }
     },
     "changelog": {
+      "automaticFromRef": true,
       "workspaceChangelog": {
         "createRelease": false,
         "file": "{workspaceRoot}/CHANGELOG.md"

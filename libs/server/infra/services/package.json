@@ -1,12 +1,12 @@
 {
   "name": "@steam-idler/server/infra/services",
-  "version": "0.0.1",
+  "version": "2.1.0",
   "private": true,
   "type": "commonjs",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
   "dependencies": {
-    "@steam-idler/server/infra/types": "0.0.1",
+    "@steam-idler/server/infra/types": "2.1.0",
     "tslib": "^2.3.0",
     "@nestjs/common": "^11.0.0",
     "@nestjs/config": "^4.0.4"
