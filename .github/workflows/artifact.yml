@@ -1,0 +1,42 @@
+name: Artifact
+
+on:
+  workflow_call:
+    inputs:
+      dist-artifact:
+        description: Name of the internal dist artifact uploaded by build.yml
+        required: true
+        type: string
+    outputs:
+      artifact-name:
+        description: Public name of the PR artifact
+        value: ${{ jobs.artifact.outputs.artifact-name }}
+      artifact-url:
+        description: Public URL of the PR artifact
+        value: ${{ jobs.artifact.outputs.artifact-url }}
+
+jobs:
+  artifact:
+    name: Artifact
+    runs-on: ubuntu-latest
+    outputs:
+      artifact-name: ${{ steps.name.outputs.value }}
+      artifact-url: ${{ steps.upload.outputs.artifact-url }}
+    steps:
+      - name: Compute artifact name
+        id: name
+        run: echo "value=Steam-Idler-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}" >> "$GITHUB_OUTPUT"
+
+      - name: Download dist
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ inputs.dist-artifact }}
+          path: dist
+
+      - name: Upload PR artifact
+        id: upload
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.name.outputs.value }}
+          path: dist
+          if-no-files-found: error

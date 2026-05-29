@@ -25,8 +25,25 @@ jobs:
 
   build:
     needs: [lint, format, test]
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+
+  artifact:
+    if: github.event_name == 'pull_request'
+    needs: [build]
+    uses: ./.github/workflows/artifact.yml
+    with:
+      dist-artifact: ${{ needs.build.outputs.dist-artifact }}
+    secrets: inherit
+
+  docker:
+    if: github.event_name == 'pull_request'
+    needs: [build, artifact]
     permissions:
       contents: read
       pull-requests: write
-    uses: ./.github/workflows/build.yml
+    uses: ./.github/workflows/docker.yml
+    with:
+      dist-artifact: ${{ needs.build.outputs.dist-artifact }}
+      artifact-url: ${{ needs.artifact.outputs.artifact-url }}
     secrets: inherit

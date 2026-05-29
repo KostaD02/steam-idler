@@ -1,0 +1,80 @@
+name: Docker
+
+on:
+  workflow_call:
+    inputs:
+      dist-artifact:
+        description: Name of the internal dist artifact uploaded by build.yml
+        required: true
+        type: string
+      artifact-url:
+        description: Public URL of the PR dist artifact (for the PR comment)
+        required: true
+        type: string
+
+jobs:
+  docker:
+    name: Docker
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Download dist
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ inputs.dist-artifact }}
+          path: dist
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build client image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: Dockerfile.client
+          push: false
+          tags: steam-idler-client:pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
+          outputs: type=docker,dest=/tmp/steam-idler-client.tar
+
+      - name: Build server image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: Dockerfile.server
+          push: false
+          tags: steam-idler-server:pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
+          outputs: type=docker,dest=/tmp/steam-idler-server.tar
+
+      - name: Upload client image
+        id: upload-client
+        uses: actions/upload-artifact@v7
+        with:
+          name: Steam-Idler-Client-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
+          path: /tmp/steam-idler-client.tar
+          if-no-files-found: error
+
+      - name: Upload server image
+        id: upload-server
+        uses: actions/upload-artifact@v7
+        with:
+          name: Steam-Idler-Server-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
+          path: /tmp/steam-idler-server.tar
+          if-no-files-found: error
+
+      - name: Comment on PR
+        uses: actions/github-script@v9
+        env:
+          PR_COMMIT_COUNT: ${{ github.event.pull_request.commits }}
+          ARTIFACT_URL: ${{ inputs.artifact-url }}
+          CLIENT_IMAGE_TAG: steam-idler-client:pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
+          SERVER_IMAGE_TAG: steam-idler-server:pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
+          CLIENT_IMAGE_URL: ${{ steps.upload-client.outputs.artifact-url }}
+          SERVER_IMAGE_URL: ${{ steps.upload-server.outputs.artifact-url }}
+        with:
+          script: |
+            const script = require('./.github/scripts/comment-pr.cjs');
+            await script({ github, context });
