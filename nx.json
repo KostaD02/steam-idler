@@ -75,5 +75,37 @@
     "@nx/angular:component": {
       "style": "scss"
     }
+  },
+  "release": {
+    "projects": ["infra"],
+    "releaseTagPattern": "v{version}",
+    "version": {
+      "conventionalCommits": true,
+      "fallbackCurrentVersionResolver": "disk",
+      "manifestRootsToUpdate": ["."]
+    },
+    "conventionalCommits": {
+      "types": {
+        "refactor": { "semverBump": "none", "changelog": { "hidden": false } },
+        "chore": { "semverBump": "none", "changelog": { "hidden": false } },
+        "docs": { "semverBump": "none", "changelog": { "hidden": false } },
+        "style": { "semverBump": "none", "changelog": { "hidden": false } },
+        "test": { "semverBump": "none", "changelog": { "hidden": false } },
+        "ci": { "semverBump": "none", "changelog": { "hidden": false } },
+        "build": { "semverBump": "none", "changelog": { "hidden": false } }
+      }
+    },
+    "changelog": {
+      "workspaceChangelog": {
+        "createRelease": false,
+        "file": "{workspaceRoot}/CHANGELOG.md"
+      },
+      "projectChangelogs": false
+    },
+    "git": {
+      "commit": true,
+      "commitMessage": "chore(release): {version} [skip ci]",
+      "tag": true
+    }
   }
 }
