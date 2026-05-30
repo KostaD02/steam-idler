@@ -10,5 +10,4 @@ export {
   type ExceptionStatusKey,
   ExceptionStatusKeys,
   CommonExpectionsKeys,
-  type HttpExceptionResponse,
 } from './lib/exception';

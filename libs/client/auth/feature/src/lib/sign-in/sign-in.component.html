@@ -1,14 +1,16 @@
 <header class="auth-form__header">
-  <h2>Sign in</h2>
+  <h2>{{ 'ui.auth.sign_in.title' | translate }}</h2>
 </header>
 
-@if (errorMessage(); as message) {
-  <div class="auth-form__error" role="alert">{{ message }}</div>
+@if (errorKey(); as key) {
+  <div class="auth-form__error" role="alert">{{ key | translate }}</div>
 }
 
 <form class="auth-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
   <div class="kd-field-group">
-    <label class="kd-field-label" for="sign-in-email">Email</label>
+    <label class="kd-field-label" for="sign-in-email">{{
+      'ui.auth.fields.email.label' | translate
+    }}</label>
     <input
       id="sign-in-email"
       type="email"
@@ -16,15 +18,19 @@
       [class.kd-invalid]="isInvalid('email')"
       formControlName="email"
       autocomplete="email"
-      placeholder="vigac@vigacashvili.ge"
+      [placeholder]="'ui.auth.fields.email.placeholder' | translate"
     />
     @if (isInvalid('email')) {
-      <span class="kd-field-error">Enter a valid email address.</span>
+      <span class="kd-field-error">{{
+        'ui.auth.fields.email.error' | translate
+      }}</span>
     }
   </div>
 
   <div class="kd-field-group">
-    <label class="kd-field-label" for="sign-in-password">Password</label>
+    <label class="kd-field-label" for="sign-in-password">{{
+      'ui.auth.fields.password.label' | translate
+    }}</label>
     <input
       id="sign-in-password"
       type="password"
@@ -32,12 +38,12 @@
       [class.kd-invalid]="isInvalid('password')"
       formControlName="password"
       autocomplete="current-password"
-      placeholder="••••••••"
+      [placeholder]="'ui.auth.fields.password.placeholder_signin' | translate"
     />
     @if (isInvalid('password')) {
-      <span class="kd-field-error"
-        >Password must be at least 8 characters.</span
-      >
+      <span class="kd-field-error">{{
+        'ui.auth.fields.password.error_signin' | translate
+      }}</span>
     }
   </div>
 
@@ -46,11 +52,18 @@
     class="kd-btn kd-btn--block auth-form__submit"
     [disabled]="submitting()"
   >
-    {{ submitting() ? 'Signing in…' : 'Sign in' }}
+    {{
+      (submitting()
+        ? 'ui.auth.sign_in.submit_loading'
+        : 'ui.auth.sign_in.submit'
+      ) | translate
+    }}
   </button>
 </form>
 
 <footer class="auth-form__switch">
-  <span>No account yet?</span>
-  <a routerLink="/auth/sign-up">Create one</a>
+  <span>{{ 'ui.auth.sign_in.switch_text' | translate }}</span>
+  <a routerLink="/auth/sign-up">{{
+    'ui.auth.sign_in.switch_action' | translate
+  }}</a>
 </footer>

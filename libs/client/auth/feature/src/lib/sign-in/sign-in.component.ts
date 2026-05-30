@@ -10,13 +10,14 @@ import { Router, RouterLink } from '@angular/router';
 
 import { catchError, EMPTY, finalize, tap } from 'rxjs';
 
-import { AuthService } from '@steam-idler/client/auth/data-access';
+import { extractErrorKey } from '@steam-idler/client/infra/util';
 
-import { extractAuthErrorMessage } from '../auth-error.util';
+import { AuthService } from '@steam-idler/client/auth/data-access';
+import { TranslatePipe } from '@steam-idler/client/i18n/ui';
 
 @Component({
   selector: 'si-sign-in',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, TranslatePipe],
   templateUrl: './sign-in.component.html',
   styleUrl: '../auth-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,7 +28,7 @@ export class SignInComponent {
   private readonly router = inject(Router);
 
   readonly submitting = signal(false);
-  readonly errorMessage = signal<string | null>(null);
+  readonly errorKey = signal<string | null>(null);
 
   readonly form = this.fb.group({
     email: this.fb.nonNullable.control('', [
@@ -52,14 +53,14 @@ export class SignInComponent {
     }
 
     this.submitting.set(true);
-    this.errorMessage.set(null);
+    this.errorKey.set(null);
 
     this.authService
       .signIn(this.form.getRawValue())
       .pipe(
         tap(() => this.router.navigateByUrl('/dashboard')),
         catchError((err: HttpErrorResponse) => {
-          this.errorMessage.set(extractAuthErrorMessage(err));
+          this.errorKey.set(extractErrorKey(err));
           return EMPTY;
         }),
         finalize(() => this.submitting.set(false)),

@@ -19,6 +19,7 @@
     "lint:all": "nx run-many -t lint --parallel=3",
     "lint:fix": "nx affected -t lint --parallel=3 --fix",
     "lint:fix:all": "nx run-many -t lint --parallel=3 --fix",
+    "validate:i18n": "node -r @swc-node/register tools/scripts/validate-i18n.ts",
     "db:up": "docker compose -f docker-compose.dev.yml up -d",
     "db:down": "docker compose -f docker-compose.dev.yml down",
     "g:secret": "node -e \"console.log(require('crypto').randomBytes(64).toString('hex'))\"",

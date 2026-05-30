@@ -77,7 +77,13 @@
       "@steam-idler/client/auth/data-access": [
         "libs/client/auth/data-access/src/index.ts"
       ],
-      "@steam-idler/client/auth/core": ["libs/client/auth/core/src/index.ts"]
+      "@steam-idler/client/auth/core": ["libs/client/auth/core/src/index.ts"],
+      "@steam-idler/client/i18n/data-access": [
+        "libs/client/i18n/data-access/src/index.ts"
+      ],
+      "@steam-idler/client/i18n/core": ["libs/client/i18n/core/src/index.ts"],
+      "@steam-idler/client/i18n/types": ["libs/client/i18n/types/src/index.ts"],
+      "@steam-idler/client/i18n/ui": ["libs/client/i18n/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

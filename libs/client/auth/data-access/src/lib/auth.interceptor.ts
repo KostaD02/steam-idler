@@ -10,9 +10,10 @@ import {
   throwError,
 } from 'rxjs';
 
+import { type HttpExceptionResponse } from '@steam-idler/infra';
+
 import { LocalStorageService } from '@steam-idler/client/infra/core';
 import { StorageKeysEnum } from '@steam-idler/client/infra/types';
-import { HttpExceptionResponse } from '@steam-idler/server/infra/types';
 
 import { AuthExpectionKeys } from '@steam-idler/server/auth/types';
 

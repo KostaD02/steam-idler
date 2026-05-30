@@ -2,31 +2,31 @@ import { NavigationItem } from '@steam-idler/client/header/types';
 
 export const NAVIGATION_ITEMS: NavigationItem[] = [
   {
-    label: 'Dashboard',
+    labelKey: 'ui.header.nav.dashboard',
     path: '/',
     requiresLogin: false,
     displayAfterLogin: true,
   },
   {
-    label: 'Accounts',
+    labelKey: 'ui.header.nav.accounts',
     path: '/accounts',
     requiresLogin: true,
     displayAfterLogin: true,
   },
   {
-    label: 'Auth',
+    labelKey: 'ui.header.nav.auth',
     path: '/auth',
     requiresLogin: false,
     displayAfterLogin: false,
   },
   {
-    label: 'Settings',
+    labelKey: 'ui.header.nav.settings',
     path: '/settings',
     requiresLogin: true,
     displayAfterLogin: true,
   },
   {
-    label: 'API',
+    labelKey: 'ui.header.nav.api',
     path: '/api',
     requiresLogin: false,
     displayAfterLogin: true,

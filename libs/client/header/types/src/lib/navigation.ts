@@ -1,5 +1,5 @@
 export interface NavigationItem {
-  label: string;
+  labelKey: string;
   path: string;
   requiresLogin: boolean;
   displayAfterLogin: boolean;

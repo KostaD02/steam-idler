@@ -1,0 +1,43 @@
+<button
+  #trigger
+  class="language-switcher__trigger"
+  type="button"
+  [attr.aria-label]="'ui.header.aria.language' | translate"
+  aria-haspopup="listbox"
+  [attr.aria-controls]="isOpen() ? listboxId : null"
+  [attr.aria-expanded]="isOpen()"
+  (click)="toggle()"
+>
+  <svg aria-hidden="true">
+    <use href="/icons/globe.svg#root" />
+  </svg>
+</button>
+
+@if (isOpen()) {
+  <ul
+    #listbox
+    class="language-switcher__menu"
+    role="listbox"
+    tabindex="-1"
+    [id]="listboxId"
+    [attr.aria-label]="'ui.header.aria.language' | translate"
+    [attr.aria-activedescendant]="activeOptionId()"
+    (keydown)="onKeydown($event)"
+  >
+    @for (locale of locales; track locale; let i = $index) {
+      <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+      <li
+        class="language-switcher__option"
+        role="option"
+        [id]="optionId(i)"
+        [class.language-switcher__option--active]="locale === current()"
+        [class.language-switcher__option--focused]="i === activeIndex()"
+        [attr.aria-selected]="locale === current() ? 'true' : 'false'"
+        (click)="select(locale)"
+        (mousemove)="activeIndex.set(i)"
+      >
+        {{ labels[locale] }}
+      </li>
+    }
+  </ul>
+}

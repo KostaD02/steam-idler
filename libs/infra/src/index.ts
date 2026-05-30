@@ -7,6 +7,7 @@ export {
   type SteamIdlerMessageType,
 } from './lib/logger';
 export { getISOString, getTzOffsetDate } from './lib/iso';
+export { type HttpExceptionResponse } from './lib/http-exception';
 export { sanitizeObject } from './lib/sanitize';
 export { API_CONFIG, API_PAGINATION, API_SENSITIVE_KEYS } from './lib/api';
 export { type SteamIdlerValidator } from './lib/validator';

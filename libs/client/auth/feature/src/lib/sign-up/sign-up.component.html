@@ -1,16 +1,16 @@
 <header class="auth-form__header">
-  <h2>Create account</h2>
+  <h2>{{ 'ui.auth.sign_up.title' | translate }}</h2>
 </header>
 
-@if (errorMessage(); as message) {
-  <div class="auth-form__error" role="alert">{{ message }}</div>
+@if (errorKey(); as key) {
+  <div class="auth-form__error" role="alert">{{ key | translate }}</div>
 }
 
 <form class="auth-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
   <div class="kd-field-group">
-    <label class="kd-field-label" for="sign-up-display-name"
-      >Display name</label
-    >
+    <label class="kd-field-label" for="sign-up-display-name">{{
+      'ui.auth.fields.display_name.label' | translate
+    }}</label>
     <input
       id="sign-up-display-name"
       type="text"
@@ -18,15 +18,19 @@
       [class.kd-invalid]="isInvalid('displayName')"
       formControlName="displayName"
       autocomplete="nickname"
-      placeholder="InigoMontoya"
+      [placeholder]="'ui.auth.fields.display_name.placeholder' | translate"
     />
     @if (isInvalid('displayName')) {
-      <span class="kd-field-error">Display name must be 2–30 characters.</span>
+      <span class="kd-field-error">{{
+        'ui.auth.fields.display_name.error' | translate
+      }}</span>
     }
   </div>
 
   <div class="kd-field-group">
-    <label class="kd-field-label" for="sign-up-email">Email</label>
+    <label class="kd-field-label" for="sign-up-email">{{
+      'ui.auth.fields.email.label' | translate
+    }}</label>
     <input
       id="sign-up-email"
       type="email"
@@ -34,15 +38,19 @@
       [class.kd-invalid]="isInvalid('email')"
       formControlName="email"
       autocomplete="email"
-      placeholder="vigac@vigacashvili.ge"
+      [placeholder]="'ui.auth.fields.email.placeholder' | translate"
     />
     @if (isInvalid('email')) {
-      <span class="kd-field-error">Enter a valid email address.</span>
+      <span class="kd-field-error">{{
+        'ui.auth.fields.email.error' | translate
+      }}</span>
     }
   </div>
 
   <div class="kd-field-group">
-    <label class="kd-field-label" for="sign-up-password">Password</label>
+    <label class="kd-field-label" for="sign-up-password">{{
+      'ui.auth.fields.password.label' | translate
+    }}</label>
     <input
       id="sign-up-password"
       type="password"
@@ -50,10 +58,12 @@
       [class.kd-invalid]="isInvalid('password')"
       formControlName="password"
       autocomplete="new-password"
-      placeholder="At least 8 characters"
+      [placeholder]="'ui.auth.fields.password.placeholder_signup' | translate"
     />
     @if (isInvalid('password')) {
-      <span class="kd-field-error">Password must be 8–64 characters.</span>
+      <span class="kd-field-error">{{
+        'ui.auth.fields.password.error_signup' | translate
+      }}</span>
     }
   </div>
 
@@ -62,11 +72,18 @@
     class="kd-btn kd-btn--block auth-form__submit"
     [disabled]="submitting()"
   >
-    {{ submitting() ? 'Creating account…' : 'Create account' }}
+    {{
+      (submitting()
+        ? 'ui.auth.sign_up.submit_loading'
+        : 'ui.auth.sign_up.submit'
+      ) | translate
+    }}
   </button>
 </form>
 
 <footer class="auth-form__switch">
-  <span>Already have an account?</span>
-  <a routerLink="/auth/sign-in">Sign in</a>
+  <span>{{ 'ui.auth.sign_up.switch_text' | translate }}</span>
+  <a routerLink="/auth/sign-in">{{
+    'ui.auth.sign_up.switch_action' | translate
+  }}</a>
 </footer>
