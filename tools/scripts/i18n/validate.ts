@@ -14,11 +14,8 @@ function collectBuildMeta(): BuildMeta | undefined {
   }
 
   return {
-    sha,
     shortSha: sha.slice(0, 7),
     buildNumber,
-    repository: process.env.GITHUB_REPOSITORY,
-    serverUrl: process.env.GITHUB_SERVER_URL ?? 'https://github.com',
     updatedAt: new Date().toISOString().slice(0, 16).replace('T', ' '),
   };
 }

@@ -10,11 +10,8 @@ export interface LocaleRow {
 }
 
 export interface BuildMeta {
-  sha: string;
   shortSha: string;
   buildNumber: string;
-  repository?: string;
-  serverUrl: string;
   updatedAt: string;
 }
 

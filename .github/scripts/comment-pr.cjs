@@ -74,7 +74,7 @@ function renderBody(issueNumber, entries) {
     `<!-- data:${JSON.stringify(entries)}-->`,
     `## ✅ Build artifacts`,
     ``,
-    `**Latest - \`${latest.sha}\` · build N${latest.count}** _(updated ${latest.date} UTC)_`,
+    `**Latest - ${latest.sha} · build N${latest.count}** _(updated ${latest.date} UTC)_`,
     ``,
     `📦 **[Download ${bundleName}.zip](${latest.bundleUrl})**`,
   ];
@@ -97,7 +97,7 @@ function renderBody(issueNumber, entries) {
       `<details>`,
       `<summary>📜 Previous builds (${previous.length})</summary>`,
       ``,
-      `| Commit | Build | Bundle | Docker |`,
+      `| Build | Commit | Bundle | Docker |`,
       `| --- | --- | --- | --- |`,
       ...previous.map((e) => {
         const docker =
@@ -105,7 +105,7 @@ function renderBody(issueNumber, entries) {
             ? `[client](${e.clientUrl}) · [server](${e.serverUrl})`
             : '-';
 
-        return `| \`${e.sha}\` | #${e.count} | [bundle](${e.bundleUrl}) | ${docker} |`;
+        return `| ${e.count} | ${e.sha} | [bundle](${e.bundleUrl}) | ${docker} |`;
       }),
       ``,
       `</details>`,

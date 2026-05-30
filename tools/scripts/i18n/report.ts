@@ -10,28 +10,24 @@ export function renderBar(percent: number): string {
 }
 
 export function renderBuildLine(build: BuildMeta): string {
-  const { sha, shortSha, buildNumber, repository, serverUrl, updatedAt } =
-    build;
-
-  const buildLabel = `build N${buildNumber}`;
-  const buildText = repository
-    ? `[${buildLabel}](${serverUrl}/${repository}/commit/${sha})`
-    : buildLabel;
-
-  return `**Latest - \`${shortSha}\` · ${buildText}** _(updated ${updatedAt} UTC)_`;
+  const { shortSha, buildNumber, updatedAt } = build;
+  return `**Latest - ${shortSha} · build N${buildNumber}** _(updated ${updatedAt} UTC)_`;
 }
 
 export function buildMarkdownReport(data: ReportData): string {
   const { locales, defaultFlatCount, requiredCount } = data;
-  const lines = [
-    `<!-- i18n-coverage-report -->`,
-    `## 🌍 i18n Coverage`,
-    ``,
+  const lines = [`<!-- i18n-coverage-report -->`, `## 🌍 i18n Coverage`, ``];
+
+  if (data.build) {
+    lines.unshift(``, renderBuildLine(data.build));
+  }
+
+  lines.push(
     `**${locales.length} locales** supported. \`${DEFAULT_LOCALE}\` reference bundle has **${defaultFlatCount} keys** (${requiredCount} BE error keys + ${defaultFlatCount - requiredCount} UI keys).`,
     ``,
     `| Locale | Native | Coverage | |`,
     `| --- | --- | --- | --- |`,
-  ];
+  );
 
   for (const row of locales) {
     const bar = renderBar(row.percent);
@@ -47,10 +43,6 @@ export function buildMarkdownReport(data: ReportData): string {
     `> [!TIP]`,
     `> Want to test before pushing? Run \`pnpm validate:i18n\` locally.`,
   );
-
-  if (data.build) {
-    lines.unshift(``, renderBuildLine(data.build));
-  }
 
   return lines.join('\n');
 }
