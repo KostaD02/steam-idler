@@ -49,7 +49,7 @@ export function buildMarkdownReport(data: ReportData): string {
   );
 
   if (data.build) {
-    lines.push(``, renderBuildLine(data.build));
+    lines.unshift(``, renderBuildLine(data.build));
   }
 
   return lines.join('\n');
