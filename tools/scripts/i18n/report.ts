@@ -19,7 +19,7 @@ export function buildMarkdownReport(data: ReportData): string {
   const lines = [`<!-- i18n-coverage-report -->`, `## 🌍 i18n Coverage`, ``];
 
   if (data.build) {
-    lines.push(``, renderBuildLine(data.build));
+    lines.push(``, renderBuildLine(data.build), ``);
   }
 
   lines.push(
