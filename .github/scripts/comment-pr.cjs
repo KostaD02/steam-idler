@@ -74,7 +74,7 @@ function renderBody(issueNumber, entries) {
     `<!-- data:${JSON.stringify(entries)}-->`,
     `## ✅ Build artifacts`,
     ``,
-    `**Latest - \`${latest.sha}\` · build #${latest.count}** _(updated ${latest.date} UTC)_`,
+    `**Latest - \`${latest.sha}\` · build N${latest.count}** _(updated ${latest.date} UTC)_`,
     ``,
     `📦 **[Download ${bundleName}.zip](${latest.bundleUrl})**`,
   ];

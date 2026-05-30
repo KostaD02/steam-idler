@@ -16,6 +16,8 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Validate i18n bundle
+        env:
+          I18N_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: pnpm run validate:i18n
 
       - name: Comment coverage on PR

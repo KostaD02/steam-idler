@@ -2,11 +2,26 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { DEFAULT_LOCALE, REPORT_DIR, ROOT } from './constants';
-import { ReportData } from './types';
+import { BuildMeta, ReportData } from './types';
 
 export function renderBar(percent: number): string {
   const filled = Math.round(percent / 10);
   return `${'█'.repeat(filled)}${'░'.repeat(10 - filled)}`;
+}
+
+export function renderBuildLine(build: BuildMeta): string {
+  const { sha, shortSha, runNumber, runId, repository, serverUrl, updatedAt } =
+    build;
+
+  const shaText = repository
+    ? `[\`${shortSha}\`](${serverUrl}/${repository}/commit/${sha})`
+    : `\`${shortSha}\``;
+  const buildText =
+    repository && runId
+      ? `[build #${runNumber}](${serverUrl}/${repository}/actions/runs/${runId})`
+      : `build #${runNumber}`;
+
+  return `<sub>Latest — ${shaText} · ${buildText} (updated ${updatedAt} UTC)</sub>`;
 }
 
 export function buildMarkdownReport(data: ReportData): string {
@@ -28,7 +43,17 @@ export function buildMarkdownReport(data: ReportData): string {
     );
   }
 
-  lines.push(``, `Missing keys fall back to \`${DEFAULT_LOCALE}\` at runtime.`);
+  lines.push(
+    ``,
+    `Missing keys fall back to \`${DEFAULT_LOCALE}\` at runtime.`,
+    ``,
+    `> 💡 Want to test before pushing? Run \`pnpm validate:i18n\` locally.`,
+  );
+
+  if (data.build) {
+    lines.push(``, renderBuildLine(data.build));
+  }
+
   return lines.join('\n');
 }
 

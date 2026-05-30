@@ -3,7 +3,26 @@ import { DEFAULT_LOCALE, I18N_DIR, REPORT_DIR } from './constants';
 import { extractLocaleLabels, extractRequiredKeys } from './extract';
 import { flatten } from './flatten';
 import { writeReports } from './report';
-import { LocaleRow, ReportData } from './types';
+import { BuildMeta, LocaleRow, ReportData } from './types';
+
+function collectBuildMeta(): BuildMeta | undefined {
+  const runNumber = process.env.GITHUB_RUN_NUMBER;
+  const sha = process.env.I18N_COMMIT_SHA ?? process.env.GITHUB_SHA;
+
+  if (!runNumber || !sha) {
+    return undefined;
+  }
+
+  return {
+    sha,
+    shortSha: sha.slice(0, 7),
+    runNumber,
+    runId: process.env.GITHUB_RUN_ID,
+    repository: process.env.GITHUB_REPOSITORY,
+    serverUrl: process.env.GITHUB_SERVER_URL ?? 'https://github.com',
+    updatedAt: new Date().toISOString().slice(0, 16).replace('T', ' '),
+  };
+}
 
 export function run(): void {
   const locales = discoverLocales();
@@ -72,6 +91,7 @@ export function run(): void {
     defaultFlatCount,
     requiredCount: required.size,
     locales: rows,
+    build: collectBuildMeta(),
   };
   writeReports(reportData);
   console.log(`📝 Report written to ${REPORT_DIR}/i18n-report.{json,md}.`);

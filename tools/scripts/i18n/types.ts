@@ -9,9 +9,20 @@ export interface LocaleRow {
   percent: number;
 }
 
+export interface BuildMeta {
+  sha: string;
+  shortSha: string;
+  runNumber: string;
+  runId?: string;
+  repository?: string;
+  serverUrl: string;
+  updatedAt: string;
+}
+
 export interface ReportData {
   defaultLocale: string;
   defaultFlatCount: number;
   requiredCount: number;
   locales: LocaleRow[];
+  build?: BuildMeta;
 }
