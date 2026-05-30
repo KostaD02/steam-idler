@@ -1,3 +1,17 @@
+## 2.2.1 (2026-05-30)
+
+### 🚀 Features
+
+- **client:** i18n ([#52](https://github.com/KostaD02/steam-idler/pull/52))
+
+### 🤖 CI
+
+- split CI into reusable workflows and cache node_modules ([#50](https://github.com/KostaD02/steam-idler/pull/50))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.2.0 (2026-05-29)
 
 ### 🚀 Features
