@@ -82,7 +82,7 @@ function renderBody(issueNumber, entries) {
   if (latest.clientTag && latest.serverTag) {
     lines.push(
       ``,
-      `🐳 Client → **[${clientTar}](${latest.clientUrl})** (\`${latest.clientTag}\`) · Server → **[${serverTar}](${latest.serverUrl})** (\`${latest.serverTag}\`)`,
+      `🐳 Client → **[${clientTar}](${latest.clientUrl})** (\`${latest.clientTag}\`)\n🐳Server → **[${serverTar}](${latest.serverUrl})** (\`${latest.serverTag}\`)`,
       ``,
       `\`\`\`bash`,
       `docker load -i ${clientTar}`,
