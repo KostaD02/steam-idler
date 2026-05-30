@@ -9,11 +9,47 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Decide the bump from conventional commits since the last tag:
+  # breaking -> major, feat -> minor, fix -> patch, anything else -> none (no release).
+  check:
+    name: Check for releasable commits
+    runs-on: ubuntu-latest
+    outputs:
+      specifier: ${{ steps.bump.outputs.specifier }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Determine version bump
+        id: bump
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 --match 'v*' 2>/dev/null || true)
+          if [ -n "$LAST_TAG" ]; then RANGE="$LAST_TAG..HEAD"; else RANGE="HEAD"; fi
+          SUBJECTS=$(git log "$RANGE" --format='%s')
+          BODIES=$(git log "$RANGE" --format='%b')
+          if echo "$SUBJECTS" | grep -qE '^[a-z]+(\([^)]*\))?!:' || echo "$BODIES" | grep -qE 'BREAKING[ -]CHANGE'; then
+            SPECIFIER=major
+          elif echo "$SUBJECTS" | grep -qE '^feat(\([^)]*\))?:'; then
+            SPECIFIER=minor
+          elif echo "$SUBJECTS" | grep -qE '^fix(\([^)]*\))?:'; then
+            SPECIFIER=patch
+          else
+            SPECIFIER=none
+            echo "::notice::No feat/fix/breaking commits since ${LAST_TAG:-start} — skipping release."
+          fi
+          echo "specifier=$SPECIFIER" >> "$GITHUB_OUTPUT"
+          echo "Range '${RANGE}' -> bump '${SPECIFIER}'"
+
   release:
     name: Release
+    needs: check
+    if: needs.check.outputs.specifier != 'none'
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      SPECIFIER: ${{ needs.check.outputs.specifier }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -27,55 +63,38 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Capture current version
-        id: before
+      - name: Run nx release
+        run: pnpm exec nx release "$SPECIFIER" --skip-publish
+
+      - name: Read new version
+        id: v
         run: |
           echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
 
-      - name: Run nx release
-        run: pnpm exec nx release --skip-publish
-
-      - name: Resolve release result
-        id: result
-        run: |
-          AFTER=$(node -p "require('./package.json').version")
-          echo "version=$AFTER" >> "$GITHUB_OUTPUT"
-          if [ "$AFTER" != "${{ steps.before.outputs.version }}" ]; then
-            echo "released=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "released=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::No releasable commits — version unchanged at $AFTER. Skipping release."
-          fi
-
       - name: Push release commit and tag
-        if: steps.result.outputs.released == 'true'
         run: git push --follow-tags
 
       - name: Build apps
-        if: steps.result.outputs.released == 'true'
         run: pnpm exec nx run-many -t build --parallel=3
 
       - name: Package build artifact
-        if: steps.result.outputs.released == 'true'
         run: |
           cd dist
-          zip -r "../steam-idler-${{ steps.result.outputs.version }}.zip" .
+          zip -r "../steam-idler-${{ steps.v.outputs.version }}.zip" .
           cd ..
-          ls -lh "steam-idler-${{ steps.result.outputs.version }}.zip"
+          ls -lh "steam-idler-${{ steps.v.outputs.version }}.zip"
 
       - name: Render release notes
-        if: steps.result.outputs.released == 'true'
-        run: sed "s/__VERSION__/${{ steps.result.outputs.version }}/g" .github/release-template.md > release-notes.md
+        run: sed "s/__VERSION__/${{ steps.v.outputs.version }}/g" .github/release-template.md > release-notes.md
 
       - name: Create GitHub Release
-        if: steps.result.outputs.released == 'true'
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.result.outputs.version }}
-          name: v${{ steps.result.outputs.version }}
+          tag_name: v${{ steps.v.outputs.version }}
+          name: v${{ steps.v.outputs.version }}
           body_path: release-notes.md
           generate_release_notes: true
           make_latest: true
-          files: steam-idler-${{ steps.result.outputs.version }}.zip
+          files: steam-idler-${{ steps.v.outputs.version }}.zip

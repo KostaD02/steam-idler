@@ -77,7 +77,7 @@
     }
   },
   "release": {
-    "projects": ["*"],
+    "projects": ["infra"],
     "releaseTagPattern": "v{version}",
     "version": {
       "conventionalCommits": true,
