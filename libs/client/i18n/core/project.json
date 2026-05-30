@@ -1,0 +1,27 @@
+{
+  "name": "client-i18n-core",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/client/i18n/core/src",
+  "prefix": "si",
+  "projectType": "library",
+  "tags": ["type:core", "scope:client"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/client/i18n/core/jest.config.cts",
+        "tsConfig": "libs/client/i18n/core/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/client/i18n/core/**/*.ts",
+          "libs/client/i18n/core/**/*.html"
+        ]
+      }
+    }
+  }
+}

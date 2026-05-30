@@ -1,18 +1,19 @@
 import { HttpException, Injectable } from '@nestjs/common';
 
+import { type HttpExceptionResponse } from '@steam-idler/infra';
+
 import {
   ExceptionStatusCodesKeys,
   ExceptionStatusKey,
   ExceptionStatusKeys,
-  HttpExceptionResponse,
 } from '@steam-idler/server/infra/types';
 
 @Injectable()
 export class ExceptionService {
   throw(
     exception: ExceptionStatusKey = ExceptionStatusKeys.InternalServerError,
-    message?: string,
-    errorKeys?: string[],
+    message: string,
+    errorKeys: string[],
   ): never {
     const status =
       ExceptionStatusCodesKeys[exception] ||

@@ -23,8 +23,15 @@ jobs:
     uses: ./.github/workflows/test.yml
     secrets: inherit
 
+  i18n:
+    permissions:
+      contents: read
+      pull-requests: write
+    uses: ./.github/workflows/i18n.yml
+    secrets: inherit
+
   build:
-    needs: [lint, format, test]
+    needs: [lint]
     uses: ./.github/workflows/build.yml
     secrets: inherit
 

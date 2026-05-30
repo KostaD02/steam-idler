@@ -2,6 +2,6 @@
   @if (swaggerUrl) {
     <iframe [src]="swaggerUrl"></iframe>
   } @else {
-    <p>API base URL is not configured.</p>
+    <p>{{ 'ui.api.no_config' | translate }}</p>
   }
 </section>

@@ -1,46 +1,116 @@
-module.exports = async ({ github, context }) => {
-  const prCommitCount = process.env.PR_COMMIT_COUNT || 'X';
-  const artifactUrl = process.env.ARTIFACT_URL;
-  const clientImageTag = process.env.CLIENT_IMAGE_TAG;
-  const serverImageTag = process.env.SERVER_IMAGE_TAG;
-  const clientImageUrl = process.env.CLIENT_IMAGE_URL;
-  const serverImageUrl = process.env.SERVER_IMAGE_URL;
+const MARKER = '<!-- build-artifacts-report -->';
+const MAX_ENTRIES = 15;
 
-  const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-  const downloadUrl = artifactUrl || runUrl;
-  const artifactName = `Steam-Idler-PR-${context.issue.number}-${prCommitCount}`;
-  const clientArtifactName = `Steam-Idler-Client-PR-${context.issue.number}-${prCommitCount}`;
-  const serverArtifactName = `Steam-Idler-Server-PR-${context.issue.number}-${prCommitCount}`;
+module.exports = async ({ github, context }) => {
+  const { owner, repo } = context.repo;
+  const issueNumber = context.issue.number;
+  const runUrl = `https://github.com/${owner}/${repo}/actions/runs/${context.runId}`;
+  const prCommitCount = process.env.PR_COMMIT_COUNT || 'X';
+  const headSha = context.payload.pull_request?.head?.sha || context.sha || '';
+
+  const entry = {
+    sha: headSha.slice(0, 7),
+    count: prCommitCount,
+    date: new Date().toISOString().slice(0, 16).replace('T', ' '),
+    bundleUrl: process.env.ARTIFACT_URL || runUrl,
+    clientUrl: process.env.CLIENT_IMAGE_URL || runUrl,
+    serverUrl: process.env.SERVER_IMAGE_URL || runUrl,
+    clientTag: process.env.CLIENT_IMAGE_TAG || '',
+    serverTag: process.env.SERVER_IMAGE_TAG || '',
+  };
+
+  const comments = await github.paginate(github.rest.issues.listComments, {
+    owner,
+    repo,
+    issue_number: issueNumber,
+    per_page: 100,
+  });
+  const existing = comments.find((c) => c.body && c.body.includes(MARKER));
+
+  let entries = [];
+
+  if (existing) {
+    const match = existing.body.match(/<!-- data:(.*?)-->/s);
+
+    if (match) {
+      try {
+        entries = JSON.parse(match[1].trim());
+      } catch {
+        entries = [];
+      }
+    }
+  }
+
+  entries.unshift(entry);
+  entries = entries.slice(0, MAX_ENTRIES);
+
+  const body = renderBody(issueNumber, entries);
+
+  if (existing) {
+    await github.rest.issues.updateComment({
+      owner,
+      repo,
+      comment_id: existing.id,
+      body,
+    });
+  } else {
+    await github.rest.issues.createComment({
+      owner,
+      repo,
+      issue_number: issueNumber,
+      body,
+    });
+  }
+};
+
+function renderBody(issueNumber, entries) {
+  const [latest, ...previous] = entries;
+  const bundleName = `Steam-Idler-PR-${issueNumber}-${latest.count}`;
+  const clientTar = `Steam-Idler-Client-PR-${issueNumber}-${latest.count}.tar`;
+  const serverTar = `Steam-Idler-Server-PR-${issueNumber}-${latest.count}.tar`;
 
   const lines = [
-    `✅ **Build Successful!**`,
+    MARKER,
+    `<!-- data:${JSON.stringify(entries)}-->`,
+    `## ✅ Build artifacts`,
     ``,
-    `The compiled client + server bundles have been uploaded as a workflow artifact. You can download and test them directly:`,
+    `**Latest - \`${latest.sha}\` · build #${latest.count}** _(updated ${latest.date} UTC)_`,
     ``,
-    `📦 **[Download ${artifactName}.zip](${downloadUrl})**`,
+    `📦 **[Download ${bundleName}.zip](${latest.bundleUrl})**`,
   ];
 
-  if (clientImageTag && serverImageTag) {
+  if (latest.clientTag && latest.serverTag) {
     lines.push(
       ``,
-      `🐳 **Docker images** (built locally, saved as tarballs):`,
-      ``,
-      `- Client → **[${clientArtifactName}.tar](${clientImageUrl || runUrl})** (\`${clientImageTag}\`)`,
-      `- Server → **[${serverArtifactName}.tar](${serverImageUrl || runUrl})** (\`${serverImageTag}\`)`,
-      ``,
-      `Load locally with:`,
+      `🐳 Client → **[${clientTar}](${latest.clientUrl})** (\`${latest.clientTag}\`) · Server → **[${serverTar}](${latest.serverUrl})** (\`${latest.serverTag}\`)`,
       ``,
       `\`\`\`bash`,
-      `docker load -i ${clientArtifactName}.tar`,
-      `docker load -i ${serverArtifactName}.tar`,
+      `docker load -i ${clientTar}`,
+      `docker load -i ${serverTar}`,
       `\`\`\``,
     );
   }
 
-  await github.rest.issues.createComment({
-    body: lines.join('\n'),
-    repo: context.repo.repo,
-    owner: context.repo.owner,
-    issue_number: context.issue.number,
-  });
-};
+  if (previous.length) {
+    lines.push(
+      ``,
+      `<details>`,
+      `<summary>📜 Previous builds (${previous.length})</summary>`,
+      ``,
+      `| Commit | Build | Bundle | Docker |`,
+      `| --- | --- | --- | --- |`,
+      ...previous.map((e) => {
+        const docker =
+          e.clientTag && e.serverTag
+            ? `[client](${e.clientUrl}) · [server](${e.serverUrl})`
+            : '-';
+
+        return `| \`${e.sha}\` | #${e.count} | [bundle](${e.bundleUrl}) | ${docker} |`;
+      }),
+      ``,
+      `</details>`,
+    );
+  }
+
+  return lines.join('\n');
+}

@@ -44,10 +44,3 @@ export const CommonExpectionsKeys = {
   PropertyShouldNotExist: 'errors.common.property_should_not_exist',
   EventPayloadRequired: 'errors.common.event_payload_required',
 } as const;
-
-export type HttpExceptionResponse = {
-  error: string;
-  status: number;
-  message?: string | string[];
-  errorKeys?: string[];
-};

@@ -4,10 +4,13 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { LayoutService } from '@steam-idler/client/infra/core';
 import { ConfigService } from '@steam-idler/client/infra/data-access';
 
+import { TranslatePipe } from '@steam-idler/client/i18n/ui';
+
 @Component({
   selector: 'si-api',
   templateUrl: './api.component.html',
   styleUrl: './api.component.scss',
+  imports: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApiComponent {

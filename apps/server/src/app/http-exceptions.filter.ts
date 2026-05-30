@@ -9,10 +9,9 @@ import {
 
 import { Request, Response } from 'express';
 
-import { getISOString } from '@steam-idler/infra';
+import { getISOString, type HttpExceptionResponse } from '@steam-idler/infra';
 
 import {
-  HttpExceptionResponse,
   ExceptionStatusKeys,
   CommonExpectionsKeys,
 } from '@steam-idler/server/infra/types';
@@ -55,6 +54,7 @@ export class HttpExceptionsFilter implements ExceptionFilter {
       ).getResponse() as HttpExceptionResponse;
       const errorWithIncorrectStructure = Array.isArray(data.message);
       exceptionResponse.status = status;
+
       if (errorWithIncorrectStructure) {
         if (data.message[0].includes('should not exist')) {
           // Property whitelist errors
@@ -75,9 +75,11 @@ export class HttpExceptionsFilter implements ExceptionFilter {
         exceptionResponse.message = data.message;
         exceptionResponse.errorKeys = data.errorKeys;
       }
+
       if (!Array.isArray(exceptionResponse.errorKeys)) {
         exceptionResponse.errorKeys = [exceptionResponse.errorKeys];
       }
+
       if (!exceptionResponse.errorKeys.includes(exceptionResponse.error)) {
         exceptionResponse.errorKeys.unshift(exceptionResponse.error);
       }

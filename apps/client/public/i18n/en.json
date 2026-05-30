@@ -1,0 +1,141 @@
+{
+  "errors": {
+    "not_found": "Resource not found.",
+    "forbidden": "You don't have permission to do that.",
+    "bad_request": "The request was invalid.",
+    "payment_required": "Payment is required.",
+    "unauthorized": "You must be signed in.",
+    "conflict": "That conflicts with an existing resource.",
+    "teapot": "I'm a teapot.",
+    "payload_too_large": "The request payload is too large.",
+    "unsupported_media_type": "The media type is not supported.",
+    "enhance_your_calm": "Please slow down.",
+    "too_many_requests": "Too many requests. Please try again later.",
+    "internal_server_error": "Something went wrong on our end.",
+    "common": {
+      "app_error": "Something went wrong. Please try again.",
+      "endpoint_not_found": "Endpoint not found.",
+      "invalid_json": "The request body is not valid JSON.",
+      "incorrect_mongoose_id": "Invalid ID format.",
+      "property_should_not_exist": "An unexpected property was sent.",
+      "event_payload_required": "Event payload is required."
+    },
+    "auth": {
+      "incorrect_email_or_password": "Email or password is incorrect.",
+      "email_in_use": "An account with this email already exists.",
+      "phone_number_in_use": "An account with this phone number already exists.",
+      "token_invalid": "Your session is invalid.",
+      "token_expired": "Your session has expired.",
+      "token_not_found": "No session token was found.",
+      "invalid_email": "That email address looks invalid.",
+      "invalid_password": "Password is invalid.",
+      "invalid_old_password": "Current password is incorrect.",
+      "invalid_change_password": "The new password is invalid.",
+      "invalid_credentials": "Email or password is incorrect.",
+      "invalid_token": "Your session is invalid.",
+      "display_name_too_short": "Display name is too short.",
+      "display_name_too_long": "Display name is too long.",
+      "display_name_should_be_string": "Display name must be text.",
+      "password_too_short": "Password is too short.",
+      "password_too_long": "Password is too long.",
+      "password_should_be_string": "Password must be text.",
+      "old_password_too_short": "Current password is too short.",
+      "old_password_too_long": "Current password is too long.",
+      "old_password_should_be_string": "Current password must be text.",
+      "new_password_too_short": "New password is too short.",
+      "new_password_too_long": "New password is too long.",
+      "new_password_should_be_string": "New password must be text.",
+      "should_provide_email": "Email is required.",
+      "should_provide_password": "Password is required.",
+      "password_changed": "Your password was changed. Please sign in again.",
+      "no_update_fields_provided": "No fields were provided to update.",
+      "user_not_found": "We couldn't find an account that matches.",
+      "role_not_sufficient": "You don't have permission to do that."
+    },
+    "steam_account": {
+      "not_found": "Steam account not found.",
+      "user_already_has_steam_account": "You've already linked a Steam account.",
+      "login_is_required": "Steam login is required.",
+      "login_should_be_string": "Steam login must be text.",
+      "password_is_required": "Steam password is required.",
+      "password_should_be_string": "Steam password must be text.",
+      "two_factor_code_is_required": "A Steam Guard code is required.",
+      "two_factor_code_too_short": "The Steam Guard code is too short.",
+      "two_factor_code_too_long": "The Steam Guard code is too long.",
+      "two_factor_code_should_be_string": "The Steam Guard code must be text.",
+      "login_error": "Failed to sign in to Steam.",
+      "guard_code_is_invalid": "The Steam Guard code is invalid.",
+      "invalid_credentials": "Steam credentials are incorrect.",
+      "rate_limit_exceeded": "Steam rate limit hit. Please wait and try again.",
+      "games_ids_should_be_array": "Game IDs must be a list.",
+      "games_ids_must_be_numbers": "Game IDs must be numbers."
+    }
+  },
+  "ui": {
+    "auth": {
+      "sign_in": {
+        "title": "Sign in",
+        "submit": "Sign in",
+        "submit_loading": "Signing in…",
+        "switch_text": "No account yet?",
+        "switch_action": "Create one"
+      },
+      "sign_up": {
+        "title": "Create account",
+        "submit": "Create account",
+        "submit_loading": "Creating account…",
+        "switch_text": "Already have an account?",
+        "switch_action": "Sign in"
+      },
+      "fields": {
+        "display_name": {
+          "label": "Display name",
+          "placeholder": "InigoMontoya",
+          "error": "Display name must be 2–30 characters."
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "vigac@vigacashvili.ge",
+          "error": "Enter a valid email address."
+        },
+        "password": {
+          "label": "Password",
+          "placeholder_signin": "••••••••",
+          "placeholder_signup": "At least 8 characters",
+          "error_signin": "Password must be at least 8 characters.",
+          "error_signup": "Password must be 8–64 characters."
+        }
+      }
+    },
+    "header": {
+      "aria": {
+        "theme_light": "Switch to light theme",
+        "theme_dark": "Switch to dark theme",
+        "github": "View source on GitHub",
+        "sign_out": "Sign out",
+        "menu_open": "Open menu",
+        "menu_close": "Close menu",
+        "language": "Choose language"
+      },
+      "nav": {
+        "dashboard": "Dashboard",
+        "accounts": "Accounts",
+        "auth": "Auth",
+        "settings": "Settings",
+        "api": "API"
+      }
+    },
+    "dashboard": {
+      "placeholder": "dashboard works!"
+    },
+    "not_found": {
+      "placeholder": "not-found works!"
+    },
+    "api": {
+      "no_config": "API base URL is not configured."
+    },
+    "i18n": {
+      "load_error": "Couldn't load that language. Please try again."
+    }
+  }
+}

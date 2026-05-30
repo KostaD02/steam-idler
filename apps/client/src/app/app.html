@@ -2,3 +2,10 @@
 <main [style]="{ padding: sizing.innerPadding + 'px' }">
   <router-outlet></router-outlet>
 </main>
+
+@if (loading()) {
+<div class="app-loader" role="status" aria-busy="true">
+  <span class="app-loader__spinner" aria-hidden="true"></span>
+  <span class="app-loader__sr">Loading…</span>
+</div>
+}

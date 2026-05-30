@@ -3,12 +3,8 @@ import { inject, Injectable } from '@angular/core';
 
 import { firstValueFrom } from 'rxjs';
 
+import { ConfigSchema } from '@steam-idler/client/infra/types';
 import { LoggerService } from '@steam-idler/client/infra/util';
-
-export interface ConfigSchema {
-  apiBase: string;
-  logEnabled: boolean;
-}
 
 @Injectable({ providedIn: 'root' })
 export class ConfigService {

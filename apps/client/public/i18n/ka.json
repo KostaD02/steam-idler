@@ -1,0 +1,34 @@
+{
+  "errors": {
+    "not_found": "რესურსი ვერ მოიძებნა."
+  },
+  "ui": {
+    "header": {
+      "aria": {
+        "theme_light": "ღია თემაზე გადართვა",
+        "theme_dark": "ბნელ თემაზე გადართვა",
+        "github": "კოდის ხილვა GitHub-ზე",
+        "sign_out": "გასვლა",
+        "menu_open": "მენიუს გახსნა",
+        "menu_close": "მენიუს დახურვა",
+        "language": "ენის არჩევა"
+      },
+      "nav": {
+        "dashboard": "მთავარი",
+        "accounts": "ანგარიშები",
+        "auth": "ავტორიზაცია",
+        "settings": "პარამეტრები",
+        "api": "API"
+      }
+    },
+    "dashboard": {
+      "placeholder": "მთავარი მუშაობს!"
+    },
+    "not_found": {
+      "placeholder": "გვერდი ვერ მოიძებნა!"
+    },
+    "api": {
+      "no_config": "API URL არ არის კონფიგურირებული."
+    }
+  }
+}

@@ -36,6 +36,7 @@ export class SteamAccountService {
         this.exceptionService.throw(
           ExceptionStatusKeys.BadRequest,
           'CHECK ME ON WHAT IT HAPPENED',
+          ['CHECK ME ON WHAT IT HAPPENED'],
         );
       } else {
         const error = err as {

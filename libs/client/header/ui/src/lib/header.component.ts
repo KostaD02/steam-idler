@@ -15,12 +15,22 @@ import { ThemeEnum } from '@steam-idler/client/infra/types';
 
 import { AuthService } from '@steam-idler/client/auth/data-access';
 import { NAVIGATION_ITEMS } from '@steam-idler/client/header/core';
+import {
+  LanguageSwitcherComponent,
+  TranslatePipe,
+} from '@steam-idler/client/i18n/ui';
 
 @Component({
   selector: 'si-header',
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
-  imports: [NgTemplateOutlet, RouterLink, RouterLinkActive],
+  imports: [
+    NgTemplateOutlet,
+    RouterLink,
+    RouterLinkActive,
+    TranslatePipe,
+    LanguageSwitcherComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {

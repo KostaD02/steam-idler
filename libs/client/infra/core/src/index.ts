@@ -4,3 +4,4 @@ export {
   SessionStorageService,
 } from './lib/storage.service';
 export { LayoutService } from './lib/layout.service';
+export { LoaderService } from './lib/loader.service';

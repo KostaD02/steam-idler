@@ -19,6 +19,7 @@
         <ng-container *ngTemplateOutlet="navigation"></ng-container>
       }
       <ng-container *ngTemplateOutlet="githubLink"></ng-container>
+      <si-language-switcher></si-language-switcher>
       <ng-container *ngTemplateOutlet="themeToggle"></ng-container>
       @if (isAuthenticated()) {
         <ng-container *ngTemplateOutlet="signOutButton"></ng-container>
@@ -59,7 +60,7 @@
           class="kd-header-anchor"
           (click)="isSideNavOpen.set(false)"
         >
-          {{ item.label }}
+          {{ item.labelKey | translate }}
         </a>
       </li>
     }
@@ -71,7 +72,10 @@
     class="header__theme-toggle"
     type="button"
     [attr.aria-label]="
-      isDarkTheme() ? 'Switch to light theme' : 'Switch to dark theme'
+      (isDarkTheme()
+        ? 'ui.header.aria.theme_light'
+        : 'ui.header.aria.theme_dark'
+      ) | translate
     "
     (click)="toggleTheme()"
   >
@@ -91,7 +95,7 @@
     href="https://github.com/KostaD02/steam-idler"
     target="_blank"
     rel="noopener noreferrer"
-    aria-label="View source on GitHub"
+    [attr.aria-label]="'ui.header.aria.github' | translate"
   >
     <svg aria-hidden="true">
       <use href="/icons/github.svg#root" />
@@ -103,7 +107,7 @@
   <button
     class="header__sign-out"
     type="button"
-    aria-label="Sign out"
+    [attr.aria-label]="'ui.header.aria.sign_out' | translate"
     (click)="signOut()"
   >
     <svg aria-hidden="true">
@@ -117,7 +121,12 @@
     class="header__burger"
     [class.header__burger--open]="isSideNavOpen()"
     type="button"
-    [attr.aria-label]="isSideNavOpen() ? 'Close menu' : 'Open menu'"
+    [attr.aria-label]="
+      (isSideNavOpen()
+        ? 'ui.header.aria.menu_close'
+        : 'ui.header.aria.menu_open'
+      ) | translate
+    "
     [attr.aria-expanded]="isSideNavOpen()"
     (click)="isSideNavOpen.set(!isSideNavOpen())"
   >
