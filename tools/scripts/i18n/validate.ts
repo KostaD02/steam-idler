@@ -6,18 +6,17 @@ import { writeReports } from './report';
 import { BuildMeta, LocaleRow, ReportData } from './types';
 
 function collectBuildMeta(): BuildMeta | undefined {
-  const runNumber = process.env.GITHUB_RUN_NUMBER;
+  const buildNumber = process.env.PR_COMMIT_COUNT;
   const sha = process.env.I18N_COMMIT_SHA ?? process.env.GITHUB_SHA;
 
-  if (!runNumber || !sha) {
+  if (!buildNumber || !sha) {
     return undefined;
   }
 
   return {
     sha,
     shortSha: sha.slice(0, 7),
-    runNumber,
-    runId: process.env.GITHUB_RUN_ID,
+    buildNumber,
     repository: process.env.GITHUB_REPOSITORY,
     serverUrl: process.env.GITHUB_SERVER_URL ?? 'https://github.com',
     updatedAt: new Date().toISOString().slice(0, 16).replace('T', ' '),

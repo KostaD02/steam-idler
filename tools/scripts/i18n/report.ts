@@ -10,18 +10,15 @@ export function renderBar(percent: number): string {
 }
 
 export function renderBuildLine(build: BuildMeta): string {
-  const { sha, shortSha, runNumber, runId, repository, serverUrl, updatedAt } =
+  const { sha, shortSha, buildNumber, repository, serverUrl, updatedAt } =
     build;
 
-  const shaText = repository
-    ? `[\`${shortSha}\`](${serverUrl}/${repository}/commit/${sha})`
-    : `\`${shortSha}\``;
-  const buildText =
-    repository && runId
-      ? `[build #${runNumber}](${serverUrl}/${repository}/actions/runs/${runId})`
-      : `build #${runNumber}`;
+  const buildLabel = `build N${buildNumber}`;
+  const buildText = repository
+    ? `[${buildLabel}](${serverUrl}/${repository}/commit/${sha})`
+    : buildLabel;
 
-  return `<sub>Latest — ${shaText} · ${buildText} (updated ${updatedAt} UTC)</sub>`;
+  return `**Latest - \`${shortSha}\` · ${buildText}** _(updated ${updatedAt} UTC)_`;
 }
 
 export function buildMarkdownReport(data: ReportData): string {
@@ -47,7 +44,8 @@ export function buildMarkdownReport(data: ReportData): string {
     ``,
     `Missing keys fall back to \`${DEFAULT_LOCALE}\` at runtime.`,
     ``,
-    `> 💡 Want to test before pushing? Run \`pnpm validate:i18n\` locally.`,
+    `> [!TIP]`,
+    `> Want to test before pushing? Run \`pnpm validate:i18n\` locally.`,
   );
 
   if (data.build) {
