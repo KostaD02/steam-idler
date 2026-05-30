@@ -1,3 +1,17 @@
+## 2.3.0 (2026-05-30)
+
+### 🚀 Features
+
+- **release:** enhance release workflow and add release notes template ([2578d39](https://github.com/KostaD02/steam-idler/commit/2578d39))
+
+### 🩹 Fixes
+
+- release ([be3f61e](https://github.com/KostaD02/steam-idler/commit/be3f61e))
+
+### ❤️ Thank You
+
+- kostad02
+
 ## 2.2.1 (2026-05-30)
 
 ### 🚀 Features
