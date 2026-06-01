@@ -4,6 +4,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import cookieParser from 'cookie-parser';
 
+import { LogLevel, LogLevelEnum } from '@steam-idler/infra';
+
 import { LoggingInterceptor } from '@steam-idler/server/infra/interceptors';
 import { EnvironmentService } from '@steam-idler/server/infra/services';
 
@@ -36,11 +38,15 @@ async function bootstrap() {
 
   app.useGlobalFilters(new HttpExceptionsFilter());
 
-  if (env.get('SERVER_LOG_ENABLED')) {
-    app.useGlobalInterceptors(new LoggingInterceptor());
+  const logType = Number(
+    env.get('SERVER_LOG_TYPE', LogLevelEnum.All),
+  ) as LogLevel;
+
+  if (logType > LogLevelEnum.None) {
+    app.useGlobalInterceptors(new LoggingInterceptor(logType));
   }
 
-  const port = env.get('SERVER_PORT', 2201);
+  const port = env.get('SERVER_PORT', 2221);
   const config = new DocumentBuilder()
     .setTitle('Steam Idler')
     .setDescription('The Steam Idler API description')

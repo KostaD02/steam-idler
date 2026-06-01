@@ -1,5 +1,0 @@
-{
-  "apiBase": "${API_BASE}",
-  "logEnabled": "${DEBUGGER}",
-  "version": "${APP_VERSION}"
-}

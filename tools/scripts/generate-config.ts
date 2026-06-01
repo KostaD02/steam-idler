@@ -4,14 +4,18 @@ import { resolve } from 'node:path';
 const ROOT = resolve(__dirname, '../..');
 const ENV_PATH = resolve(ROOT, './.env');
 const ENV_EXAMPLE_PATH = resolve(ROOT, './.env.example');
+const PACKAGE_JSON_PATH = resolve(ROOT, './package.json');
 const CONFIG_FILE = resolve(ROOT, './dist/apps/client/browser/config.json');
 
-const CLIENT_RELATED_KEYS = ['SERVER_PORT'];
+const DEFAULT_LOG_TYPE = 2;
 
-function generateObject(
-  text: string,
-  clientRelatedKeys: string[],
-): Record<string, string> {
+interface ClientConfig {
+  apiBase: string;
+  logType: number;
+  version: string;
+}
+
+function parseEnv(text: string): Record<string, string> {
   const result: Record<string, string> = {};
 
   for (const rawLine of text.split(/\r?\n/)) {
@@ -30,10 +34,6 @@ function generateObject(
     const key = line.slice(0, eq).trim();
 
     if (key === '') {
-      continue;
-    }
-
-    if (!clientRelatedKeys.includes(key)) {
       continue;
     }
 
@@ -56,10 +56,37 @@ function readEnvFile(): string {
   }
 }
 
+function readVersion(): string {
+  const pkg = JSON.parse(readFileSync(PACKAGE_JSON_PATH, 'utf8')) as {
+    version?: string;
+  };
+
+  return pkg.version ?? 'unknown';
+}
+
+function toLogType(value: string | undefined): number {
+  const parsed = Number(value);
+
+  return parsed === 0 || parsed === 1 || parsed === 2
+    ? parsed
+    : DEFAULT_LOG_TYPE;
+}
+
+function buildConfig(env: Record<string, string>): ClientConfig {
+  const serverIp = env['SERVER_IP'] || 'localhost';
+  const serverPort = env['SERVER_PORT'] || '2221';
+
+  return {
+    apiBase: `http://${serverIp}:${serverPort}/api`,
+    logType: toLogType(env['CLIENT_LOG_TYPE']),
+    version: readVersion(),
+  };
+}
+
 function run(): void {
   try {
-    const envFile = readEnvFile();
-    const config = generateObject(envFile, CLIENT_RELATED_KEYS);
+    const env = parseEnv(readEnvFile());
+    const config = buildConfig(env);
     rmSync(CONFIG_FILE, { force: true });
     writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2));
     console.log('✅ Successfully finished writing .env to config.json');

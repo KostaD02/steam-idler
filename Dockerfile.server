@@ -12,6 +12,6 @@ COPY --chown=node:node dist/apps/server ./
 
 USER node
 
-EXPOSE 2201
+EXPOSE 2221
 
 CMD ["node", "main.js"]
