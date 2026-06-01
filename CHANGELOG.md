@@ -1,3 +1,17 @@
+## 2.4.0 (2026-06-01)
+
+### 🚀 Features
+
+- add config generation script to convert .env to config.json ([#56](https://github.com/KostaD02/steam-idler/pull/56))
+
+### 📖 Documentation
+
+- correct wording in release template and update contributor name in changelog ([2cb68a7](https://github.com/KostaD02/steam-idler/commit/2cb68a7))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.3.0 (2026-05-30)
 
 ### 🚀 Features
