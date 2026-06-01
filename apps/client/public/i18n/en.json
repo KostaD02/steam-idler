@@ -126,7 +126,11 @@
       }
     },
     "dashboard": {
-      "placeholder": "dashboard works!"
+      "info": {
+        "title": "Your dashboard",
+        "cta_action": "Sign in",
+        "description": "to view and manage your Steam accounts"
+      }
     },
     "not_found": {
       "placeholder": "not-found works!"

@@ -1,1 +1,16 @@
-<p>{{ 'ui.dashboard.placeholder' | translate }}</p>
+<section class="dashboard" [style.height]="sizing.innerContentHeight()">
+  @if (user()) {
+  } @else {
+    <div class="not-authed">
+      <si-card class="info">
+        <h2>{{ 'ui.dashboard.info.title' | translate }}</h2>
+        <p>
+          <a routerLink="/auth/sign-in">{{
+            'ui.dashboard.info.cta_action' | translate
+          }}</a>
+          {{ 'ui.dashboard.info.description' | translate }}
+        </p>
+      </si-card>
+    </div>
+  }
+</section>

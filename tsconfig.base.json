@@ -83,7 +83,10 @@
       ],
       "@steam-idler/client/i18n/core": ["libs/client/i18n/core/src/index.ts"],
       "@steam-idler/client/i18n/types": ["libs/client/i18n/types/src/index.ts"],
-      "@steam-idler/client/i18n/ui": ["libs/client/i18n/ui/src/index.ts"]
+      "@steam-idler/client/i18n/ui": ["libs/client/i18n/ui/src/index.ts"],
+      "@steam-idler/client/infra/ui-card": [
+        "libs/client/infra/ui-card/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
