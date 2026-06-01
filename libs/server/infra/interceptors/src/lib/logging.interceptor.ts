@@ -14,6 +14,8 @@ import {
   API_SENSITIVE_KEYS,
   generateUuid,
   getISOString,
+  LogLevel,
+  LogLevelEnum,
   SafeAny,
   sanitizeObject,
 } from '@steam-idler/infra';
@@ -21,6 +23,8 @@ import {
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   private readonly logger = new Logger(LoggingInterceptor.name);
+
+  constructor(private readonly logLevel: LogLevel = LogLevelEnum.All) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<SafeAny> {
     const httpCtx = context.switchToHttp();
@@ -46,6 +50,12 @@ export class LoggingInterceptor implements NestInterceptor {
     durationMs: number,
     res: SafeAny,
   ): void {
+    const isError = statusCode >= 500;
+
+    if (!isError && this.logLevel < LogLevelEnum.All) {
+      return;
+    }
+
     const userId = (req as SafeAny).user?._id;
     const params =
       req.params && Object.keys(req.params).length ? { ...req.params } : null;
@@ -67,7 +77,7 @@ export class LoggingInterceptor implements NestInterceptor {
       response: this.formatResponse(res?.toObject ? res.toObject() : res),
     };
 
-    if (statusCode >= 500) {
+    if (isError) {
       this.logger.error(data);
     } else if (statusCode >= 400) {
       this.logger.warn(data);

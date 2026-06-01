@@ -1,7 +1,6 @@
 {
-  "//": "Generate this based on .env file",
-  "///": "Replace logEnabled later with logType",
-  "apiBase": "http://localhost:2201/api",
-  "logEnabled": true,
+  "//": "Dev config served by `nx serve`. The production config.json is generated from .env by `pnpm g:config`.",
+  "apiBase": "http://localhost:2221/api",
+  "logType": 2,
   "version": "dev"
 }

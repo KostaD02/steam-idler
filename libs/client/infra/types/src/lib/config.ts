@@ -1,5 +1,7 @@
+import { LogLevel } from '@steam-idler/infra';
+
 export interface ConfigSchema {
   apiBase: string;
-  logEnabled: boolean;
-  version?: string;
+  version: string;
+  logType: LogLevel;
 }

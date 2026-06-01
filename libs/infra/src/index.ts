@@ -6,6 +6,7 @@ export {
   type SteamIdlerLogType,
   type SteamIdlerMessageType,
 } from './lib/logger';
+export { LogLevelEnum, type LogLevel } from './lib/log-level';
 export { getISOString, getTzOffsetDate } from './lib/iso';
 export { type HttpExceptionResponse } from './lib/http-exception';
 export { sanitizeObject } from './lib/sanitize';

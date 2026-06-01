@@ -49,6 +49,9 @@
     "serve": {
       "continuous": true,
       "executor": "@angular/build:dev-server",
+      "options": {
+        "port": 2222
+      },
       "configurations": {
         "production": {
           "buildTarget": "client:build:production"
@@ -63,7 +66,7 @@
       "executor": "@angular/build:dev-server",
       "options": {
         "buildTarget": "client:build",
-        "port": 4200
+        "port": 2222
       },
       "dependsOn": ["server:serve"]
     },
@@ -83,7 +86,7 @@
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "client:build",
-        "port": 4200,
+        "port": 2222,
         "staticFilePath": "dist/apps/client/browser",
         "spa": true
       }

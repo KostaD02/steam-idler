@@ -21,10 +21,10 @@ services:
     depends_on:
       - steam-idler-mongo
     ports:
-      - '${SERVER_PORT:-2201}:${SERVER_PORT:-2201}'
+      - '${SERVER_PORT:-2221}:${SERVER_PORT:-2221}'
     environment:
-      SERVER_PORT: ${SERVER_PORT:-2201}
-      SERVER_LOG_ENABLED: ${SERVER_LOG_ENABLED:-true}
+      SERVER_PORT: ${SERVER_PORT:-2221}
+      SERVER_LOG_TYPE: ${SERVER_LOG_TYPE:-2}
       JWT_SECRET: ${JWT_SECRET:-dev-only-secret-please-override-1234567890}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1}
       DATABASE_URL: mongodb://steam-idler-mongo:27017/steam-idler
