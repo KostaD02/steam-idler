@@ -38,7 +38,7 @@ jobs:
           file: Dockerfile.client
           push: false
           tags: steam-idler-client:pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
-          outputs: type=docker,dest=/tmp/steam-idler-client.tar
+          outputs: type=docker,dest=/tmp/Steam-Idler-Client-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}.tar
 
       - name: Build server image
         uses: docker/build-push-action@v7
@@ -47,14 +47,14 @@ jobs:
           file: Dockerfile.server
           push: false
           tags: steam-idler-server:pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
-          outputs: type=docker,dest=/tmp/steam-idler-server.tar
+          outputs: type=docker,dest=/tmp/Steam-Idler-Server-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}.tar
 
       - name: Upload client image
         id: upload-client
         uses: actions/upload-artifact@v7
         with:
           name: Steam-Idler-Client-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
-          path: /tmp/steam-idler-client.tar
+          path: /tmp/Steam-Idler-Client-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}.tar
           if-no-files-found: error
 
       - name: Upload server image
@@ -62,7 +62,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: Steam-Idler-Server-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
-          path: /tmp/steam-idler-server.tar
+          path: /tmp/Steam-Idler-Server-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}.tar
           if-no-files-found: error
 
       - name: Comment on PR
