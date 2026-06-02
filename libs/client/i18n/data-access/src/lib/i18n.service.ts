@@ -8,11 +8,11 @@ import {
   LoaderService,
   LocalStorageService,
 } from '@steam-idler/client/infra/core';
+import { StorageKeysEnum } from '@steam-idler/client/infra/types';
 
 import {
   DEFAULT_I18N_CACHE_VERSION,
   flattenBundle,
-  I18N_STORAGE_KEY,
   interpolate,
   isLocale,
 } from '@steam-idler/client/i18n/core';
@@ -74,7 +74,7 @@ export class I18nService {
     }
 
     this.locale.set(next);
-    this.storage.setItem(I18N_STORAGE_KEY, next);
+    this.storage.setItem(StorageKeysEnum.I18nLocale, next);
     return true;
   }
 
@@ -90,15 +90,21 @@ export class I18nService {
       return true;
     }
 
-    const cached = await this.cache.get(this.cacheVersion, locale);
+    if (!this.shouldSkipCache()) {
+      const cached = await this.cache.get(this.cacheVersion, locale);
 
-    if (cached) {
-      this.storeBundle(locale, cached);
-      return true;
+      if (cached) {
+        this.storeBundle(locale, cached);
+        return true;
+      }
     }
 
     await this.fetchBundle(locale);
     return !!this.bundles()[locale];
+  }
+
+  private shouldSkipCache(): boolean {
+    return this.storage.getItem(StorageKeysEnum.I18nSkipCache) === true;
   }
 
   private fetchBundle(locale: Locale): Promise<void> {
@@ -113,7 +119,10 @@ export class I18nService {
     )
       .then((nested) => {
         this.storeBundle(locale, nested);
-        void this.cache.set(this.cacheVersion, locale, nested);
+
+        if (!this.shouldSkipCache()) {
+          void this.cache.set(this.cacheVersion, locale, nested);
+        }
       })
       .catch(() => undefined)
       .finally(() => this.inFlight.delete(locale));
@@ -128,7 +137,7 @@ export class I18nService {
   }
 
   private resolveInitialLocale(): Locale {
-    const saved = this.storage.getItem(I18N_STORAGE_KEY);
+    const saved = this.storage.getItem(StorageKeysEnum.I18nLocale);
 
     if (isLocale(saved, SUPPORTED_LOCALES as unknown as string[])) {
       return saved;

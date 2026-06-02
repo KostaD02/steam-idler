@@ -1,2 +1,2 @@
-export { SteamSignInDto } from './sign-in';
-export { GamesToIdleDto } from './games-to-idle';
+export { type SteamSignInDto } from './sign-in';
+export { type GamesToIdleDto } from './games-to-idle';

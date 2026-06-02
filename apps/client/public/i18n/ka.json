@@ -21,9 +21,6 @@
         "api": "API"
       }
     },
-    "dashboard": {
-      "placeholder": "მთავარი მუშაობს!"
-    },
     "not_found": {
       "placeholder": "გვერდი ვერ მოიძებნა!"
     },

@@ -1,1 +1,30 @@
-<p>{{ 'ui.dashboard.placeholder' | translate }}</p>
+<section class="dashboard" [style.height]="sizing.innerContentHeight()">
+  @if (user(); as user) {
+    @if (user.steamAccounts.length > 0) {
+    } @else {
+      <div class="info-wrapper">
+        <si-card class="info">
+          <h2>{{ 'ui.dashboard.info.empty.title' | translate }}</h2>
+          <p>
+            <a routerLink="/accounts">{{
+              'ui.dashboard.info.empty.cta_action' | translate
+            }}</a>
+            {{ 'ui.dashboard.info.empty.description' | translate }}
+          </p>
+        </si-card>
+      </div>
+    }
+  } @else {
+    <div class="info-wrapper">
+      <si-card class="info">
+        <h2>{{ 'ui.dashboard.info.not-authenticated.title' | translate }}</h2>
+        <p>
+          <a routerLink="/auth/sign-in">{{
+            'ui.dashboard.info.not-authenticated.cta_action' | translate
+          }}</a>
+          {{ 'ui.dashboard.info.not-authenticated.description' | translate }}
+        </p>
+      </si-card>
+    </div>
+  }
+</section>

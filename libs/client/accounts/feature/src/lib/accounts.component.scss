@@ -1,0 +1,50 @@
+.accounts {
+  .accounts__wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .accounts__card {
+    width: 100%;
+    max-width: 420px;
+  }
+}
+
+.accounts-form__header {
+  margin-bottom: 24px;
+
+  h2 {
+    font-size: var(--kd-font-size-xxl);
+    margin: 0 0 8px;
+  }
+
+  p {
+    margin: 0;
+    font-size: var(--kd-font-size-xs);
+    color: var(--kd-text-muted);
+  }
+}
+
+.accounts-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.accounts-form__submit {
+  margin-top: 8px;
+}
+
+.accounts-form__error {
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  background: var(--kd-danger-soft);
+  border: 1px solid var(--kd-danger);
+  border-radius: var(--kd-radius-sm);
+  color: var(--kd-danger);
+  font-size: var(--kd-font-size-xs);
+  line-height: 1.4;
+}

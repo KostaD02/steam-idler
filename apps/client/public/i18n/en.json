@@ -72,6 +72,31 @@
     }
   },
   "ui": {
+    "accounts": {
+      "add": {
+        "title": "Add a Steam account",
+        "subtitle": "Sign in with your Steam credentials to start idling games.",
+        "submit": "Add account",
+        "submit_loading": "Adding account…"
+      },
+      "fields": {
+        "login": {
+          "label": "Steam login",
+          "placeholder": "Your Steam account name",
+          "error": "Steam login is required."
+        },
+        "password": {
+          "label": "Steam password",
+          "placeholder": "Your Steam password",
+          "error": "Steam password is required."
+        },
+        "two_factor_code": {
+          "label": "Steam Guard code",
+          "placeholder": "5-character code",
+          "error": "Enter your 5-character Steam Guard code."
+        }
+      }
+    },
     "auth": {
       "sign_in": {
         "title": "Sign in",
@@ -126,7 +151,18 @@
       }
     },
     "dashboard": {
-      "placeholder": "dashboard works!"
+      "info": {
+        "empty": {
+          "title": "No accounts yet",
+          "cta_action": "Add a Steam account",
+          "description": "to start idling your games"
+        },
+        "not-authenticated": {
+          "title": "Your dashboard",
+          "cta_action": "Sign in",
+          "description": "to view and manage your Steam accounts"
+        }
+      }
     },
     "not_found": {
       "placeholder": "not-found works!"
