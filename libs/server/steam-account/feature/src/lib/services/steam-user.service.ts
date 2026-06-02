@@ -5,6 +5,7 @@ import SteamUser from 'steam-user';
 import { ExceptionService } from '@steam-idler/server/infra/services';
 import { ExceptionStatusKeys, MongoId } from '@steam-idler/server/infra/types';
 
+import { AuthRepository } from '@steam-idler/server/auth/domain';
 import {
   SteamAccountDocument,
   SteamAccountRepository,
@@ -20,6 +21,7 @@ export class SteamUserService {
 
   constructor(
     private readonly steamAccountRepository: SteamAccountRepository,
+    private readonly authRepository: AuthRepository,
     private readonly exceptionService: ExceptionService,
   ) {
     this.init();
@@ -84,6 +86,13 @@ export class SteamUserService {
           user.credentials.id = steamUser.steamID.getSteamID64();
           await user.save();
 
+          // Maintain the reverse link so `user.steamAccounts` stays in sync
+          // with the SteamAccount documents that reference this user.
+          await this.authRepository.pushSteamAccount(
+            userId,
+            user._id.toString(),
+          );
+
           //  TODO: update persona
           resolve(user.toObject());
         } catch {
@@ -127,7 +136,7 @@ export class SteamUserService {
     });
   }
 
-  removeSteamAccount(name: string) {
+  async removeSteamAccount(name: string) {
     const steamUser = this.usersMap.get(name);
 
     if (!steamUser) {
@@ -138,9 +147,19 @@ export class SteamUserService {
       );
     }
 
+    const steamAccount = await this.steamAccountRepository.getByName(name);
+
     steamUser.logOff();
     steamUser.removeAllListeners();
     this.usersMap.delete(name);
+
+    if (steamAccount) {
+      // Keep `user.steamAccounts` in sync by removing the reverse link.
+      await this.authRepository.pullSteamAccount(
+        steamAccount.userId,
+        steamAccount._id.toString(),
+      );
+    }
 
     return this.steamAccountRepository.deleteByAccountName(name);
   }

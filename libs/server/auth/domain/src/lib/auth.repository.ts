@@ -6,7 +6,7 @@ import { Model } from 'mongoose';
 import { getISOString } from '@steam-idler/infra';
 
 import { ExceptionService } from '@steam-idler/server/infra/services';
-import { ExceptionStatusKeys } from '@steam-idler/server/infra/types';
+import { ExceptionStatusKeys, MongoId } from '@steam-idler/server/infra/types';
 
 import { UserExceptionKeys } from '@steam-idler/server/auth/types';
 
@@ -51,6 +51,26 @@ export class AuthRepository {
 
   updateById(id: string, dto: UserUpdateDto) {
     return this.userModel.findByIdAndUpdate(id, dto, { new: true }).exec();
+  }
+
+  pushSteamAccount(userId: MongoId, steamAccountId: string) {
+    return this.userModel
+      .findByIdAndUpdate(
+        userId,
+        { $addToSet: { steamAccounts: steamAccountId } },
+        { new: true },
+      )
+      .exec();
+  }
+
+  pullSteamAccount(userId: MongoId, steamAccountId: string) {
+    return this.userModel
+      .findByIdAndUpdate(
+        userId,
+        { $pull: { steamAccounts: steamAccountId } },
+        { new: true },
+      )
+      .exec();
   }
 
   updatePassword(id: string, hashedPassword: string) {

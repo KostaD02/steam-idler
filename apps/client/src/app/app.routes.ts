@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 
-import { guestGuard } from '@steam-idler/client/auth/data-access';
+import { authGuard, guestGuard } from '@steam-idler/client/auth/data-access';
 
 export const appRoutes: Route[] = [
   {
@@ -13,6 +13,14 @@ export const appRoutes: Route[] = [
     loadChildren: () =>
       import('@steam-idler/client/dashboard/feature').then(
         (m) => m.dashboardRoutes,
+      ),
+  },
+  {
+    path: 'accounts',
+    canActivate: [authGuard],
+    loadChildren: () =>
+      import('@steam-idler/client/accounts/feature').then(
+        (m) => m.accountsRoutes,
       ),
   },
   {
