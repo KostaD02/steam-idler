@@ -36,7 +36,7 @@ jobs:
             SPECIFIER=patch
           else
             SPECIFIER=none
-            echo "::notice::No feat/fix/breaking commits since ${LAST_TAG:-start} — skipping release."
+            echo "::notice::No feat/fix/breaking commits since ${LAST_TAG:-start} - skipping release."
           fi
           echo "specifier=$SPECIFIER" >> "$GITHUB_OUTPUT"
           echo "Range '${RANGE}' -> bump '${SPECIFIER}'"
