@@ -1,3 +1,17 @@
+## 2.5.0 (2026-06-02)
+
+### 🚀 Features
+
+- **client:** add accounts ([#58](https://github.com/KostaD02/steam-idler/pull/58))
+
+### 🏡 Chore
+
+- update configuration for server and client ports, logging, and environment variables ([#57](https://github.com/KostaD02/steam-idler/pull/57))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.4.0 (2026-06-01)
 
 ### 🚀 Features
