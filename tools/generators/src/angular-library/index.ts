@@ -38,7 +38,7 @@ function normalizeOptions(
   const subNames = options.subname ? names(options.subname) : null;
 
   const typeFolder = subNames
-    ? `${options.type}-${subNames.fileName}`
+    ? joinPathFragments(options.type, subNames.fileName)
     : options.type;
 
   const projectRoot = joinPathFragments(

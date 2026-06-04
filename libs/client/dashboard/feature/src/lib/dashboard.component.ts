@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { LayoutService } from '@steam-idler/client/infra/core';
-import { CardComponent } from '@steam-idler/client/infra/ui-card';
+import { CardComponent } from '@steam-idler/client/infra/ui/card';
 
 import { AuthService } from '@steam-idler/client/auth/data-access';
 import { TranslatePipe } from '@steam-idler/client/i18n/ui';

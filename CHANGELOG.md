@@ -118,7 +118,6 @@
 ### ❤️ Thank You
 
 - Konstantine Datunishvili @KostaD02
-- kostad02
 
 ## 2.1.0 (2026-05-29)
 
