@@ -2,6 +2,10 @@
 
 @use 'styles/index';
 
+.text-main {
+  color: var(--kd-accent);
+}
+
 .app-loader {
   position: fixed;
   inset: 0;

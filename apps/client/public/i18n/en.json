@@ -151,6 +151,12 @@
       }
     },
     "dashboard": {
+      "stats": {
+        "count": {
+          "title": "Total accounts",
+          "description": "You have <strong class=\"text-main\">{{count}}</strong> account linked."
+        }
+      },
       "info": {
         "empty": {
           "title": "No accounts yet",

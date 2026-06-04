@@ -1,6 +1,17 @@
 <section class="dashboard" [style.height]="sizing.innerContentHeight()">
   @if (user(); as user) {
     @if (user.steamAccounts.length > 0) {
+      <div class="stats-wrapper">
+        <si-card class="info">
+          <h2>{{ 'ui.dashboard.stats.count.title' | translate }}</h2>
+          <p
+            [innerHTML]="
+              'ui.dashboard.stats.count.description'
+                | translate: { count: user.steamAccounts.length }
+            "
+          ></p>
+        </si-card>
+      </div>
     } @else {
       <div class="info-wrapper">
         <si-card class="info">
