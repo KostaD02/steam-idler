@@ -1,4 +1,23 @@
 <section class="dashboard" [style.height]="sizing.innerContentHeight()">
+  <div class="demo-wrapper">
+    <si-card class="demo">
+      <h2>Confirm dialog demo</h2>
+      <p>Test</p>
+      <button
+        type="button"
+        class="kd-btn kd-btn--primary"
+        (click)="openConfirmDemo()"
+      >
+        Open confirm
+      </button>
+      @if (lastResult() !== null) {
+        <p class="demo__result">
+          Last result: {{ lastResult() ? 'confirmed (OK)' : 'dismissed' }}
+        </p>
+      }
+    </si-card>
+  </div>
+
   @if (user(); as user) {
     @if (user.steamAccounts.length > 0) {
       <div class="stats-wrapper">

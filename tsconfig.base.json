@@ -92,6 +92,9 @@
       ],
       "@steam-idler/client/infra/ui/card": [
         "libs/client/infra/ui/card/src/index.ts"
+      ],
+      "@steam-idler/client/infra/ui/dialog": [
+        "libs/client/infra/ui/dialog/src/index.ts"
       ]
     }
   },

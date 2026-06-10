@@ -1,0 +1,12 @@
+<si-dialog>
+  <span siDialogHeader>{{ data.title }}</span>
+  <p class="si-confirm-dialog__body">{{ data.body }}</p>
+  <ng-container siDialogActions>
+    <button type="button" class="kd-btn" (click)="close()">
+      {{ data.closeLabel ?? 'Close' }}
+    </button>
+    <button type="button" class="kd-btn kd-btn--primary" (click)="confirm()">
+      {{ data.okLabel ?? 'OK' }}
+    </button>
+  </ng-container>
+</si-dialog>

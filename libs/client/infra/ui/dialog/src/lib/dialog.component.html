@@ -1,0 +1,26 @@
+<header class="si-dialog__header">
+  <div class="si-dialog__title">
+    <ng-content select="[siDialogHeader]"></ng-content>
+  </div>
+
+  @if (closable() && dialogRef) {
+    <button
+      type="button"
+      class="si-dialog__close"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <svg aria-hidden="true">
+        <use href="/icons/close.svg#root" />
+      </svg>
+    </button>
+  }
+</header>
+
+<div class="si-dialog__body">
+  <ng-content></ng-content>
+</div>
+
+<footer class="si-dialog__actions">
+  <ng-content select="[siDialogActions]"></ng-content>
+</footer>
