@@ -17,4 +17,13 @@ export const SteamAccountExceptionKeys = {
   RateLimitExceeded: 'errors.steam_account.rate_limit_exceeded',
   GamesIdsShouldBeArray: 'errors.steam_account.games_ids_should_be_array',
   GamesIdsMustBeNumbers: 'errors.steam_account.games_ids_must_be_numbers',
+  InvalidPersonaStatus: 'errors.steam_account.invalid_persona_status',
+  AutoReplyTemplateShouldBeString:
+    'errors.steam_account.auto_reply_template_should_be_string',
+  AutoReplyTemplateTooLong: 'errors.steam_account.auto_reply_template_too_long',
+  AutoReplyWhileIdlingShouldBeBoolean:
+    'errors.steam_account.auto_reply_while_idling_should_be_boolean',
+  DisplayedGameNameShouldBeString:
+    'errors.steam_account.displayed_game_name_should_be_string',
+  DisplayedGameNameTooLong: 'errors.steam_account.displayed_game_name_too_long',
 } as const;

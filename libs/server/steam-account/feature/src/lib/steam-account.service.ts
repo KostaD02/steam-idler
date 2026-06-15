@@ -7,7 +7,13 @@ import {
   MongoId,
 } from '@steam-idler/server/infra/types';
 
-import { GamesToIdleDto, SteamSignInDto } from './dto';
+import {
+  GamesToIdleDto,
+  SteamSignInDto,
+  UpdateAutoReplyDto,
+  UpdateDisplayedGameNameDto,
+  UpdatePersonaDto,
+} from './dto';
 import { SteamUserService } from './services/steam-user.service';
 
 @Injectable()
@@ -67,5 +73,28 @@ export class SteamAccountService {
 
   updateIdlingGames(name: string, dto: GamesToIdleDto) {
     return this.steamUserService.updateIdlingGames(name, dto);
+  }
+
+  updatePersona(name: string, dto: UpdatePersonaDto) {
+    return this.steamUserService.updatePersona(name, dto.personaStatus);
+  }
+
+  updateDisplayedGameName(name: string, dto: UpdateDisplayedGameNameDto) {
+    return this.steamUserService.updateDisplayedGameName(
+      name,
+      dto.displayedGameName,
+    );
+  }
+
+  startAutoReply(name: string) {
+    return this.steamUserService.setAutoReplyEnabled(name, true);
+  }
+
+  stopAutoReply(name: string) {
+    return this.steamUserService.setAutoReplyEnabled(name, false);
+  }
+
+  updateAutoReply(name: string, dto: UpdateAutoReplyDto) {
+    return this.steamUserService.updateAutoReply(name, dto);
   }
 }

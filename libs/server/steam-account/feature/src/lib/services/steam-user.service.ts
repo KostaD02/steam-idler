@@ -10,14 +10,18 @@ import {
   SteamAccountDocument,
   SteamAccountRepository,
 } from '@steam-idler/server/steam-account/domain';
-import { SteamAccountExceptionKeys } from '@steam-idler/server/steam-account/types';
+import {
+  SteamAccountExceptionKeys,
+  SteamPersonaStatus,
+} from '@steam-idler/server/steam-account/types';
 
-import { GamesToIdleDto, SteamSignInDto } from '../dto';
+import { GamesToIdleDto, SteamSignInDto, UpdateAutoReplyDto } from '../dto';
 
 @Injectable()
 export class SteamUserService {
   private readonly logger = new Logger(SteamUserService.name);
   private readonly usersMap = new Map<string, SteamUser>();
+  private readonly autoRepliedFriends = new Map<string, Set<string>>();
 
   constructor(
     private readonly steamAccountRepository: SteamAccountRepository,
@@ -70,6 +74,8 @@ export class SteamUserService {
 
     // TODO: should I add steamUser.on('error') here?
 
+    this.registerAutoReply(steamUser, login);
+
     steamUser.logOn({
       accountName: login,
       password,
@@ -93,7 +99,9 @@ export class SteamUserService {
             user._id.toString(),
           );
 
-          //  TODO: update persona
+          steamUser.setPersona(
+            user.idleSettings.personaStatus as SteamUser.EPersonaState,
+          );
           resolve(user.toObject());
         } catch {
           this.usersMap.delete(login);
@@ -282,6 +290,149 @@ export class SteamUserService {
     return this.returnSteamAccountObject(steamUserAccount);
   }
 
+  async updatePersona(accountName: string, personaStatus: SteamPersonaStatus) {
+    const steamUserAccount =
+      await this.steamAccountRepository.getByName(accountName);
+
+    if (!steamUserAccount) {
+      this.exceptionService.throw(
+        ExceptionStatusKeys.BadRequest,
+        'Steam account not found',
+        [SteamAccountExceptionKeys.NotFound],
+      );
+    }
+
+    steamUserAccount.idleSettings.personaStatus = personaStatus;
+    await steamUserAccount.save();
+
+    const steamUser = this.usersMap.get(accountName);
+
+    if (steamUser) {
+      steamUser.setPersona(personaStatus as SteamUser.EPersonaState);
+    }
+
+    this.logger.log(
+      `Steam user ${accountName} persona updated to ${personaStatus}`,
+    );
+
+    return this.returnSteamAccountObject(steamUserAccount);
+  }
+
+  async updateDisplayedGameName(
+    accountName: string,
+    displayedGameName: string,
+  ) {
+    const steamUserAccount =
+      await this.steamAccountRepository.getByName(accountName);
+
+    if (!steamUserAccount) {
+      this.exceptionService.throw(
+        ExceptionStatusKeys.BadRequest,
+        'Steam account not found',
+        [SteamAccountExceptionKeys.NotFound],
+      );
+    }
+
+    steamUserAccount.displayedGameName = displayedGameName;
+    await steamUserAccount.save();
+
+    const steamUser = this.usersMap.get(accountName);
+
+    if (steamUser && steamUserAccount.idleSettings.idleEnabled) {
+      return this.idleGames(accountName);
+    }
+
+    this.logger.log(
+      `Steam user ${accountName} displayed game name updated to "${displayedGameName}"`,
+    );
+
+    return this.returnSteamAccountObject(steamUserAccount);
+  }
+
+  async setAutoReplyEnabled(accountName: string, enabled: boolean) {
+    const steamUserAccount =
+      await this.steamAccountRepository.getByName(accountName);
+
+    if (!steamUserAccount) {
+      this.exceptionService.throw(
+        ExceptionStatusKeys.BadRequest,
+        'Steam account not found',
+        [SteamAccountExceptionKeys.NotFound],
+      );
+    }
+
+    steamUserAccount.idleSettings.autoReply.enabled = enabled;
+    await steamUserAccount.save();
+
+    this.autoRepliedFriends.delete(accountName);
+
+    this.logger.log(
+      `Steam user ${accountName} auto-reply ${enabled ? 'enabled' : 'disabled'}`,
+    );
+
+    return this.returnSteamAccountObject(steamUserAccount);
+  }
+
+  async updateAutoReply(accountName: string, dto: UpdateAutoReplyDto) {
+    const steamUserAccount =
+      await this.steamAccountRepository.getByName(accountName);
+
+    if (!steamUserAccount) {
+      this.exceptionService.throw(
+        ExceptionStatusKeys.BadRequest,
+        'Steam account not found',
+        [SteamAccountExceptionKeys.NotFound],
+      );
+    }
+
+    steamUserAccount.idleSettings.autoReply.template = dto.template;
+    steamUserAccount.idleSettings.autoReply.whileIdling = dto.whileIdling;
+    await steamUserAccount.save();
+    this.autoRepliedFriends.delete(accountName);
+
+    this.logger.log(`Steam user ${accountName} auto-reply settings updated`);
+
+    return this.returnSteamAccountObject(steamUserAccount);
+  }
+
+  private registerAutoReply(steamUser: SteamUser, accountName: string) {
+    steamUser.chat.on('friendMessage', async (message) => {
+      try {
+        const steamUserAccount =
+          await this.steamAccountRepository.getByName(accountName);
+        const autoReply = steamUserAccount?.idleSettings.autoReply;
+
+        if (!steamUserAccount || !autoReply?.enabled || !autoReply.template) {
+          return;
+        }
+
+        if (
+          autoReply.whileIdling &&
+          !steamUserAccount.idleSettings.idleEnabled
+        ) {
+          return;
+        }
+
+        const friendId = message.steamid_friend.getSteamID64();
+        const replied =
+          this.autoRepliedFriends.get(accountName) ?? new Set<string>();
+
+        if (replied.has(friendId)) {
+          return;
+        }
+
+        await steamUser.chat.sendFriendMessage(
+          message.steamid_friend,
+          autoReply.template,
+        );
+        replied.add(friendId);
+        this.autoRepliedFriends.set(accountName, replied);
+      } catch (error) {
+        this.logger.error(`Auto-reply failed for ${accountName}`, error);
+      }
+    });
+  }
+
   private async init() {
     const users = await this.steamAccountRepository.getAll();
 
@@ -313,8 +464,10 @@ export class SteamUserService {
       this.usersMap.set(user.accountName, steamUser);
       user.credentials.id = steamUser?.steamID?.getSteamID64() || '';
       await user.save();
-      // TODO: update preferred persona status
-      // TODO: idle games
+      steamUser.setPersona(
+        user.idleSettings.personaStatus as SteamUser.EPersonaState,
+      );
+      this.idleGames(user.accountName, false);
     });
 
     steamUser.on('refreshToken', async (refreshToken) => {
@@ -327,7 +480,7 @@ export class SteamUserService {
       await user.save();
     });
 
-    // TODO: implement steamUser.chat with friendMessage hook
+    this.registerAutoReply(steamUser, user.accountName);
 
     steamUser.logOn({
       refreshToken: user.credentials.refreshToken,

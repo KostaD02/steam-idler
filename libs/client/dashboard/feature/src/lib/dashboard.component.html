@@ -1,9 +1,76 @@
-<section class="dashboard" [style.height]="sizing.innerContentHeight()">
-  @if (user(); as user) {
-    @if (user.steamAccounts.length > 0) {
+<section class="dashboard" [style.min-height]="sizing.innerContentHeight()">
+  @if (user()) {
+    @if (isInitialLoad()) {
+      <p class="dashboard__sr-only" role="status">
+        {{ 'ui.dashboard.states.loading' | translate }}
+      </p>
+      <div class="dashboard__grid" aria-busy="true">
+        @for (skeleton of skeletons; track skeleton) {
+          <si-card class="dashboard__skeleton" aria-hidden="true">
+            <span
+              class="dashboard__skeleton-line dashboard__skeleton-line--title"
+            ></span>
+            <span class="dashboard__skeleton-line"></span>
+            <span class="dashboard__skeleton-line"></span>
+            <span
+              class="dashboard__skeleton-line dashboard__skeleton-line--short"
+            ></span>
+          </si-card>
+        }
+      </div>
+    } @else if (accounts().length > 0) {
+      <header class="dashboard__head">
+        <h1 class="dashboard__title">
+          {{ 'ui.dashboard.overview.title' | translate }}
+        </h1>
+        <p class="dashboard__subtitle">
+          {{ 'ui.dashboard.overview.subtitle' | translate }}
+        </p>
+      </header>
+
+      <div class="dashboard__stats">
+        <si-card class="dashboard__stat">
+          <span class="dashboard__stat-value">{{ stats().total }}</span>
+          <span class="dashboard__stat-label">{{
+            'ui.dashboard.stats.accounts' | translate
+          }}</span>
+        </si-card>
+        <si-card class="dashboard__stat">
+          <span class="dashboard__stat-value">{{ stats().idling }}</span>
+          <span class="dashboard__stat-label">{{
+            'ui.dashboard.stats.idling' | translate
+          }}</span>
+        </si-card>
+        <si-card class="dashboard__stat">
+          <span class="dashboard__stat-value">{{ stats().games }}</span>
+          <span class="dashboard__stat-label">{{
+            'ui.dashboard.stats.games' | translate
+          }}</span>
+        </si-card>
+      </div>
+
+      <div class="dashboard__grid">
+        @for (account of accounts(); track account._id) {
+          <si-account-card [account]="account" (changed)="reload()" />
+        }
+      </div>
+    } @else if (hasError()) {
+      <div class="dashboard__center">
+        <si-card class="dashboard__message">
+          <h2>{{ 'ui.dashboard.states.error.title' | translate }}</h2>
+          <p>{{ 'ui.dashboard.states.error.description' | translate }}</p>
+          <button
+            type="button"
+            class="kd-btn kd-btn-primary"
+            (click)="reload()"
+          >
+            {{ 'ui.dashboard.states.error.retry' | translate }}
+          </button>
+        </si-card>
+      </div>
     } @else {
-      <div class="info-wrapper">
-        <si-card class="info">
+      <div class="dashboard__center">
+        <si-card class="dashboard__message">
           <h2>{{ 'ui.dashboard.info.empty.title' | translate }}</h2>
           <p>
             <a routerLink="/accounts">{{
@@ -15,8 +82,8 @@
       </div>
     }
   } @else {
-    <div class="info-wrapper">
-      <si-card class="info">
+    <div class="dashboard__center">
+      <si-card class="dashboard__message">
         <h2>{{ 'ui.dashboard.info.not-authenticated.title' | translate }}</h2>
         <p>
           <a routerLink="/auth/sign-in">{{

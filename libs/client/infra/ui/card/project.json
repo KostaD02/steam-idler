@@ -1,7 +1,7 @@
 {
   "name": "client-infra-ui-card",
-  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/client/infra/ui-card/src",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/client/infra/ui/card/src",
   "prefix": "si",
   "projectType": "library",
   "tags": ["type:ui", "scope:client"],
@@ -10,16 +10,16 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/client/infra/ui-card/jest.config.cts",
-        "tsConfig": "libs/client/infra/ui-card/tsconfig.spec.json"
+        "jestConfig": "libs/client/infra/ui/card/jest.config.cts",
+        "tsConfig": "libs/client/infra/ui/card/tsconfig.spec.json"
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": [
-          "libs/client/infra/ui-card/**/*.ts",
-          "libs/client/infra/ui-card/**/*.html"
+          "libs/client/infra/ui/card/**/*.ts",
+          "libs/client/infra/ui/card/**/*.html"
         ]
       }
     }

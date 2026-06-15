@@ -1,0 +1,64 @@
+<button
+  #trigger
+  type="button"
+  class="persona-select__trigger"
+  [disabled]="disabled()"
+  aria-haspopup="listbox"
+  [attr.aria-controls]="isOpen() ? listboxId : null"
+  [attr.aria-expanded]="isOpen()"
+  [attr.aria-label]="'ui.dashboard.persona.aria' | translate"
+  (click)="toggle()"
+>
+  <span
+    class="persona-select__dot"
+    [style.background-color]="current().color"
+    aria-hidden="true"
+  ></span>
+  <span class="persona-select__label">{{
+    current().labelKey | translate
+  }}</span>
+  <svg class="persona-select__caret" viewBox="0 0 12 12" aria-hidden="true">
+    <path
+      d="M2.5 4.5 L6 8 L9.5 4.5"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+</button>
+
+@if (isOpen()) {
+  <ul
+    #listbox
+    class="persona-select__menu"
+    role="listbox"
+    tabindex="-1"
+    [id]="listboxId"
+    [attr.aria-label]="'ui.dashboard.persona.aria' | translate"
+    [attr.aria-activedescendant]="activeOptionId()"
+    (keydown)="onKeydown($event)"
+  >
+    @for (option of options; track option.value) {
+      <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+      <li
+        class="persona-select__option"
+        role="option"
+        [id]="optionId($index)"
+        [class.persona-select__option--active]="option.value === persona()"
+        [class.persona-select__option--focused]="$index === activeIndex()"
+        [attr.aria-selected]="option.value === persona() ? 'true' : 'false'"
+        (click)="choose(option.value)"
+        (mousemove)="activeIndex.set($index)"
+      >
+        <span
+          class="persona-select__dot"
+          [style.background-color]="option.color"
+          aria-hidden="true"
+        ></span>
+        {{ option.labelKey | translate }}
+      </li>
+    }
+  </ul>
+}

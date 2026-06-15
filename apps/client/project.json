@@ -20,7 +20,10 @@
             "input": "apps/client/public"
           }
         ],
-        "styles": ["apps/client/src/styles.scss"]
+        "styles": [
+          "node_modules/@angular/cdk/overlay-prebuilt.css",
+          "apps/client/src/styles.scss"
+        ]
       },
       "configurations": {
         "production": {

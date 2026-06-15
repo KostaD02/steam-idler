@@ -32,10 +32,7 @@
   }
 }
 
-.kd-btn--primary {
-  background-color: var(--kd-accent);
-  color: var(--kd-text-inverse);
-
+.kd-btn-primary {
   &:hover,
   &:focus-visible {
     background-color: var(--kd-accent);
@@ -43,19 +40,17 @@
   }
 }
 
-.kd-btn--ghost {
+.kd-btn-ghost {
   border-color: var(--kd-border-strong);
   color: var(--kd-text-secondary);
 
   &:hover,
   &:focus-visible {
-    border-color: var(--kd-accent);
-    color: var(--kd-accent);
     box-shadow: 3px 3px 0 0 var(--kd-border-strong);
   }
 }
 
-.kd-btn--danger {
+.kd-btn-danger {
   border-color: var(--kd-danger);
   color: var(--kd-danger);
 
@@ -65,12 +60,12 @@
   }
 }
 
-.kd-btn--sm {
+.kd-btn-sm {
   padding: 0.5rem 0.75rem;
   font-size: var(--kd-font-size-xxs);
 }
 
-.kd-btn--lg {
+.kd-btn-lg {
   padding: 1rem 1.5rem;
   font-size: var(--kd-font-size-sm);
 
@@ -81,7 +76,7 @@
   }
 }
 
-.kd-btn--block {
+.kd-btn-block {
   display: flex;
   width: 100%;
 }

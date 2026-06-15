@@ -1,0 +1,60 @@
+<si-dialog>
+  <span siDialogHeader>
+    {{ 'ui.dashboard.edit_games.title' | translate }} - {{ data.accountName }}
+  </span>
+
+  <p class="edit-games__hint">
+    {{ 'ui.dashboard.edit_games.hint' | translate }}
+    <a href="https://steamdb.info/" target="_blank" rel="noopener noreferrer">
+      {{ 'ui.dashboard.edit_games.find_ids' | translate }} ↗
+    </a>
+  </p>
+
+  <div class="edit-games__add">
+    <input
+      type="number"
+      class="kd-field-input"
+      inputmode="numeric"
+      min="1"
+      [formControl]="newId"
+      (keydown.enter)="add()"
+      [placeholder]="'ui.dashboard.edit_games.placeholder' | translate"
+    />
+    <button type="button" class="kd-btn kd-btn-ghost" (click)="add()">
+      {{ 'ui.dashboard.edit_games.add' | translate }}
+    </button>
+  </div>
+
+  @if (ids().length > 0) {
+    <ul class="edit-games__list">
+      @for (id of ids(); track id) {
+        <li class="edit-games__chip">
+          <span>{{ id }}</span>
+          <button
+            type="button"
+            class="edit-games__chip-remove"
+            [attr.aria-label]="
+              'ui.dashboard.edit_games.remove_aria' | translate: { id }
+            "
+            (click)="removeId(id)"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </li>
+      }
+    </ul>
+  } @else {
+    <p class="edit-games__empty">
+      {{ 'ui.dashboard.edit_games.empty' | translate }}
+    </p>
+  }
+
+  <ng-container siDialogActions>
+    <button type="button" class="kd-btn" (click)="close()">
+      {{ 'ui.common.cancel' | translate }}
+    </button>
+    <button type="button" class="kd-btn kd-btn-primary" (click)="save()">
+      {{ 'ui.common.save' | translate }}
+    </button>
+  </ng-container>
+</si-dialog>

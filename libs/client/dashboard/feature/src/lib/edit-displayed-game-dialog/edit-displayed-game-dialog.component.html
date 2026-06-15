@@ -1,0 +1,40 @@
+<si-dialog>
+  <span siDialogHeader>
+    {{ 'ui.dashboard.edit_now_playing.title' | translate }} -
+    {{ data.accountName }}
+  </span>
+
+  <p class="edit-displayed-game__hint">
+    {{ 'ui.dashboard.edit_now_playing.hint' | translate }}
+  </p>
+
+  <div class="kd-field-group">
+    <label class="kd-field-label" for="displayed-game-name">
+      {{ 'ui.dashboard.edit_now_playing.label' | translate }}
+    </label>
+    <input
+      id="displayed-game-name"
+      type="text"
+      class="kd-field-input"
+      autocomplete="off"
+      [formControl]="displayedGameName"
+      [maxlength]="maxLength"
+      (keydown.enter)="save()"
+      [placeholder]="'ui.dashboard.edit_now_playing.placeholder' | translate"
+    />
+  </div>
+
+  <ng-container siDialogActions>
+    <button type="button" class="kd-btn" (click)="close()">
+      {{ 'ui.common.cancel' | translate }}
+    </button>
+    <button
+      type="button"
+      class="kd-btn kd-btn-primary"
+      [disabled]="displayedGameName.invalid"
+      (click)="save()"
+    >
+      {{ 'ui.common.save' | translate }}
+    </button>
+  </ng-container>
+</si-dialog>

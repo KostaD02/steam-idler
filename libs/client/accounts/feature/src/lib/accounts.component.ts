@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { catchError, EMPTY, finalize, tap } from 'rxjs';
 
 import { LayoutService } from '@steam-idler/client/infra/core';
-import { CardComponent } from '@steam-idler/client/infra/ui-card';
+import { CardComponent } from '@steam-idler/client/infra/ui/card';
 import { extractErrorKey } from '@steam-idler/client/infra/util';
 
 import { AccountsService } from '@steam-idler/client/accounts/data-access';

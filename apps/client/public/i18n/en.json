@@ -68,10 +68,21 @@
       "invalid_credentials": "Steam credentials are incorrect.",
       "rate_limit_exceeded": "Steam rate limit hit. Please wait and try again.",
       "games_ids_should_be_array": "Game IDs must be a list.",
-      "games_ids_must_be_numbers": "Game IDs must be numbers."
+      "games_ids_must_be_numbers": "Game IDs must be numbers.",
+      "invalid_persona_status": "That online status isn't valid.",
+      "auto_reply_template_should_be_string": "Auto-reply message must be text.",
+      "auto_reply_template_too_long": "Auto-reply message is too long.",
+      "auto_reply_while_idling_should_be_boolean": "Auto-reply scope is invalid.",
+      "displayed_game_name_should_be_string": "Display title must be text.",
+      "displayed_game_name_too_long": "Display title is too long."
     }
   },
   "ui": {
+    "common": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "close": "Close"
+    },
     "accounts": {
       "add": {
         "title": "Add a Steam account",
@@ -151,6 +162,86 @@
       }
     },
     "dashboard": {
+      "overview": {
+        "title": "Your Steam accounts",
+        "subtitle": "Monitor the accounts you've linked for idling."
+      },
+      "stats": {
+        "accounts": "Linked accounts",
+        "idling": "Idling now",
+        "games": "Games idling"
+      },
+      "card": {
+        "presence": "Presence",
+        "games_idling": "Games idling",
+        "auto_reply": "Auto-reply",
+        "auto_reply_on": "On",
+        "auto_reply_off": "Off",
+        "last_updated": "Last updated",
+        "status": {
+          "idling": "Idling",
+          "paused": "Paused"
+        }
+      },
+      "actions": {
+        "start": "Start idling",
+        "pause": "Pause idling",
+        "edit_games": "Edit games",
+        "auto_reply_start": "Start auto-reply",
+        "auto_reply_stop": "Stop auto-reply",
+        "edit_auto_reply": "Edit auto-reply",
+        "edit_now_playing": "Edit now playing",
+        "remove": "Remove",
+        "no_games_hint": "Add games before you can start idling."
+      },
+      "edit_now_playing": {
+        "title": "Now playing",
+        "hint": "A custom title shown as the game you're playing on your friends list while idling. Leave empty to show only your idle games.",
+        "label": "Display title",
+        "placeholder": "e.g. Idling Via Steam Idler"
+      },
+      "edit_auto_reply": {
+        "title": "Edit auto-reply",
+        "hint": "Send an automatic reply to friends who message this account.",
+        "template_label": "Reply message",
+        "template_placeholder": "e.g. I'm away right now - this is an automatic reply.",
+        "while_idling_label": "Only reply while idling"
+      },
+      "edit_games": {
+        "title": "Edit idle games",
+        "hint": "Add the Steam app IDs this account should idle, then save.",
+        "find_ids": "Find app IDs on SteamDB",
+        "placeholder": "App ID (e.g. 1245620)",
+        "add": "Add",
+        "empty": "No games added yet.",
+        "remove_aria": "Remove game {{id}}"
+      },
+      "remove_confirm": {
+        "title": "Remove account",
+        "body": "This stops idling and unlinks this Steam account. You can add it again later.",
+        "ok": "Remove",
+        "cancel": "Cancel"
+      },
+      "persona": {
+        "aria": "Change online status",
+        "offline": "Offline",
+        "online": "Online",
+        "busy": "Busy",
+        "away": "Away",
+        "snooze": "Snooze",
+        "looking_to_trade": "Looking to trade",
+        "looking_to_play": "Looking to play",
+        "invisible": "Invisible",
+        "unknown": "Unknown"
+      },
+      "states": {
+        "loading": "Loading your accounts…",
+        "error": {
+          "title": "Couldn't load your accounts",
+          "description": "Something went wrong while fetching your Steam accounts. Please try again.",
+          "retry": "Try again"
+        }
+      },
       "info": {
         "empty": {
           "title": "No accounts yet",

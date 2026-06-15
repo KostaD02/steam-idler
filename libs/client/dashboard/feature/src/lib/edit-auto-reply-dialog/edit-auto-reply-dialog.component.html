@@ -1,0 +1,49 @@
+<si-dialog>
+  <span siDialogHeader>
+    {{ 'ui.dashboard.edit_auto_reply.title' | translate }} -
+    {{ data.accountName }}
+  </span>
+
+  <p class="edit-auto-reply__hint">
+    {{ 'ui.dashboard.edit_auto_reply.hint' | translate }}
+  </p>
+
+  <form class="edit-auto-reply__form" [formGroup]="form">
+    <div class="kd-field-group">
+      <label class="kd-field-label" for="auto-reply-template">
+        {{ 'ui.dashboard.edit_auto_reply.template_label' | translate }}
+      </label>
+      <textarea
+        id="auto-reply-template"
+        class="kd-field-input edit-auto-reply__textarea"
+        formControlName="template"
+        rows="3"
+        [maxlength]="maxLength"
+        [placeholder]="
+          'ui.dashboard.edit_auto_reply.template_placeholder' | translate
+        "
+      ></textarea>
+    </div>
+
+    <label class="edit-auto-reply__toggle">
+      <input type="checkbox" formControlName="whileIdling" />
+      <span>{{
+        'ui.dashboard.edit_auto_reply.while_idling_label' | translate
+      }}</span>
+    </label>
+  </form>
+
+  <ng-container siDialogActions>
+    <button type="button" class="kd-btn" (click)="close()">
+      {{ 'ui.common.cancel' | translate }}
+    </button>
+    <button
+      type="button"
+      class="kd-btn kd-btn-primary"
+      [disabled]="form.invalid"
+      (click)="save()"
+    >
+      {{ 'ui.common.save' | translate }}
+    </button>
+  </ng-container>
+</si-dialog>

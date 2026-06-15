@@ -1,8 +1,8 @@
 module.exports = {
-  displayName: 'client-infra-ui-card',
-  preset: '../../../../jest.preset.js',
+  displayName: 'client-infra-ui-dialog',
+  preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/client/infra/ui-card',
+  coverageDirectory: '../../../../../coverage/libs/client/infra/ui/dialog',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

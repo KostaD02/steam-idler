@@ -64,7 +64,7 @@
     },
     "subname": {
       "type": "string",
-      "description": "Optional sub-name to append to the type folder (e.g. 'login' produces 'feature-login'). Use when a domain has multiple features or ui libs.",
+      "description": "Optional sub-name nested under the type folder (e.g. 'login' produces 'feature/login'). Use when a domain has multiple features or ui libs.",
       "pattern": "^[a-zA-Z][a-zA-Z0-9-]*$"
     },
     "directory": {

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { LayoutService } from '@steam-idler/client/infra/core';
-import { CardComponent } from '@steam-idler/client/infra/ui-card';
+import { CardComponent } from '@steam-idler/client/infra/ui/card';
 
 @Component({
   selector: 'si-auth',

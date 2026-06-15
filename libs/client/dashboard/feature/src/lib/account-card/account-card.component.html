@@ -1,0 +1,131 @@
+<si-card class="account">
+  <div class="account__body" [class.account__body--busy]="busy()">
+    <header class="account__header">
+      <h3 class="account__name" [title]="account().accountName">
+        {{ account().accountName }}
+      </h3>
+
+      @if (isIdling()) {
+        <span class="kd-status-pill kd-status-pill--active">
+          <span class="kd-status-pill__dot" aria-hidden="true"></span>
+          {{ 'ui.dashboard.card.status.idling' | translate }}
+        </span>
+      } @else {
+        <span class="kd-status-pill kd-status-pill--idle">
+          <span class="kd-status-pill__dot" aria-hidden="true"></span>
+          {{ 'ui.dashboard.card.status.paused' | translate }}
+        </span>
+      }
+    </header>
+
+    <dl class="account__stats">
+      <div class="account__stat account__stat--presence">
+        <dt>{{ 'ui.dashboard.card.presence' | translate }}</dt>
+        <dd>
+          <si-persona-select
+            [persona]="personaStatus()"
+            [disabled]="busy()"
+            (personaChange)="changePersona($event)"
+          />
+        </dd>
+      </div>
+
+      <div class="account__stat">
+        <dt>{{ 'ui.dashboard.card.games_idling' | translate }}</dt>
+        <dd>{{ gamesCount() }}</dd>
+      </div>
+
+      <div class="account__stat">
+        <dt>{{ 'ui.dashboard.card.auto_reply' | translate }}</dt>
+        <dd>
+          {{
+            (autoReplyEnabled()
+              ? 'ui.dashboard.card.auto_reply_on'
+              : 'ui.dashboard.card.auto_reply_off'
+            ) | translate
+          }}
+        </dd>
+      </div>
+
+      <div class="account__stat">
+        <dt>{{ 'ui.dashboard.card.last_updated' | translate }}</dt>
+        <dd [title]="account().updatedAt">{{ lastUpdated() }}</dd>
+      </div>
+    </dl>
+
+    @if (errorKey(); as key) {
+      <p class="account__error" role="alert">{{ key | translate }}</p>
+    }
+
+    <div class="account__actions">
+      <button
+        type="button"
+        class="kd-btn kd-btn-primary kd-btn-sm"
+        [disabled]="busy() || (!isIdling() && !canStart())"
+        [title]="
+          !isIdling() && !canStart()
+            ? ('ui.dashboard.actions.no_games_hint' | translate)
+            : null
+        "
+        (click)="toggleIdling()"
+      >
+        {{
+          (isIdling()
+            ? 'ui.dashboard.actions.pause'
+            : 'ui.dashboard.actions.start'
+          ) | translate
+        }}
+      </button>
+
+      <button
+        type="button"
+        class="kd-btn kd-btn-ghost kd-btn-sm"
+        [disabled]="busy()"
+        (click)="editGames()"
+      >
+        {{ 'ui.dashboard.actions.edit_games' | translate }}
+      </button>
+
+      <button
+        type="button"
+        class="kd-btn kd-btn-ghost kd-btn-sm"
+        [disabled]="busy()"
+        (click)="toggleAutoReply()"
+      >
+        {{
+          (autoReplyEnabled()
+            ? 'ui.dashboard.actions.auto_reply_stop'
+            : 'ui.dashboard.actions.auto_reply_start'
+          ) | translate
+        }}
+      </button>
+
+      <button
+        type="button"
+        class="kd-btn kd-btn-ghost kd-btn-sm"
+        [disabled]="busy()"
+        (click)="editAutoReply()"
+      >
+        {{ 'ui.dashboard.actions.edit_auto_reply' | translate }}
+      </button>
+
+      <button
+        type="button"
+        class="kd-btn kd-btn-ghost kd-btn-sm"
+        [disabled]="busy()"
+        (click)="editNowPlaying()"
+      >
+        {{ 'ui.dashboard.actions.edit_now_playing' | translate }}
+      </button>
+
+      <button
+        type="button"
+        class="kd-btn kd-btn-danger kd-btn-sm"
+        [disabled]="busy()"
+        (click)="remove()"
+      >
+        {{ 'ui.dashboard.actions.remove' | translate }}
+      </button>
+    </div>
+  </div>
+</si-card>

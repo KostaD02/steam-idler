@@ -1,6 +1,6 @@
 import { TranslationParams } from '@steam-idler/client/i18n/types';
 
-const PLACEHOLDER = /\{(\w+)\}/g;
+const PLACEHOLDER = /\{\{\s*(\w+)\s*\}\}/g;
 
 export function interpolate(
   template: string,
