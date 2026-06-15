@@ -46,8 +46,6 @@
 
   &:hover,
   &:focus-visible {
-    border-color: var(--kd-accent);
-    color: var(--kd-accent);
     box-shadow: 3px 3px 0 0 var(--kd-border-strong);
   }
 }

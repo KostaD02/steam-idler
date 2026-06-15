@@ -15,3 +15,5 @@ export interface SteamAccount extends MongoObject {
   /** Auth material used to log in and maintain the Steam session. */
   credentials: SteamAccountCredentials;
 }
+
+export type SteamAccountSummary = Omit<SteamAccount, 'credentials'>;

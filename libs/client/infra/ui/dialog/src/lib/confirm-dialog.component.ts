@@ -8,6 +8,7 @@ export interface ConfirmDialogData {
   body: string;
   okLabel?: string;
   closeLabel?: string;
+  danger?: boolean;
 }
 
 @Component({

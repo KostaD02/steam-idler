@@ -1,0 +1,37 @@
+.edit-auto-reply {
+  &__hint {
+    margin: 0 0 16px;
+    font-size: var(--kd-font-size-xs);
+    color: var(--kd-text-muted);
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__textarea {
+    resize: vertical;
+    min-height: 72px;
+    font-family: inherit;
+    line-height: 1.5;
+    max-height: 300px;
+  }
+
+  &__toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--kd-font-size-sm);
+    color: var(--kd-text-secondary);
+    cursor: pointer;
+
+    input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--kd-accent);
+      cursor: pointer;
+    }
+  }
+}

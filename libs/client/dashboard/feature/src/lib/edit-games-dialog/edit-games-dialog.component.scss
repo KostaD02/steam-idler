@@ -1,0 +1,77 @@
+.edit-games {
+  &__hint {
+    margin: 0 0 16px;
+    font-size: var(--kd-font-size-xs);
+    color: var(--kd-text-muted);
+  }
+
+  &__add {
+    display: flex;
+    gap: 8px;
+
+    .kd-field-input {
+      flex: 1;
+      min-width: 0;
+      appearance: textfield;
+      -moz-appearance: textfield;
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px 4px 12px;
+    border: 1px solid var(--kd-border);
+    border-radius: var(--kd-radius-pill);
+    background: var(--kd-bg-elevated);
+    font-family: var(--kd-font-mono);
+    font-size: var(--kd-font-size-xs);
+    color: var(--kd-text-secondary);
+  }
+
+  &__chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--kd-text-muted);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    transition: var(--kd-transition-fast);
+
+    &:hover,
+    &:focus-visible {
+      outline: none;
+      background: var(--kd-danger-soft);
+      color: var(--kd-danger);
+    }
+  }
+
+  &__empty {
+    margin: 16px 0 0;
+    font-size: var(--kd-font-size-xs);
+    color: var(--kd-text-muted);
+  }
+}

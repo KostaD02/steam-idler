@@ -5,7 +5,7 @@
     '--header-padding': sizing.innerPadding + 'px',
   }"
 >
-  <nav class="header__inner">
+  <nav class="header__inner" [style.max-width]="sizing.maxContentWidth + 'px'">
     <a
       routerLink="/"
       class="header__logo kd-header-anchor"

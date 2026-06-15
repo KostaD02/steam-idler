@@ -1,0 +1,103 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.account {
+  height: 100%;
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    height: 100%;
+    transition: opacity 0.2s var(--kd-easing);
+
+    &--busy {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  &__name {
+    margin: 0;
+    font-size: var(--kd-font-size-lg);
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 16px;
+    margin: 0;
+  }
+
+  &__stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+
+    dt {
+      font-size: var(--kd-font-size-xxs);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--kd-text-muted);
+    }
+
+    dd {
+      margin: 0;
+      font-size: var(--kd-font-size-sm);
+      color: var(--kd-text-primary);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &--presence dd {
+      overflow: visible;
+    }
+  }
+
+  &__error {
+    margin: 0;
+    padding: 8px 10px;
+    border: 1px solid var(--kd-danger);
+    border-radius: var(--kd-radius-sm);
+    background: var(--kd-danger-soft);
+    color: var(--kd-danger);
+    font-size: var(--kd-font-size-xs);
+    line-height: 1.4;
+  }
+
+  &__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .account {
+    &__header {
+      flex-wrap: wrap;
+    }
+
+    &__stats,
+    &__actions {
+      grid-template-columns: 1fr;
+    }
+  }
+}
