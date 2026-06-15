@@ -129,7 +129,7 @@
     "jest-preset-angular": "~16.1.5",
     "jest-util": "^30.4.1",
     "jsonc-eslint-parser": "^2.1.0",
-    "lint-staged": "^16.4.0",
+    "lint-staged": "^17.0.7",
     "nx": "22.7.1",
     "prettier": "~3.8.3",
     "ts-jest": "^29.4.0",
