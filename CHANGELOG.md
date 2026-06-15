@@ -1,3 +1,13 @@
+## 2.6.0 (2026-06-15)
+
+### 🚀 Features
+
+- **client:** dashboard ([#59](https://github.com/KostaD02/steam-idler/pull/59))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.5.0 (2026-06-02)
 
 ### 🚀 Features
