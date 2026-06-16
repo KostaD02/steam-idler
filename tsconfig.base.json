@@ -95,6 +95,9 @@
       ],
       "@steam-idler/client/infra/ui/dialog": [
         "libs/client/infra/ui/dialog/src/index.ts"
+      ],
+      "@steam-idler/client/settings/feature": [
+        "libs/client/settings/feature/src/index.ts"
       ]
     }
   },

@@ -1,0 +1,59 @@
+<section class="settings" [style.height]="sizing.innerContentHeight()">
+  <div class="settings__wrapper">
+    <si-card class="settings__card">
+      <header class="settings__header">
+        <h2>{{ 'ui.settings.title' | translate }}</h2>
+        <p>{{ 'ui.settings.subtitle' | translate }}</p>
+      </header>
+
+      @if (user(); as currentUser) {
+        <dl class="settings__details">
+          <div class="settings__row">
+            <dt class="settings__label">
+              {{ 'ui.settings.fields.email.label' | translate }}
+            </dt>
+            <dd class="settings__value">{{ currentUser.email }}</dd>
+          </div>
+
+          <div class="settings__row">
+            <dt class="settings__label">
+              {{ 'ui.settings.fields.display_name.label' | translate }}
+            </dt>
+            <dd class="settings__value">{{ currentUser.displayName }}</dd>
+          </div>
+
+          <div class="settings__row">
+            <dt class="settings__label">
+              {{ 'ui.settings.fields.password.label' | translate }}
+            </dt>
+            <dd class="settings__value settings__value--muted">
+              {{ 'ui.settings.fields.password.value' | translate }}
+            </dd>
+          </div>
+        </dl>
+
+        @if (errorKey(); as key) {
+          <div class="settings__error" role="alert">{{ key | translate }}</div>
+        }
+
+        <div class="settings__actions">
+          <button
+            type="button"
+            class="kd-btn kd-btn-primary kd-btn-block"
+            (click)="openChangePassword()"
+          >
+            {{ 'ui.settings.change_password.trigger' | translate }}
+          </button>
+
+          <button
+            type="button"
+            class="kd-btn kd-btn-danger kd-btn-block"
+            (click)="deleteAccount()"
+          >
+            {{ 'ui.settings.delete_account.trigger' | translate }}
+          </button>
+        </div>
+      }
+    </si-card>
+  </div>
+</section>
