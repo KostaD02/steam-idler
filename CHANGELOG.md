@@ -1,3 +1,13 @@
+## 2.7.0 (2026-06-16)
+
+### 🚀 Features
+
+- **client:** add account settings feature with change password and delete account functionality ([#62](https://github.com/KostaD02/steam-idler/pull/62))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.6.0 (2026-06-15)
 
 ### 🚀 Features
