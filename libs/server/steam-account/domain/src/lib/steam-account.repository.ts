@@ -3,6 +3,12 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
 
+import {
+  Cacheable,
+  CacheEvict,
+  CacheRepository,
+  buildCacheKey,
+} from '@steam-idler/server/infra/cache';
 import { ExceptionService } from '@steam-idler/server/infra/services';
 import {
   ExceptionStatusKeys,
@@ -22,6 +28,7 @@ import {
 } from './steam-account.schema';
 
 @Injectable()
+@CacheRepository()
 export class SteamAccountRepository {
   constructor(
     @InjectModel(SteamAccountEntity.name)
@@ -37,6 +44,7 @@ export class SteamAccountRepository {
     return this.steamAccountModel.findById(id).exec();
   }
 
+  @Cacheable({ key: (args) => buildCacheKey('user', String(args[0])) })
   getByUserId(id: MongoId) {
     return this.steamAccountModel
       .find({ userId: id })
@@ -53,6 +61,7 @@ export class SteamAccountRepository {
     return this.steamAccountModel.exists({ accountName });
   }
 
+  @CacheEvict({ keys: [(args) => buildCacheKey('user', String(args[1]))] })
   create(accountName: string, userId: MongoId) {
     const steamAccount: StrippedMongoObject<SteamAccount> = {
       userId,
@@ -82,6 +91,12 @@ export class SteamAccountRepository {
     steamAccount: Partial<StrippedMongoObject<SteamAccount>>,
   ) {
     return this.steamAccountModel.findByIdAndUpdate(id, steamAccount);
+  }
+
+  // Method to evict cache for a user via decorator
+  @CacheEvict({ keys: [(args) => buildCacheKey('user', String(args[0]))] })
+  evictUserAccounts(_userId: MongoId): Promise<void> {
+    return Promise.resolve();
   }
 
   async deleteById(id: string) {

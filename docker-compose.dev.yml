@@ -1,8 +1,5 @@
 # Local development dependencies only.
 #
-# Spins up services that the app needs at dev time (MongoDB) so contributors
-# don't have to install them on their host. Not used for shipping or
-# production purely `up` once when you start working, `down` when done.
 #
 # Usage:
 #   pnpm db:up      # start
@@ -16,6 +13,13 @@ services:
       - '27018:27017'
     volumes:
       - mongo_data:/data/db
+    restart: unless-stopped
+
+  steam-idler-redis:
+    image: redis:7-alpine
+    container_name: steam-idler-redis
+    ports:
+      - '6379:6379'
     restart: unless-stopped
 
 volumes:
