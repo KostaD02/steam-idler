@@ -1,3 +1,13 @@
+## 2.8.0 (2026-06-16)
+
+### 🚀 Features
+
+- **server:** implement cache service and redis factory for improved caching mechanism ([#63](https://github.com/KostaD02/steam-idler/pull/63))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.7.0 (2026-06-16)
 
 ### 🚀 Features
