@@ -1,0 +1,25 @@
+{
+  "name": "server-infra-cache",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/server/infra/cache/src",
+  "projectType": "library",
+  "tags": ["type:data-access", "scope:server"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/server/infra/cache",
+        "main": "libs/server/infra/cache/src/index.ts",
+        "tsConfig": "libs/server/infra/cache/tsconfig.lib.json",
+        "assets": ["libs/server/infra/cache/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["libs/server/infra/cache/**/*.ts"]
+      }
+    }
+  }
+}

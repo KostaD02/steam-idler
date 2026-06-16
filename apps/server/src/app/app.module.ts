@@ -1,6 +1,7 @@
 import { Logger, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
+import { CacheModule } from '@steam-idler/server/infra/cache';
 import {
   CommonServicesModule,
   EnvironmentService,
@@ -16,6 +17,7 @@ import { GlobalModule } from './global.module';
   imports: [
     GlobalModule,
     CommonServicesModule,
+    CacheModule,
     MongooseModule.forRootAsync({
       useFactory: (env: EnvironmentService) => ({
         uri: env.get('DATABASE_URL', 'mongodb://127.0.0.1:27017/steam-idler'),

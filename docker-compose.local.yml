@@ -12,6 +12,15 @@ services:
       driver: none
     restart: unless-stopped
 
+  steam-idler-redis:
+    image: redis:7-alpine
+    container_name: steam-idler-redis
+    networks:
+      - steam-idler-net
+    logging:
+      driver: none
+    restart: unless-stopped
+
   steam-idler-server:
     build:
       context: .
@@ -20,6 +29,7 @@ services:
     container_name: steam-idler-server
     depends_on:
       - steam-idler-mongo
+      - steam-idler-redis
     ports:
       - '${SERVER_PORT:-2221}:${SERVER_PORT:-2221}'
     environment:
@@ -28,6 +38,11 @@ services:
       JWT_SECRET: ${JWT_SECRET:-dev-only-secret-please-override-1234567890}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1}
       DATABASE_URL: mongodb://steam-idler-mongo:27017/steam-idler
+      REDIS_ENABLED: ${REDIS_ENABLED:-true}
+      REDIS_HOST: steam-idler-redis
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      REDIS_TTL: ${REDIS_TTL:-300000}
     networks:
       - steam-idler-net
     restart: unless-stopped

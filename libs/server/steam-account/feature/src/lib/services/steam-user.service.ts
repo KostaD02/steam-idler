@@ -106,6 +106,7 @@ export class SteamUserService {
         } catch {
           this.usersMap.delete(login);
           await user.deleteOne().exec();
+          await this.steamAccountRepository.evictUserAccounts(userId);
           reject({
             status: ExceptionStatusKeys.BadRequest,
             message: 'Steam account login error',
@@ -117,6 +118,7 @@ export class SteamUserService {
       steamUser.once('error', async (error: Error) => {
         this.usersMap.delete(login);
         await user.deleteOne().exec();
+        await this.steamAccountRepository.evictUserAccounts(userId);
         const isRateLimitExceeded = error?.message === 'RateLimitExceeded';
         reject({
           status: ExceptionStatusKeys.BadRequest,
@@ -133,6 +135,7 @@ export class SteamUserService {
         if (lastCodeWrong) {
           this.usersMap.delete(login);
           await user.deleteOne().exec();
+          await this.steamAccountRepository.evictUserAccounts(userId);
           cb('');
           reject({
             status: ExceptionStatusKeys.BadRequest,
@@ -169,7 +172,13 @@ export class SteamUserService {
       );
     }
 
-    return this.steamAccountRepository.deleteByAccountName(name);
+    const result = await this.steamAccountRepository.deleteByAccountName(name);
+
+    if (steamAccount) {
+      await this.steamAccountRepository.evictUserAccounts(steamAccount.userId);
+    }
+
+    return result;
   }
 
   async idleGames(accountName: string, forceIdle = false) {
@@ -197,6 +206,9 @@ export class SteamUserService {
     if (forceIdle) {
       steamUserAccount.idleSettings.idleEnabled = true;
       await steamUserAccount.save();
+      await this.steamAccountRepository.evictUserAccounts(
+        steamUserAccount.userId,
+      );
     }
 
     if (!steamUserAccount.idleSettings.idleEnabled) {
@@ -209,6 +221,9 @@ export class SteamUserService {
       );
       steamUserAccount.idleSettings.idleEnabled = false;
       await steamUserAccount.save();
+      await this.steamAccountRepository.evictUserAccounts(
+        steamUserAccount.userId,
+      );
       return this.returnSteamAccountObject(steamUserAccount, false);
     }
 
@@ -250,6 +265,9 @@ export class SteamUserService {
     }
     steamUserAccount.idleSettings.idleEnabled = false;
     await steamUserAccount.save();
+    await this.steamAccountRepository.evictUserAccounts(
+      steamUserAccount.userId,
+    );
     steamUser.gamesPlayed([], true);
     this.logger.log(
       `Steam user ${steamUserAccount.accountName} is no longer idling`,
@@ -281,6 +299,9 @@ export class SteamUserService {
 
     steamUserAccount.idleSettings.idleGameIds = dto.gamesIds;
     await steamUserAccount.save();
+    await this.steamAccountRepository.evictUserAccounts(
+      steamUserAccount.userId,
+    );
 
     this.logger.log(
       `Steam user ${steamUserAccount.accountName} has updated idling games`,
@@ -304,6 +325,9 @@ export class SteamUserService {
 
     steamUserAccount.idleSettings.personaStatus = personaStatus;
     await steamUserAccount.save();
+    await this.steamAccountRepository.evictUserAccounts(
+      steamUserAccount.userId,
+    );
 
     const steamUser = this.usersMap.get(accountName);
 
@@ -335,6 +359,9 @@ export class SteamUserService {
 
     steamUserAccount.displayedGameName = displayedGameName;
     await steamUserAccount.save();
+    await this.steamAccountRepository.evictUserAccounts(
+      steamUserAccount.userId,
+    );
 
     const steamUser = this.usersMap.get(accountName);
 
@@ -363,6 +390,9 @@ export class SteamUserService {
 
     steamUserAccount.idleSettings.autoReply.enabled = enabled;
     await steamUserAccount.save();
+    await this.steamAccountRepository.evictUserAccounts(
+      steamUserAccount.userId,
+    );
 
     this.autoRepliedFriends.delete(accountName);
 
@@ -388,6 +418,9 @@ export class SteamUserService {
     steamUserAccount.idleSettings.autoReply.template = dto.template;
     steamUserAccount.idleSettings.autoReply.whileIdling = dto.whileIdling;
     await steamUserAccount.save();
+    await this.steamAccountRepository.evictUserAccounts(
+      steamUserAccount.userId,
+    );
     this.autoRepliedFriends.delete(accountName);
 
     this.logger.log(`Steam user ${accountName} auto-reply settings updated`);

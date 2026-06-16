@@ -17,6 +17,9 @@
     "baseUrl": ".",
     "paths": {
       "@steam-idler/generators": ["tools/generators/src/index.ts"],
+      "@steam-idler/server/infra/cache": [
+        "libs/server/infra/cache/src/index.ts"
+      ],
       "@steam-idler/server/infra/types": [
         "libs/server/infra/types/src/index.ts"
       ],

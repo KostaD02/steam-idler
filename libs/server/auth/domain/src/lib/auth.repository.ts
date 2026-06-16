@@ -50,7 +50,9 @@ export class AuthRepository {
   }
 
   updateById(id: string, dto: UserUpdateDto) {
-    return this.userModel.findByIdAndUpdate(id, dto, { new: true }).exec();
+    return this.userModel
+      .findByIdAndUpdate(id, dto, { returnDocument: 'after' })
+      .exec();
   }
 
   pushSteamAccount(userId: MongoId, steamAccountId: string) {
@@ -58,7 +60,7 @@ export class AuthRepository {
       .findByIdAndUpdate(
         userId,
         { $addToSet: { steamAccounts: steamAccountId } },
-        { new: true },
+        { returnDocument: 'after' },
       )
       .exec();
   }
@@ -68,7 +70,7 @@ export class AuthRepository {
       .findByIdAndUpdate(
         userId,
         { $pull: { steamAccounts: steamAccountId } },
-        { new: true },
+        { returnDocument: 'after' },
       )
       .exec();
   }
@@ -81,7 +83,7 @@ export class AuthRepository {
           password: hashedPassword,
           passwordChangedAt: getISOString(),
         },
-        { new: true },
+        { returnDocument: 'after' },
       )
       .exec();
   }
