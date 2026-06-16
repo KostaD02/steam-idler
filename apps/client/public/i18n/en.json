@@ -143,6 +143,56 @@
         }
       }
     },
+    "settings": {
+      "title": "Account settings",
+      "subtitle": "Your account details. Email and display name can't be changed here.",
+      "fields": {
+        "email": {
+          "label": "Email"
+        },
+        "display_name": {
+          "label": "Display name"
+        },
+        "password": {
+          "label": "Password",
+          "value": "••••••••"
+        }
+      },
+      "change_password": {
+        "trigger": "Change password",
+        "title": "Change password",
+        "hint": "Enter your current password and choose a new one.",
+        "submit": "Update password",
+        "submit_loading": "Updating…",
+        "fields": {
+          "old_password": {
+            "label": "Current password",
+            "placeholder": "Your current password",
+            "error": "Current password is required."
+          },
+          "new_password": {
+            "label": "New password",
+            "placeholder": "At least 8 characters",
+            "error": "New password must be 8-64 characters."
+          },
+          "confirm_password": {
+            "label": "Confirm new password",
+            "placeholder": "Re-enter your new password",
+            "error": "Please confirm your new password.",
+            "mismatch": "Passwords don't match."
+          }
+        }
+      },
+      "delete_account": {
+        "trigger": "Delete account",
+        "confirm": {
+          "title": "Delete account",
+          "body": "This permanently deletes your account and unlinks all of your Steam accounts. This can't be undone.",
+          "ok": "Delete account",
+          "cancel": "Cancel"
+        }
+      }
+    },
     "header": {
       "aria": {
         "theme_light": "Switch to light theme",

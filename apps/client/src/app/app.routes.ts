@@ -24,6 +24,14 @@ export const appRoutes: Route[] = [
       ),
   },
   {
+    path: 'settings',
+    canActivate: [authGuard],
+    loadChildren: () =>
+      import('@steam-idler/client/settings/feature').then(
+        (m) => m.settingsRoutes,
+      ),
+  },
+  {
     path: 'api',
     loadChildren: () =>
       import('@steam-idler/client/api/feature').then((m) => m.apiRoutes),
