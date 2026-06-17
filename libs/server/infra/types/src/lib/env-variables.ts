@@ -6,6 +6,7 @@ export interface EnvVariables {
   SERVER_LOG_TYPE: LogLevel;
   JWT_SECRET: string;
   JWT_EXPIRES_IN: number;
+  CREDENTIALS_SECRET: string;
   REDIS_ENABLED: string;
   REDIS_HOST: string;
   REDIS_PORT: number;
