@@ -10,6 +10,7 @@ import {
   SignUpDto,
   Tokens,
   UpdateUserDto,
+  UpdateUserSettingsDto,
   User,
 } from '@steam-idler/server/auth/types';
 
@@ -46,6 +47,10 @@ export class AuthApiService {
 
   updateUser(dto: UpdateUserDto): Observable<User> {
     return this.apiService.patch<User>(this.apiUrl, dto);
+  }
+
+  updateSettings(dto: UpdateUserSettingsDto): Observable<User> {
+    return this.apiService.patch<User>(`${this.apiUrl}/settings`, dto);
   }
 
   deleteUser(): Observable<{ success: true }> {

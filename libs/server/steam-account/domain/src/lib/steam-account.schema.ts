@@ -9,6 +9,7 @@ import {
   SteamAccount,
   SteamAccountCredentials,
   SteamAccountIdleSettings,
+  SteamAccountProfile,
   SteamPersonaStatusEnum,
 } from '@steam-idler/server/steam-account/types';
 
@@ -38,6 +39,22 @@ export class SteamAccountEntity implements StrippedMongoObject<SteamAccount> {
     maxLength: STEAM_ACCOUNT_API_CONFIG.MAX_DISPLAYED_GAME_NAME_LENGTH,
   })
   displayedGameName!: string;
+
+  @Prop({
+    _id: false,
+    required: true,
+    type: {
+      name: {
+        type: String,
+        default: '',
+      },
+      avatarUrl: {
+        type: String,
+        default: '',
+      },
+    },
+  })
+  profile!: SteamAccountProfile;
 
   @Prop({
     _id: false,

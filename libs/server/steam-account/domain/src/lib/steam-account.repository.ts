@@ -45,12 +45,17 @@ export class SteamAccountRepository {
   }
 
   @Cacheable({ key: (args) => buildCacheKey('user', String(args[0])) })
-  getByUserId(id: MongoId) {
-    return this.steamAccountModel
+  async getByUserId(id: MongoId) {
+    const accounts = await this.steamAccountModel
       .find({ userId: id })
       .select('-credentials')
       .lean()
       .exec();
+
+    return accounts.map((account) => ({
+      ...account,
+      profile: account.profile ?? { name: '', avatarUrl: '' },
+    }));
   }
 
   getByName(accountName: string) {
@@ -67,6 +72,10 @@ export class SteamAccountRepository {
       userId,
       accountName,
       displayedGameName: '',
+      profile: {
+        name: '',
+        avatarUrl: '',
+      },
       credentials: {
         id: '',
         cookies: [],

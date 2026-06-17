@@ -36,6 +36,28 @@
     margin: 0 0 24px;
   }
 
+  &__preferences {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0 0 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--kd-border);
+  }
+
+  &__section-title {
+    margin: 0;
+    font-size: var(--kd-font-size-xxs);
+    font-weight: 600;
+    color: var(--kd-text-secondary);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  &__preference {
+    display: flex;
+  }
+
   &__error {
     margin-bottom: 16px;
     padding: 10px 12px;

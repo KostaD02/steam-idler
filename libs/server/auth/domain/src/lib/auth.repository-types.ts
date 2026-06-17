@@ -1,5 +1,8 @@
-import { UpdatableUserField } from '@steam-idler/server/auth/core';
-import { BaseUser } from '@steam-idler/server/auth/types';
+import {
+  UpdatableUserField,
+  UpdatableUserSettingsField,
+} from '@steam-idler/server/auth/core';
+import { BaseUser, UserSettings } from '@steam-idler/server/auth/types';
 
 export type UserCreateDto = Pick<
   BaseUser,
@@ -7,3 +10,7 @@ export type UserCreateDto = Pick<
 >;
 
 export type UserUpdateDto = Partial<Pick<BaseUser, UpdatableUserField>>;
+
+export type UserSettingsUpdateDto = Partial<
+  Pick<UserSettings, UpdatableUserSettingsField>
+>;

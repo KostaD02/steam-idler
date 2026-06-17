@@ -27,6 +27,7 @@ export const AuthExpectionKeys = {
   ShouldProvidePassword: 'errors.auth.should_provide_password',
   PasswordChanged: 'errors.auth.password_changed',
   NoUpdateFieldsProvided: 'errors.auth.no_update_fields_provided',
+  SettingShouldBeBoolean: 'errors.auth.setting_should_be_boolean',
 } as const;
 
 export const UserExceptionKeys = {

@@ -13,3 +13,4 @@ export { sanitizeObject } from './lib/sanitize';
 export { API_CONFIG, API_PAGINATION, API_SENSITIVE_KEYS } from './lib/api';
 export { type SteamIdlerValidator } from './lib/validator';
 export { formatRelativeTime } from './lib/time';
+export { maskString } from './lib/mask';

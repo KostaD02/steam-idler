@@ -10,7 +10,7 @@ import {
 
 import { catchError, EMPTY, finalize, Observable, tap } from 'rxjs';
 
-import { formatRelativeTime } from '@steam-idler/infra';
+import { formatRelativeTime, maskString } from '@steam-idler/infra';
 
 import { DialogService } from '@steam-idler/client/infra/core';
 import { CardComponent } from '@steam-idler/client/infra/ui/card';
@@ -18,6 +18,7 @@ import { ConfirmDialogService } from '@steam-idler/client/infra/ui/dialog';
 import { extractErrorKey } from '@steam-idler/client/infra/util';
 
 import { AccountsService } from '@steam-idler/client/accounts/data-access';
+import { AuthService } from '@steam-idler/client/auth/data-access';
 import { I18nService } from '@steam-idler/client/i18n/data-access';
 import { TranslatePipe } from '@steam-idler/client/i18n/ui';
 import {
@@ -51,6 +52,7 @@ export class AccountCardComponent {
   private readonly dialogService = inject(DialogService);
   private readonly confirmDialog = inject(ConfirmDialogService);
   private readonly i18n = inject(I18nService);
+  private readonly authService = inject(AuthService);
 
   readonly account = input.required<SteamAccountSummary>();
 
@@ -58,6 +60,27 @@ export class AccountCardComponent {
 
   readonly busy = signal(false);
   readonly errorKey = signal<string | null>(null);
+
+  private readonly settings = computed(() => this.authService.user()?.settings);
+
+  readonly avatarUrl = computed(() => {
+    const avatar = this.account().profile?.avatarUrl;
+
+    return this.settings()?.showProfileImage && avatar ? avatar : null;
+  });
+
+  readonly displayName = computed(() => {
+    const settings = this.settings();
+    const account = this.account();
+    const profileName = account.profile?.name;
+
+    const name =
+      settings?.showProfileName && profileName
+        ? profileName
+        : account.accountName;
+
+    return settings?.maskAccountName ? maskString(name) : name;
+  });
 
   readonly isIdling = computed(() => this.account().idleSettings.idleEnabled);
 

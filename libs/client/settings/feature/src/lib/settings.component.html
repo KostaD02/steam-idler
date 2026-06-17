@@ -32,6 +32,39 @@
           </div>
         </dl>
 
+        <section class="settings__preferences">
+          <h3 class="settings__section-title">
+            {{ 'ui.settings.display.title' | translate }}
+          </h3>
+
+          <si-toggle
+            class="settings__preference"
+            [checked]="settings().showProfileName"
+            [disabled]="saving()"
+            (checkedChange)="updateSetting({ showProfileName: $event })"
+          >
+            {{ 'ui.settings.display.show_profile_name' | translate }}
+          </si-toggle>
+
+          <si-toggle
+            class="settings__preference"
+            [checked]="settings().showProfileImage"
+            [disabled]="saving()"
+            (checkedChange)="updateSetting({ showProfileImage: $event })"
+          >
+            {{ 'ui.settings.display.show_profile_image' | translate }}
+          </si-toggle>
+
+          <si-toggle
+            class="settings__preference"
+            [checked]="settings().maskAccountName"
+            [disabled]="saving()"
+            (checkedChange)="updateSetting({ maskAccountName: $event })"
+          >
+            {{ 'ui.settings.display.mask_account_name' | translate }}
+          </si-toggle>
+        </section>
+
         @if (errorKey(); as key) {
           <div class="settings__error" role="alert">{{ key | translate }}</div>
         }

@@ -7,4 +7,5 @@ export {
   type AuthenticatedUser,
   type UserNotSelectedFields,
 } from './lib/user';
+export { type UserSettings } from './lib/user-settings';
 export { type Tokens } from './lib/tokens';

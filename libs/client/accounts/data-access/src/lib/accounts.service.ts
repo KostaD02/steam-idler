@@ -5,7 +5,6 @@ import { map, Observable, switchMap } from 'rxjs';
 import { AuthService } from '@steam-idler/client/auth/data-access';
 import {
   GamesToIdleDto,
-  SteamAccount,
   SteamAccountSummary,
   SteamSignInDto,
   UpdateAutoReplyDto,
@@ -24,7 +23,7 @@ export class AccountsService {
     return this.accountsApiService.getSteamAccounts();
   }
 
-  addSteamAccount(dto: SteamSignInDto): Observable<SteamAccount> {
+  addSteamAccount(dto: SteamSignInDto): Observable<SteamAccountSummary> {
     return this.accountsApiService
       .addSteamAccount(dto)
       .pipe(

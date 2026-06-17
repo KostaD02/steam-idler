@@ -10,7 +10,11 @@ import { ExceptionStatusKeys, MongoId } from '@steam-idler/server/infra/types';
 
 import { UserExceptionKeys } from '@steam-idler/server/auth/types';
 
-import { UserCreateDto, UserUpdateDto } from './auth.repository-types';
+import {
+  UserCreateDto,
+  UserSettingsUpdateDto,
+  UserUpdateDto,
+} from './auth.repository-types';
 import { UserDocument, UserEntity } from './auth.schema';
 
 @Injectable()
@@ -52,6 +56,18 @@ export class AuthRepository {
   updateById(id: string, dto: UserUpdateDto) {
     return this.userModel
       .findByIdAndUpdate(id, dto, { returnDocument: 'after' })
+      .exec();
+  }
+
+  updateSettings(id: string, settings: UserSettingsUpdateDto) {
+    const update: Record<string, boolean> = {};
+
+    for (const [key, value] of Object.entries(settings)) {
+      update[`settings.${key}`] = value;
+    }
+
+    return this.userModel
+      .findByIdAndUpdate(id, { $set: update }, { returnDocument: 'after' })
       .exec();
   }
 

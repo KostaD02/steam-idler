@@ -2,27 +2,33 @@ import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   signal,
 } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { catchError, EMPTY, filter, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, filter, finalize, switchMap, tap } from 'rxjs';
 
 import { DialogService, LayoutService } from '@steam-idler/client/infra/core';
 import { CardComponent } from '@steam-idler/client/infra/ui/card';
 import { ConfirmDialogService } from '@steam-idler/client/infra/ui/dialog';
+import { ToggleComponent } from '@steam-idler/client/infra/ui/toggle';
 import { extractErrorKey } from '@steam-idler/client/infra/util';
 
 import { AuthService } from '@steam-idler/client/auth/data-access';
 import { I18nService } from '@steam-idler/client/i18n/data-access';
 import { TranslatePipe } from '@steam-idler/client/i18n/ui';
+import {
+  UpdateUserSettingsDto,
+  UserSettings,
+} from '@steam-idler/server/auth/types';
 
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
 
 @Component({
   selector: 'si-settings',
-  imports: [TranslatePipe, CardComponent],
+  imports: [TranslatePipe, CardComponent, ToggleComponent],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,9 +44,36 @@ export class SettingsComponent {
   readonly user = this.authService.user;
   readonly sizing = this.layoutService.sizing;
   readonly errorKey = signal<string | null>(null);
+  readonly saving = signal(false);
+
+  readonly settings = computed<UserSettings>(
+    () =>
+      this.user()?.settings ?? {
+        showProfileName: true,
+        showProfileImage: true,
+        maskAccountName: false,
+      },
+  );
 
   openChangePassword(): void {
     this.dialogService.open(ChangePasswordDialogComponent);
+  }
+
+  updateSetting(dto: UpdateUserSettingsDto): void {
+    this.errorKey.set(null);
+    this.saving.set(true);
+
+    this.authService
+      .updateSettings(dto)
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          this.errorKey.set(extractErrorKey(err));
+
+          return EMPTY;
+        }),
+        finalize(() => this.saving.set(false)),
+      )
+      .subscribe();
   }
 
   deleteAccount(): void {

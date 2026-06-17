@@ -26,6 +26,22 @@
     gap: 12px;
   }
 
+  &__identity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  &__avatar {
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--kd-border);
+  }
+
   &__name {
     margin: 0;
     font-size: var(--kd-font-size-lg);
