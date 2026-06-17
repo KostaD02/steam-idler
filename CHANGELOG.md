@@ -1,3 +1,13 @@
+## 2.9.0 (2026-06-17)
+
+### 🚀 Features
+
+- **server:** encrypt steam credentials at rest ([#65](https://github.com/KostaD02/steam-idler/pull/65))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.8.0 (2026-06-16)
 
 ### 🚀 Features
