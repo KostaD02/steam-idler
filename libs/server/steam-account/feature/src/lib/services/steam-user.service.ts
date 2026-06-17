@@ -2,7 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 
 import SteamUser from 'steam-user';
 
-import { ExceptionService } from '@steam-idler/server/infra/services';
+import {
+  EncryptionService,
+  ExceptionService,
+} from '@steam-idler/server/infra/services';
 import { ExceptionStatusKeys, MongoId } from '@steam-idler/server/infra/types';
 
 import { AuthRepository } from '@steam-idler/server/auth/domain';
@@ -27,6 +30,7 @@ export class SteamUserService {
     private readonly steamAccountRepository: SteamAccountRepository,
     private readonly authRepository: AuthRepository,
     private readonly exceptionService: ExceptionService,
+    private readonly encryptionService: EncryptionService,
   ) {
     this.init();
   }
@@ -61,14 +65,13 @@ export class SteamUserService {
     this.usersMap.set(steamSignInDto.login, steamUser);
 
     steamUser.on('refreshToken', async (refreshToken: string) => {
-      // ! TODO: THIS PART NEEDS TO BE ENCRYPTED BEFORE GOING LIVE
-      user.credentials.refreshToken = refreshToken;
+      user.credentials.refreshToken =
+        this.encryptionService.encrypt(refreshToken);
       await user.save();
     });
 
     steamUser.on('webSession', async (_, cookies: string[]) => {
-      // ! TODO: THIS PART NEEDS TO BE ENCRYPTED BEFORE GOING LIVE
-      user.credentials.cookies = cookies;
+      user.credentials.cookies = this.encryptionService.encryptList(cookies);
       await user.save();
     });
 
@@ -504,19 +507,22 @@ export class SteamUserService {
     });
 
     steamUser.on('refreshToken', async (refreshToken) => {
-      user.credentials.refreshToken = refreshToken;
+      user.credentials.refreshToken =
+        this.encryptionService.encrypt(refreshToken);
       await user.save();
     });
 
     steamUser.on('webSession', async (_, cookies) => {
-      user.credentials.cookies = cookies;
+      user.credentials.cookies = this.encryptionService.encryptList(cookies);
       await user.save();
     });
 
     this.registerAutoReply(steamUser, user.accountName);
 
     steamUser.logOn({
-      refreshToken: user.credentials.refreshToken,
+      refreshToken: this.encryptionService.decrypt(
+        user.credentials.refreshToken,
+      ),
     });
   }
 
