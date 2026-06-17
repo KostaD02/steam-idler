@@ -1,3 +1,13 @@
+## 2.10.0 (2026-06-17)
+
+### 🚀 Features
+
+- show steam profile name/avatar and add display settings ([#68](https://github.com/KostaD02/steam-idler/pull/68))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.9.0 (2026-06-17)
 
 ### 🚀 Features
