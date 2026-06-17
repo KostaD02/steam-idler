@@ -1,9 +1,20 @@
 <si-card class="account">
   <div class="account__body" [class.account__body--busy]="busy()">
     <header class="account__header">
-      <h3 class="account__name" [title]="account().accountName">
-        {{ account().accountName }}
-      </h3>
+      <div class="account__identity">
+        @if (avatarUrl(); as avatar) {
+          <img
+            class="account__avatar"
+            [src]="avatar"
+            alt=""
+            referrerpolicy="no-referrer"
+          />
+        }
+
+        <h3 class="account__name" [title]="displayName()">
+          {{ displayName() }}
+        </h3>
+      </div>
 
       @if (isIdling()) {
         <span class="kd-status-pill kd-status-pill--active">

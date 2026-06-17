@@ -9,12 +9,18 @@ import {
   compareToHash,
   hashText,
   UPDATABLE_USER_FIELDS,
+  UPDATABLE_USER_SETTINGS_FIELDS,
 } from '@steam-idler/server/auth/core';
-import { AuthRepository, UserUpdateDto } from '@steam-idler/server/auth/domain';
+import {
+  AuthRepository,
+  UserSettingsUpdateDto,
+  UserUpdateDto,
+} from '@steam-idler/server/auth/domain';
 import {
   AuthExpectionKeys,
   ChangePasswordDto,
   UpdateUserDto,
+  UpdateUserSettingsDto,
   User,
   UserExceptionKeys,
 } from '@steam-idler/server/auth/types';
@@ -117,6 +123,34 @@ export class AuthAccountService {
       sanitized,
     );
     this.authValidationService.checkUserExistence(updated);
+    return updated.toObject<User>();
+  }
+
+  async updateSettings(user: User, dto: UpdateUserSettingsDto) {
+    const sanitized: UserSettingsUpdateDto = {};
+
+    for (const field of UPDATABLE_USER_SETTINGS_FIELDS) {
+      const value = dto[field];
+
+      if (value !== undefined) {
+        sanitized[field] = value;
+      }
+    }
+
+    if (Object.keys(sanitized).length === 0) {
+      this.exceptionService.throw(
+        ExceptionStatusKeys.BadRequest,
+        'No settings provided to update',
+        [AuthExpectionKeys.NoUpdateFieldsProvided],
+      );
+    }
+
+    const updated = await this.authRepository.updateSettings(
+      String(user._id),
+      sanitized,
+    );
+    this.authValidationService.checkUserExistence(updated);
+
     return updated.toObject<User>();
   }
 }

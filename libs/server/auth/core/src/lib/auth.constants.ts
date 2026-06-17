@@ -21,3 +21,11 @@ export const AUTH_TOKENS = {
 
 export const UPDATABLE_USER_FIELDS = ['displayName'] as const;
 export type UpdatableUserField = (typeof UPDATABLE_USER_FIELDS)[number];
+
+export const UPDATABLE_USER_SETTINGS_FIELDS = [
+  'showProfileName',
+  'showProfileImage',
+  'maskAccountName',
+] as const;
+export type UpdatableUserSettingsField =
+  (typeof UPDATABLE_USER_SETTINGS_FIELDS)[number];

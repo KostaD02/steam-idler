@@ -6,7 +6,6 @@ import { ApiService } from '@steam-idler/client/infra/data-access';
 
 import {
   GamesToIdleDto,
-  SteamAccount,
   SteamAccountSummary,
   SteamSignInDto,
   UpdateAutoReplyDto,
@@ -26,8 +25,8 @@ export class AccountsApiService {
     return this.apiService.get<SteamAccountSummary[]>(this.apiUrl);
   }
 
-  addSteamAccount(dto: SteamSignInDto): Observable<SteamAccount> {
-    return this.apiService.post<SteamAccount>(this.apiUrl, dto);
+  addSteamAccount(dto: SteamSignInDto): Observable<SteamAccountSummary> {
+    return this.apiService.post<SteamAccountSummary>(this.apiUrl, dto);
   }
 
   startIdling(name: string): Observable<SteamAccountSummary> {

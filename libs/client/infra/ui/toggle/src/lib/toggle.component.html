@@ -1,0 +1,15 @@
+<label class="kd-toggle" [class.kd-toggle--disabled]="disabled()">
+  <input
+    type="checkbox"
+    class="kd-toggle__input"
+    [checked]="checked()"
+    [disabled]="disabled()"
+    (change)="onChange($event)"
+  />
+  <span class="kd-toggle__track" aria-hidden="true">
+    <span class="kd-toggle__thumb"></span>
+  </span>
+  <span class="kd-toggle__label">
+    <ng-content></ng-content>
+  </span>
+</label>

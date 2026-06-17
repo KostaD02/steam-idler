@@ -1,6 +1,7 @@
 import { MongoId, MongoObject } from '@steam-idler/server/infra/types';
 
 import { UserRole } from './role';
+import { UserSettings } from './user-settings';
 
 export interface BaseUser extends MongoObject {
   email: string;
@@ -9,6 +10,7 @@ export interface BaseUser extends MongoObject {
   role: UserRole;
   steamAccounts: MongoId[];
   passwordChangedAt: string;
+  settings: UserSettings;
 }
 
 export type UserNotSelectedFields = 'password';

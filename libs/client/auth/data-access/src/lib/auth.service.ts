@@ -11,6 +11,7 @@ import {
   SignInDto,
   SignUpDto,
   UpdateUserDto,
+  UpdateUserSettingsDto,
   User,
 } from '@steam-idler/server/auth/types';
 
@@ -79,6 +80,12 @@ export class AuthService {
   updateUser(dto: UpdateUserDto): Observable<User> {
     return this.authApiService
       .updateUser(dto)
+      .pipe(tap((user) => this.setUser(user)));
+  }
+
+  updateSettings(dto: UpdateUserSettingsDto): Observable<User> {
+    return this.authApiService
+      .updateSettings(dto)
       .pipe(tap((user) => this.setUser(user)));
   }
 

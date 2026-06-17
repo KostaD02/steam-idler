@@ -105,7 +105,8 @@ export class SteamUserService {
           steamUser.setPersona(
             user.idleSettings.personaStatus as SteamUser.EPersonaState,
           );
-          resolve(user.toObject());
+          await this.syncProfile(steamUser, user);
+          resolve(this.returnSteamAccountObject(user));
         } catch {
           this.usersMap.delete(login);
           await user.deleteOne().exec();
@@ -503,6 +504,7 @@ export class SteamUserService {
       steamUser.setPersona(
         user.idleSettings.personaStatus as SteamUser.EPersonaState,
       );
+      await this.syncProfile(steamUser, user);
       this.idleGames(user.accountName, false);
     });
 
@@ -524,6 +526,37 @@ export class SteamUserService {
         user.credentials.refreshToken,
       ),
     });
+  }
+
+  private async syncProfile(
+    steamUser: SteamUser,
+    account: SteamAccountDocument,
+  ) {
+    if (!steamUser.steamID) {
+      return;
+    }
+
+    try {
+      const steamId = steamUser.steamID.toString();
+      const { personas } = await steamUser.getPersonas([steamUser.steamID]);
+      const persona = personas[steamId];
+
+      if (!persona) {
+        return;
+      }
+
+      account.profile = {
+        name: persona['player_name'] ?? '',
+        avatarUrl: persona['avatar_url_full'] ?? '',
+      };
+      await account.save();
+      await this.steamAccountRepository.evictUserAccounts(account.userId);
+    } catch (error) {
+      this.logger.error(
+        `Failed to sync Steam profile for ${account.accountName}`,
+        error,
+      );
+    }
   }
 
   private returnSteamAccountObject(

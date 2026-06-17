@@ -11,6 +11,7 @@ import {
   BaseUser,
   UserRole,
   UserRoleEnum,
+  UserSettings,
 } from '@steam-idler/server/auth/types';
 
 import { UserEmailValidator } from './auth.validator';
@@ -66,6 +67,26 @@ export class UserEntity implements StrippedMongoObject<BaseUser> {
     default: () => getISOString(),
   })
   passwordChangedAt!: string;
+
+  @Prop({
+    _id: false,
+    required: true,
+    type: {
+      showProfileName: {
+        type: Boolean,
+        default: true,
+      },
+      showProfileImage: {
+        type: Boolean,
+        default: true,
+      },
+      maskAccountName: {
+        type: Boolean,
+        default: false,
+      },
+    },
+  })
+  settings!: UserSettings;
 }
 
 export type UserDocument = HydratedDocument<UserEntity>;

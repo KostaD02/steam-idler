@@ -101,6 +101,9 @@
       ],
       "@steam-idler/client/settings/feature": [
         "libs/client/settings/feature/src/index.ts"
+      ],
+      "@steam-idler/client/infra/ui/toggle": [
+        "libs/client/infra/ui/toggle/src/index.ts"
       ]
     }
   },

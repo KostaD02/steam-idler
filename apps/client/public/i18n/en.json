@@ -49,6 +49,7 @@
       "should_provide_password": "Password is required.",
       "password_changed": "Your password was changed. Please sign in again.",
       "no_update_fields_provided": "No fields were provided to update.",
+      "setting_should_be_boolean": "This setting must be true or false.",
       "user_not_found": "We couldn't find an account that matches.",
       "role_not_sufficient": "You don't have permission to do that."
     },
@@ -157,6 +158,12 @@
           "label": "Password",
           "value": "••••••••"
         }
+      },
+      "display": {
+        "title": "Display preferences",
+        "show_profile_name": "Show Steam profile name",
+        "show_profile_image": "Show Steam profile image",
+        "mask_account_name": "Mask account name"
       },
       "change_password": {
         "trigger": "Change password",

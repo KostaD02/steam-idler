@@ -27,7 +27,13 @@ import { User } from '@steam-idler/server/auth/types';
 
 import { AuthService } from './auth.service';
 import { Auth, CurrentUser } from './decorators';
-import { ChangePasswordDto, SignInDto, SignUpDto, UpdateUserDto } from './dto';
+import {
+  ChangePasswordDto,
+  SignInDto,
+  SignUpDto,
+  UpdateUserDto,
+  UpdateUserSettingsDto,
+} from './dto';
 import { LocalAuthGuard, RefreshJwtGuard } from './guards';
 
 @ApiTags('Auth')
@@ -83,6 +89,34 @@ export class AuthController {
   })
   updateUser(@CurrentUser() user: User, @Body() dto: UpdateUserDto) {
     return this.authService.updateUser(user, dto);
+  }
+
+  @Patch('settings')
+  @Auth()
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Update the current user display settings',
+    description:
+      'Patches the boolean display preferences (`showProfileName`, `showProfileImage`, `maskAccountName`) on the user resolved from the access token. At least one field must be provided; unknown fields are rejected by the global validation pipe.',
+  })
+  @ApiOkResponse({ description: 'Updated user profile.' })
+  @ApiBadRequestResponse({
+    description:
+      'Body validation failed or no updatable settings were provided. Possible errorKeys: `errors.auth.no_update_fields_provided`, `errors.auth.setting_should_be_boolean`, `errors.auth.invalid_token`, `errors.common.property_should_not_exist`.',
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'Access token expired (`errors.auth.token_expired`), missing/invalid (`errors.auth.invalid_credentials`), or issued before the latest password change (`errors.auth.password_changed`).',
+  })
+  @ApiNotFoundResponse({
+    description:
+      'User referenced by the token no longer exists. errorKey: `errors.auth.user_not_found`.',
+  })
+  updateSettings(
+    @CurrentUser() user: User,
+    @Body() dto: UpdateUserSettingsDto,
+  ) {
+    return this.authService.updateSettings(user, dto);
   }
 
   @Delete()
