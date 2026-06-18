@@ -1,3 +1,13 @@
+## 2.11.0 (2026-06-18)
+
+### 🚀 Features
+
+- add trading cards page with card drops and playtime ([#71](https://github.com/KostaD02/steam-idler/pull/71))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.10.0 (2026-06-17)
 
 ### 🚀 Features
