@@ -19,4 +19,5 @@ export const API_SENSITIVE_KEYS = [
   'twoFactorCode',
   'cookies',
   'refreshToken',
+  'qrDataUrl',
 ];

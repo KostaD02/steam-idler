@@ -2,6 +2,8 @@ import { inject, Injectable } from '@angular/core';
 
 import { map, Observable, switchMap } from 'rxjs';
 
+import { ThemeService } from '@steam-idler/client/infra/core';
+
 import { AuthService } from '@steam-idler/client/auth/data-access';
 import {
   GamesToIdleDto,
@@ -13,15 +15,22 @@ import {
   UpdatePersonaDto,
 } from '@steam-idler/server/steam-account/types';
 
-import { AccountsApiService } from './accounts-api.service';
+import { AccountsApiService, QrLoginStreamEvent } from './accounts-api.service';
 
 @Injectable({ providedIn: 'root' })
 export class AccountsService {
   private readonly accountsApiService = inject(AccountsApiService);
   private readonly authService = inject(AuthService);
+  private readonly themeService = inject(ThemeService);
 
   getSteamAccounts(): Observable<SteamAccountSummary[]> {
     return this.accountsApiService.getSteamAccounts();
+  }
+
+  streamQrLogin(): Observable<QrLoginStreamEvent> {
+    return this.accountsApiService.streamQrLogin(
+      this.themeService.selectedTheme(),
+    );
   }
 
   getCards(name: string): Observable<GameWithCards[]> {

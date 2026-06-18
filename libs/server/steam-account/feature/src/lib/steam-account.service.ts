@@ -1,4 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, MessageEvent } from '@nestjs/common';
+
+import { Observable } from 'rxjs';
 
 import { ExceptionService } from '@steam-idler/server/infra/services';
 import {
@@ -8,6 +10,11 @@ import {
 } from '@steam-idler/server/infra/types';
 
 import {
+  GameWithCards,
+  OwnedGame,
+} from '@steam-idler/server/steam-account/types';
+
+import {
   GamesToIdleDto,
   SteamSignInDto,
   UpdateAutoReplyDto,
@@ -15,6 +22,7 @@ import {
   UpdatePersonaDto,
 } from './dto';
 import { SteamCardsService } from './services/steam-cards.service';
+import { SteamQrService } from './services/steam-qr.service';
 import { SteamUserService } from './services/steam-user.service';
 
 @Injectable()
@@ -22,8 +30,13 @@ export class SteamAccountService {
   constructor(
     private readonly steamUserService: SteamUserService,
     private readonly steamCardsService: SteamCardsService,
+    private readonly steamQrService: SteamQrService,
     private readonly exceptionService: ExceptionService,
   ) {}
+
+  streamQrLogin(userId: MongoId, theme?: string): Observable<MessageEvent> {
+    return this.steamQrService.createLoginStream(userId, theme);
+  }
 
   async getSteamAccounts(userId: MongoId) {
     return this.steamUserService.getByUserId(userId);
@@ -100,7 +113,42 @@ export class SteamAccountService {
     return this.steamUserService.updateAutoReply(name, dto);
   }
 
-  getCards(name: string) {
-    return this.steamCardsService.getCards(name);
+  async getCards(name: string): Promise<GameWithCards[]> {
+    const [cards, ownedApps] = await Promise.all([
+      this.steamCardsService.getCards(name),
+      this.steamUserService.getOwnedApps(name),
+    ]);
+
+    return this.mergeLibrary(cards, ownedApps);
+  }
+
+  private mergeLibrary(
+    cards: GameWithCards[],
+    ownedApps: OwnedGame[],
+  ): GameWithCards[] {
+    const byAppid = new Map<number, GameWithCards>();
+
+    for (const owned of ownedApps) {
+      byAppid.set(owned.appid, {
+        appid: owned.appid,
+        name: owned.name,
+        iconUrl: `https://cdn.cloudflare.steamstatic.com/steam/apps/${owned.appid}/header.jpg`,
+        playtimeForever: owned.playtimeForever,
+        cardsRemaining: null,
+      });
+    }
+
+    for (const card of cards) {
+      const existing = byAppid.get(card.appid);
+
+      if (existing) {
+        existing.cardsRemaining = card.cardsRemaining;
+        continue;
+      }
+
+      byAppid.set(card.appid, card);
+    }
+
+    return [...byAppid.values()];
   }
 }

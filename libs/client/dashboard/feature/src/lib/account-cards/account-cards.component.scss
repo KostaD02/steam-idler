@@ -104,6 +104,12 @@
       border-radius: var(--kd-radius-pill);
     }
   }
+
+  &__disclaimer {
+    margin: 0;
+    font-size: var(--kd-font-size-xxs);
+    color: var(--kd-text-muted);
+  }
 }
 
 .cards-table {
@@ -221,6 +227,10 @@
     width: 52px;
     color: var(--kd-text-muted);
     font-variant-numeric: tabular-nums;
+  }
+
+  &__no-cards {
+    color: var(--kd-text-muted);
   }
 }
 

@@ -3,16 +3,30 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ApiService } from '@steam-idler/client/infra/data-access';
+import { Theme } from '@steam-idler/client/infra/types';
 
 import {
   GamesToIdleDto,
   GameWithCards,
+  QrLoginAuthenticatedData,
+  QrLoginErrorData,
+  QrLoginEventType,
+  QrLoginQrData,
   SteamAccountSummary,
   SteamSignInDto,
   UpdateAutoReplyDto,
   UpdateDisplayedGameNameDto,
   UpdatePersonaDto,
 } from '@steam-idler/server/steam-account/types';
+
+export type QrLoginStreamEvent =
+  | { event: typeof QrLoginEventType.Qr; data: QrLoginQrData }
+  | { event: typeof QrLoginEventType.Scanned; data: Record<string, never> }
+  | {
+      event: typeof QrLoginEventType.Authenticated;
+      data: QrLoginAuthenticatedData;
+    }
+  | { event: typeof QrLoginEventType.Failed; data: QrLoginErrorData };
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +48,13 @@ export class AccountsApiService {
 
   addSteamAccount(dto: SteamSignInDto): Observable<SteamAccountSummary> {
     return this.apiService.post<SteamAccountSummary>(this.apiUrl, dto);
+  }
+
+  streamQrLogin(theme: Theme): Observable<QrLoginStreamEvent> {
+    return this.apiService.stream(
+      `${this.apiUrl}/qr/stream?theme=${theme}`,
+      Object.values(QrLoginEventType),
+    ) as Observable<QrLoginStreamEvent>;
   }
 
   startIdling(name: string): Observable<SteamAccountSummary> {

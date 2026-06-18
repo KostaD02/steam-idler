@@ -6,103 +6,177 @@
         <p>{{ 'ui.accounts.add.subtitle' | translate }}</p>
       </header>
 
-      @if (errorKey(); as key) {
-        <div class="accounts-form__error" role="alert">
-          {{ key | translate }}
+      <div class="accounts-tabs" role="tablist">
+        <button
+          type="button"
+          role="tab"
+          class="accounts-tabs__tab"
+          [class.accounts-tabs__tab--active]="mode() === 'credentials'"
+          [attr.aria-selected]="mode() === 'credentials'"
+          (click)="setMode('credentials')"
+        >
+          {{ 'ui.accounts.tabs.credentials' | translate }}
+        </button>
+        <button
+          type="button"
+          role="tab"
+          class="accounts-tabs__tab"
+          [class.accounts-tabs__tab--active]="mode() === 'qr'"
+          [attr.aria-selected]="mode() === 'qr'"
+          (click)="setMode('qr')"
+        >
+          {{ 'ui.accounts.tabs.qr' | translate }}
+        </button>
+      </div>
+
+      @if (mode() === 'credentials') {
+        @if (errorKey(); as key) {
+          <div class="accounts-form__error" role="alert">
+            {{ key | translate }}
+          </div>
+        }
+
+        <form
+          class="accounts-form"
+          [formGroup]="form"
+          (ngSubmit)="onSubmit()"
+          novalidate
+        >
+          <div class="kd-field-group">
+            <label class="kd-field-label" for="account-login">{{
+              'ui.accounts.fields.login.label' | translate
+            }}</label>
+            <input
+              id="account-login"
+              type="text"
+              class="kd-field-input"
+              [class.kd-invalid]="isInvalid('login')"
+              formControlName="login"
+              autocomplete="username"
+              autocapitalize="none"
+              autocorrect="off"
+              spellcheck="false"
+              [placeholder]="'ui.accounts.fields.login.placeholder' | translate"
+            />
+            @if (isInvalid('login')) {
+              <span class="kd-field-error">{{
+                'ui.accounts.fields.login.error' | translate
+              }}</span>
+            }
+          </div>
+
+          <div class="kd-field-group">
+            <label class="kd-field-label" for="account-password">{{
+              'ui.accounts.fields.password.label' | translate
+            }}</label>
+            <input
+              id="account-password"
+              type="password"
+              class="kd-field-input"
+              [class.kd-invalid]="isInvalid('password')"
+              formControlName="password"
+              autocomplete="current-password"
+              [placeholder]="
+                'ui.accounts.fields.password.placeholder' | translate
+              "
+            />
+            @if (isInvalid('password')) {
+              <span class="kd-field-error">{{
+                'ui.accounts.fields.password.error' | translate
+              }}</span>
+            }
+          </div>
+
+          <div class="kd-field-group">
+            <label class="kd-field-label" for="account-two-factor-code">{{
+              'ui.accounts.fields.two_factor_code.label' | translate
+            }}</label>
+            <input
+              id="account-two-factor-code"
+              type="text"
+              inputmode="text"
+              maxlength="5"
+              class="kd-field-input"
+              [class.kd-invalid]="isInvalid('twoFactorCode')"
+              formControlName="twoFactorCode"
+              autocomplete="one-time-code"
+              autocapitalize="characters"
+              autocorrect="off"
+              spellcheck="false"
+              [placeholder]="
+                'ui.accounts.fields.two_factor_code.placeholder' | translate
+              "
+            />
+            @if (isInvalid('twoFactorCode')) {
+              <span class="kd-field-error">{{
+                'ui.accounts.fields.two_factor_code.error' | translate
+              }}</span>
+            }
+          </div>
+
+          <button
+            type="submit"
+            class="kd-btn kd-btn-block accounts-form__submit"
+            [disabled]="submitting()"
+          >
+            {{
+              (submitting()
+                ? 'ui.accounts.add.submit_loading'
+                : 'ui.accounts.add.submit'
+              ) | translate
+            }}
+          </button>
+        </form>
+      } @else {
+        <div class="accounts-qr">
+          @if (qrErrorKey(); as key) {
+            <div class="accounts-form__error" role="alert">
+              {{ key | translate }}
+            </div>
+          }
+
+          @switch (qrStatus()) {
+            @case ('connecting') {
+              <p class="accounts-qr__hint">
+                {{ 'ui.accounts.qr.connecting' | translate }}
+              </p>
+            }
+            @case ('waiting') {
+              <img
+                class="accounts-qr__image"
+                [src]="qrDataUrl()"
+                alt=""
+                width="240"
+                height="240"
+              />
+              <p class="accounts-qr__hint">
+                {{ 'ui.accounts.qr.instructions' | translate }}
+              </p>
+            }
+            @case ('scanned') {
+              <img
+                class="accounts-qr__image"
+                [src]="qrDataUrl()"
+                alt=""
+                width="240"
+                height="240"
+              />
+              <p class="accounts-qr__hint accounts-qr__hint--active">
+                {{ 'ui.accounts.qr.scanned' | translate }}
+              </p>
+            }
+            @case ('error') {
+              <button
+                type="button"
+                class="kd-btn kd-btn-block"
+                (click)="startQrLogin()"
+              >
+                {{ 'ui.accounts.qr.retry' | translate }}
+              </button>
+            }
+          }
         </div>
       }
-
-      <form
-        class="accounts-form"
-        [formGroup]="form"
-        (ngSubmit)="onSubmit()"
-        novalidate
-      >
-        <div class="kd-field-group">
-          <label class="kd-field-label" for="account-login">{{
-            'ui.accounts.fields.login.label' | translate
-          }}</label>
-          <input
-            id="account-login"
-            type="text"
-            class="kd-field-input"
-            [class.kd-invalid]="isInvalid('login')"
-            formControlName="login"
-            autocomplete="username"
-            autocapitalize="none"
-            autocorrect="off"
-            spellcheck="false"
-            [placeholder]="'ui.accounts.fields.login.placeholder' | translate"
-          />
-          @if (isInvalid('login')) {
-            <span class="kd-field-error">{{
-              'ui.accounts.fields.login.error' | translate
-            }}</span>
-          }
-        </div>
-
-        <div class="kd-field-group">
-          <label class="kd-field-label" for="account-password">{{
-            'ui.accounts.fields.password.label' | translate
-          }}</label>
-          <input
-            id="account-password"
-            type="password"
-            class="kd-field-input"
-            [class.kd-invalid]="isInvalid('password')"
-            formControlName="password"
-            autocomplete="current-password"
-            [placeholder]="
-              'ui.accounts.fields.password.placeholder' | translate
-            "
-          />
-          @if (isInvalid('password')) {
-            <span class="kd-field-error">{{
-              'ui.accounts.fields.password.error' | translate
-            }}</span>
-          }
-        </div>
-
-        <div class="kd-field-group">
-          <label class="kd-field-label" for="account-two-factor-code">{{
-            'ui.accounts.fields.two_factor_code.label' | translate
-          }}</label>
-          <input
-            id="account-two-factor-code"
-            type="text"
-            inputmode="text"
-            maxlength="5"
-            class="kd-field-input"
-            [class.kd-invalid]="isInvalid('twoFactorCode')"
-            formControlName="twoFactorCode"
-            autocomplete="one-time-code"
-            autocapitalize="characters"
-            autocorrect="off"
-            spellcheck="false"
-            [placeholder]="
-              'ui.accounts.fields.two_factor_code.placeholder' | translate
-            "
-          />
-          @if (isInvalid('twoFactorCode')) {
-            <span class="kd-field-error">{{
-              'ui.accounts.fields.two_factor_code.error' | translate
-            }}</span>
-          }
-        </div>
-
-        <button
-          type="submit"
-          class="kd-btn kd-btn-block accounts-form__submit"
-          [disabled]="submitting()"
-        >
-          {{
-            (submitting()
-              ? 'ui.accounts.add.submit_loading'
-              : 'ui.accounts.add.submit'
-            ) | translate
-          }}
-        </button>
-      </form>
     </si-card>
   </div>
 </section>
