@@ -1,3 +1,13 @@
+## 2.12.0 (2026-06-18)
+
+### 🚀 Features
+
+- add steam qr code login ([#72](https://github.com/KostaD02/steam-idler/pull/72))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.11.0 (2026-06-18)
 
 ### 🚀 Features
