@@ -3,7 +3,13 @@ export interface GameWithCards {
   name: string;
   iconUrl: string;
   playtimeForever: number;
-  cardsRemaining: number;
+  cardsRemaining: number | null;
+}
+
+export interface OwnedGame {
+  appid: number;
+  name: string;
+  playtimeForever: number;
 }
 
 export type GetCardsResponse = GameWithCards[];

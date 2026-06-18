@@ -5,6 +5,7 @@ import {
   Logger,
   NestInterceptor,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 
 import { Request, Response } from 'express';
 import { catchError, Observable, tap, throwError } from 'rxjs';
@@ -20,13 +21,27 @@ import {
   sanitizeObject,
 } from '@steam-idler/infra';
 
+import { SKIP_LOGGING } from './skip-logging.decorator';
+
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   private readonly logger = new Logger(LoggingInterceptor.name);
 
-  constructor(private readonly logLevel: LogLevel = LogLevelEnum.All) {}
+  constructor(
+    private readonly reflector: Reflector,
+    private readonly logLevel: LogLevel = LogLevelEnum.All,
+  ) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<SafeAny> {
+    const skipLogging = this.reflector.getAllAndOverride<boolean>(
+      SKIP_LOGGING,
+      [context.getHandler(), context.getClass()],
+    );
+
+    if (skipLogging) {
+      return next.handle();
+    }
+
     const httpCtx = context.switchToHttp();
     const req = httpCtx.getRequest<Request>();
     const res = httpCtx.getResponse<Response>();

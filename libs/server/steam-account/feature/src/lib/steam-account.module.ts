@@ -15,6 +15,7 @@ import {
 
 import { SteamAccountOwnershipGuard } from './guards';
 import { SteamCardsService } from './services/steam-cards.service';
+import { SteamQrService } from './services/steam-qr.service';
 import { SteamUserService } from './services/steam-user.service';
 import { SteamAccountController } from './steam-account.controller';
 import { SteamAccountService } from './steam-account.service';
@@ -36,6 +37,7 @@ import { SteamAccountService } from './steam-account.service';
     SteamAccountRepository,
     SteamUserService,
     SteamCardsService,
+    SteamQrService,
     SteamAccountOwnershipGuard,
   ],
 })

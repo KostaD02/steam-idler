@@ -3,9 +3,12 @@ import {
   Controller,
   Delete,
   Get,
+  MessageEvent,
   Param,
   Patch,
   Post,
+  Query,
+  Sse,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -19,6 +22,10 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+
+import { Observable } from 'rxjs';
+
+import { SkipLogging } from '@steam-idler/server/infra/interceptors';
 
 import { Auth, CurrentUser } from '@steam-idler/server/auth/feature';
 import { User } from '@steam-idler/server/auth/types';
@@ -56,6 +63,7 @@ export class SteamAccountController {
   }
 
   @Get('cards/:name')
+  @SkipLogging()
   @UseGuards(SteamAccountOwnershipGuard)
   @ApiOperation({
     summary: 'List trading-card-bearing games for a Steam account',
@@ -108,6 +116,27 @@ export class SteamAccountController {
     @CurrentUser() user: User,
   ) {
     return this.steamAccountService.addSteamAccount(steamSignInDto, user._id);
+  }
+
+  @Sse('qr/stream')
+  @ApiOperation({
+    summary: 'Add a Steam account via QR code (SSE stream)',
+    description:
+      'Opens a Server-Sent Events stream that drives the QR login flow. Emits `qr` (`{ qrDataUrl }` to render and scan with the Steam mobile app), `scanned` (the code was scanned, awaiting approval), `authenticated` (the created Steam account summary; the stream then closes), and `error` (`{ errorKey }`). Closing the connection cancels the pending login attempt. The account is created for the user resolved from the access token.',
+  })
+  @ApiOkResponse({
+    description:
+      'A `text/event-stream` of `qr` / `scanned` / `authenticated` / `error` events.',
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'Access token expired (`errors.auth.token_expired`) or no `req.user` resolved by the guard (`errors.auth.invalid_credentials`).',
+  })
+  qrStream(
+    @CurrentUser() user: User,
+    @Query('theme') theme?: string,
+  ): Observable<MessageEvent> {
+    return this.steamAccountService.streamQrLogin(user._id, theme);
   }
 
   @Delete('remove/:name')

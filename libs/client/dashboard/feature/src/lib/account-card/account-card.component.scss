@@ -71,6 +71,10 @@
       height: 16px;
     }
 
+    &::after {
+      display: none;
+    }
+
     &:hover,
     &:focus-visible {
       outline: none;

@@ -131,12 +131,15 @@ export class AccountCardsComponent {
         return a.name.localeCompare(b.name) * direction;
       }
 
-      return (a[column] - b[column]) * direction;
+      const aValue = a[column] ?? -1;
+      const bValue = b[column] ?? -1;
+
+      return (aValue - bValue) * direction;
     });
   });
 
   readonly totalCards = computed(() =>
-    this.games().reduce((total, game) => total + game.cardsRemaining, 0),
+    this.games().reduce((total, game) => total + (game.cardsRemaining ?? 0), 0),
   );
 
   setFilter(value: string): void {

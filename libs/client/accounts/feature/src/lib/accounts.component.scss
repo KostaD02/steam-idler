@@ -1,5 +1,5 @@
 .accounts {
-  .accounts__wrapper {
+  &__wrapper {
     width: 100%;
     height: 100%;
     display: flex;
@@ -7,24 +7,9 @@
     justify-content: center;
   }
 
-  .accounts__card {
+  &__card {
     width: 100%;
     max-width: 420px;
-  }
-}
-
-.accounts-form__header {
-  margin-bottom: 24px;
-
-  h2 {
-    font-size: var(--kd-font-size-xxl);
-    margin: 0 0 8px;
-  }
-
-  p {
-    margin: 0;
-    font-size: var(--kd-font-size-xs);
-    color: var(--kd-text-muted);
   }
 }
 
@@ -32,19 +17,86 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  &__header {
+    margin-bottom: 24px;
+
+    h2 {
+      font-size: var(--kd-font-size-xxl);
+      margin: 0 0 8px;
+    }
+
+    p {
+      margin: 0;
+      font-size: var(--kd-font-size-xs);
+      color: var(--kd-text-muted);
+    }
+  }
+
+  &__submit {
+    margin-top: 8px;
+  }
+
+  &__error {
+    margin-bottom: 16px;
+    padding: 10px 12px;
+    background: var(--kd-danger-soft);
+    border: 1px solid var(--kd-danger);
+    border-radius: var(--kd-radius-sm);
+    color: var(--kd-danger);
+    font-size: var(--kd-font-size-xs);
+    line-height: 1.4;
+  }
 }
 
-.accounts-form__submit {
-  margin-top: 8px;
+.accounts-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+
+  &__tab {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--kd-border);
+    border-radius: var(--kd-radius-sm);
+    background: transparent;
+    color: var(--kd-text-muted);
+    font-family: var(--kd-font-secondary);
+    font-size: var(--kd-font-size-sm);
+    cursor: pointer;
+    transition: var(--kd-transition-fast);
+
+    &--active {
+      border-color: var(--kd-accent);
+      background: var(--kd-accent-soft);
+      color: var(--kd-text-primary);
+    }
+  }
 }
 
-.accounts-form__error {
-  margin-bottom: 16px;
-  padding: 10px 12px;
-  background: var(--kd-danger-soft);
-  border: 1px solid var(--kd-danger);
-  border-radius: var(--kd-radius-sm);
-  color: var(--kd-danger);
-  font-size: var(--kd-font-size-xs);
-  line-height: 1.4;
+.accounts-qr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  min-height: 240px;
+  justify-content: center;
+
+  &__image {
+    width: 240px;
+    height: 240px;
+    border-radius: var(--kd-radius-sm);
+  }
+
+  &__hint {
+    margin: 0;
+    text-align: center;
+    font-size: var(--kd-font-size-xs);
+    color: var(--kd-text-muted);
+    line-height: 1.4;
+
+    &--active {
+      color: var(--kd-accent);
+    }
+  }
 }

@@ -76,7 +76,9 @@
       "auto_reply_while_idling_should_be_boolean": "Auto-reply scope is invalid.",
       "displayed_game_name_should_be_string": "Display title must be text.",
       "displayed_game_name_too_long": "Display title is too long.",
-      "cards_unavailable": "Couldn't read trading cards. Make sure the account is signed in."
+      "cards_unavailable": "Couldn't read trading cards. Make sure the account is signed in.",
+      "qr_timeout": "The QR code expired before it was scanned. Generate a new one.",
+      "qr_failed": "QR sign-in failed. Please try again."
     }
   },
   "ui": {
@@ -91,6 +93,16 @@
         "subtitle": "Sign in with your Steam credentials to start idling games.",
         "submit": "Add account",
         "submit_loading": "Adding account…"
+      },
+      "tabs": {
+        "credentials": "Credentials",
+        "qr": "QR code"
+      },
+      "qr": {
+        "connecting": "Generating QR code…",
+        "instructions": "Open the Steam mobile app, tap the QR scanner, and scan this code.",
+        "scanned": "Scanned! Approve the sign-in on your phone.",
+        "retry": "Generate a new code"
       },
       "fields": {
         "login": {
@@ -279,7 +291,7 @@
         "title": "Trading cards",
         "back": "Back to dashboard",
         "loading": "Loading trading cards…",
-        "empty": "No card-bearing games found for this account.",
+        "empty": "No games found for this account.",
         "filter_placeholder": "Filter by name or ID…",
         "columns": {
           "index": "#",
@@ -288,7 +300,9 @@
           "cards": "Cards left",
           "playtime": "Playtime"
         },
-        "totals": "{{games}} games · {{cards}} cards remaining"
+        "totals": "{{games}} games · {{cards}} cards remaining",
+        "no_cards_hint": "This game has no Steam trading cards.",
+        "no_cards_disclaimer": "X = this game has no Steam trading cards, so it will never drop any."
       },
       "remove_confirm": {
         "title": "Remove account",

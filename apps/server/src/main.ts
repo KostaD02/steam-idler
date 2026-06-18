@@ -1,5 +1,5 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import cookieParser from 'cookie-parser';
@@ -17,6 +17,7 @@ async function bootstrap() {
   const logger = new Logger(bootstrap.name);
   const app = await NestFactory.create(AppModule);
   const env = app.get(EnvironmentService);
+  const reflector = app.get(Reflector);
 
   app.use(cookieParser());
   app.setGlobalPrefix(globalPrefix);
@@ -43,7 +44,7 @@ async function bootstrap() {
   ) as LogLevel;
 
   if (logType > LogLevelEnum.None) {
-    app.useGlobalInterceptors(new LoggingInterceptor(logType));
+    app.useGlobalInterceptors(new LoggingInterceptor(reflector, logType));
   }
 
   const port = env.get('SERVER_PORT', 2221);

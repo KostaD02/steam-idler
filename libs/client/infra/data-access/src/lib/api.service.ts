@@ -44,4 +44,34 @@ export class ApiService {
   delete<T>(endpoint: string): Observable<T> {
     return this.httpClient.delete<T>(this.url(endpoint), this.config);
   }
+
+  stream(
+    endpoint: string,
+    eventNames: string[],
+  ): Observable<{ event: string; data: unknown }> {
+    return new Observable((subscriber) => {
+      const source = new EventSource(this.url(endpoint), {
+        withCredentials: this.config.withCredentials,
+      });
+
+      eventNames.forEach((event) => {
+        source.addEventListener(event, (message) => {
+          try {
+            subscriber.next({
+              event,
+              data: JSON.parse((message as MessageEvent).data),
+            });
+          } catch {
+            subscriber.error(new Error('stream_parse_error'));
+          }
+        });
+      });
+
+      source.onerror = () => {
+        subscriber.error(new Error('stream_connection_error'));
+      };
+
+      return () => source.close();
+    });
+  }
 }

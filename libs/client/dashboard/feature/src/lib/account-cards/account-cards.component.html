@@ -150,7 +150,15 @@
               </button>
             </th>
             <td cdk-cell *cdkCellDef="let row" class="cards-table__num">
-              {{ row.cardsRemaining }}
+              @if (row.cardsRemaining === null) {
+                <span
+                  class="cards-table__no-cards"
+                  [title]="'ui.dashboard.cards.no_cards_hint' | translate"
+                  >X</span
+                >
+              } @else {
+                {{ row.cardsRemaining }}
+              }
             </td>
           </ng-container>
 
@@ -183,6 +191,10 @@
           <tr cdk-row *cdkRowDef="let row; columns: displayedColumns()"></tr>
         </table>
       </div>
+
+      <p class="cards-page__disclaimer">
+        {{ 'ui.dashboard.cards.no_cards_disclaimer' | translate }}
+      </p>
     }
   }
 </section>

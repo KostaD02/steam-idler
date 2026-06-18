@@ -14,6 +14,7 @@ import {
   SteamAccountRepository,
 } from '@steam-idler/server/steam-account/domain';
 import {
+  OwnedGame,
   SteamAccountExceptionKeys,
   SteamPersonaStatus,
 } from '@steam-idler/server/steam-account/types';
@@ -39,6 +40,36 @@ export class SteamUserService {
 
   getByUserId(userId: MongoId) {
     return this.steamAccountRepository.getByUserId(userId);
+  }
+
+  async getOwnedApps(accountName: string): Promise<OwnedGame[]> {
+    const steamUser = this.usersMap.get(accountName);
+
+    if (!steamUser?.steamID) {
+      this.logger.warn(
+        `No live Steam session for ${accountName}; cannot fetch owned apps`,
+      );
+
+      return [];
+    }
+
+    try {
+      const { apps } = await steamUser.getUserOwnedApps(steamUser.steamID, {
+        includePlayedFreeGames: true,
+      });
+
+      this.logger.log(`Fetched ${apps.length} owned apps for ${accountName}`);
+
+      return apps.map((app) => ({
+        appid: app.appid,
+        name: app.name,
+        playtimeForever: app.playtime_forever,
+      }));
+    } catch (error) {
+      this.logger.warn(`Failed to fetch owned apps for ${accountName}`, error);
+
+      return [];
+    }
   }
 
   async addSteamAccount(steamSignInDto: SteamSignInDto, userId: MongoId) {
@@ -477,64 +508,124 @@ export class SteamUserService {
     });
   }
 
+  async createAccountFromRefreshToken(
+    accountName: string,
+    refreshToken: string,
+    userId: MongoId,
+  ) {
+    const user = await this.steamAccountRepository.create(accountName, userId);
+
+    await this.steamAccountRepository.updateCredentials(user._id.toString(), {
+      refreshToken: this.encryptionService.encrypt(refreshToken),
+    });
+
+    try {
+      await this.startLiveSession(user, refreshToken);
+    } catch (error) {
+      this.usersMap.delete(accountName);
+      await user.deleteOne().exec();
+      await this.steamAccountRepository.evictUserAccounts(userId);
+
+      throw error;
+    }
+
+    await this.authRepository.pushSteamAccount(userId, user._id.toString());
+    await this.steamAccountRepository.evictUserAccounts(userId);
+
+    return this.returnSteamAccountObject(user);
+  }
+
   private async init() {
     const users = await this.steamAccountRepository.getAll();
 
     for (const user of users) {
-      this.handleUserInit(user);
+      this.startLiveSession(user).catch(() => {
+        // Initial logon failures are already logged by the error handler.
+      });
     }
   }
 
-  private handleUserInit(user: SteamAccountDocument) {
+  private startLiveSession(
+    user: SteamAccountDocument,
+    refreshTokenOverride?: string,
+  ): Promise<void> {
     const steamUser = new SteamUser({
       autoRelogin: true,
       dataDirectory: null,
       renewRefreshTokens: true,
     });
 
-    steamUser.on('error', (error) => {
-      const eCode = error['eresult'];
-      if (eCode === SteamUser.EResult.LogonSessionReplaced) {
-        this.logger.warn(
-          `Steam account ${user.accountName} has been logged out`,
+    return new Promise<void>((resolve, reject) => {
+      let settled = false;
+
+      steamUser.on('error', (error) => {
+        const eCode = error['eresult'];
+
+        if (eCode === SteamUser.EResult.LogonSessionReplaced) {
+          this.logger.warn(
+            `Steam account ${user.accountName} has been logged out`,
+          );
+
+          return;
+        }
+
+        this.logger.error(`Steam account ${user.accountName} error`, error);
+
+        if (!settled) {
+          settled = true;
+          reject(error);
+        }
+      });
+
+      steamUser.on('loggedOn', async () => {
+        this.logger.log(`Steam user ${user.accountName} logged on`);
+        this.usersMap.set(user.accountName, steamUser);
+
+        try {
+          await this.steamAccountRepository.updateCredentials(
+            user._id.toString(),
+            { id: steamUser?.steamID?.getSteamID64() || '' },
+          );
+          steamUser.setPersona(
+            user.idleSettings.personaStatus as SteamUser.EPersonaState,
+          );
+          await this.syncProfile(steamUser, user);
+          await this.idleGames(user.accountName, false);
+        } catch (error) {
+          this.logger.error(
+            `Post-login setup failed for ${user.accountName}`,
+            error,
+          );
+        }
+
+        if (!settled) {
+          settled = true;
+          resolve();
+        }
+      });
+
+      steamUser.on('refreshToken', async (refreshToken) => {
+        await this.steamAccountRepository.updateCredentials(
+          user._id.toString(),
+          { refreshToken: this.encryptionService.encrypt(refreshToken) },
         );
-        return;
-      }
-      this.logger.error(`Steam account ${user.accountName} error`, error);
-    });
-
-    steamUser.on('loggedOn', async () => {
-      this.logger.log(`Steam user ${user.accountName} logged on`);
-      this.usersMap.set(user.accountName, steamUser);
-      await this.steamAccountRepository.updateCredentials(user._id.toString(), {
-        id: steamUser?.steamID?.getSteamID64() || '',
       });
-      steamUser.setPersona(
-        user.idleSettings.personaStatus as SteamUser.EPersonaState,
-      );
-      await this.syncProfile(steamUser, user);
-      this.idleGames(user.accountName, false);
-    });
 
-    steamUser.on('refreshToken', async (refreshToken) => {
-      await this.steamAccountRepository.updateCredentials(user._id.toString(), {
-        refreshToken: this.encryptionService.encrypt(refreshToken),
+      steamUser.on('webSession', async (_, cookies) => {
+        await this.steamAccountRepository.updateCredentials(
+          user._id.toString(),
+          { cookies: this.encryptionService.encryptList(cookies) },
+        );
+        this.steamCardsService.refreshSilently(user.accountName);
       });
-    });
 
-    steamUser.on('webSession', async (_, cookies) => {
-      await this.steamAccountRepository.updateCredentials(user._id.toString(), {
-        cookies: this.encryptionService.encryptList(cookies),
+      this.registerAutoReply(steamUser, user.accountName);
+
+      steamUser.logOn({
+        refreshToken:
+          refreshTokenOverride ??
+          this.encryptionService.decrypt(user.credentials.refreshToken),
       });
-      this.steamCardsService.refreshSilently(user.accountName);
-    });
-
-    this.registerAutoReply(steamUser, user.accountName);
-
-    steamUser.logOn({
-      refreshToken: this.encryptionService.decrypt(
-        user.credentials.refreshToken,
-      ),
     });
   }
 

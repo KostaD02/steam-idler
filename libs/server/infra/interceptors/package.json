@@ -8,6 +8,7 @@
   "dependencies": {
     "tslib": "^2.3.0",
     "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
     "express": "^5.2.1",
     "rxjs": "^7.8.0",
     "@steam-idler/infra": "2.1.0"
