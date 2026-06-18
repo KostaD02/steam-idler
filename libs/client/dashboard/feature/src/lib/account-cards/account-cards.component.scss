@@ -216,6 +216,12 @@
     color: var(--kd-text-muted);
     font-variant-numeric: tabular-nums;
   }
+
+  &__index {
+    width: 52px;
+    color: var(--kd-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
 }
 
 @media (max-width: 600px) {

@@ -53,6 +53,19 @@
     } @else {
       <div class="cards-page__table-wrap">
         <table cdk-table [dataSource]="rows()" class="cards-table">
+          <ng-container cdkColumnDef="index">
+            <th cdk-header-cell *cdkHeaderCellDef class="cards-table__index">
+              {{ 'ui.dashboard.cards.columns.index' | translate }}
+            </th>
+            <td
+              cdk-cell
+              *cdkCellDef="let row; let i = index"
+              class="cards-table__index"
+            >
+              {{ i + 1 }}
+            </td>
+          </ng-container>
+
           <ng-container cdkColumnDef="game">
             <th
               cdk-header-cell

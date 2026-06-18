@@ -53,7 +53,7 @@ export class AccountCardsComponent {
   readonly displayedColumns = computed(() =>
     this.layoutService.isMobileView()
       ? ['game', 'cardsRemaining', 'playtimeForever']
-      : ['game', 'appid', 'cardsRemaining', 'playtimeForever'],
+      : ['index', 'game', 'appid', 'cardsRemaining', 'playtimeForever'],
   );
 
   readonly accountName = toSignal(

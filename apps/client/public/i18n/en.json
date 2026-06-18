@@ -282,6 +282,7 @@
         "empty": "No card-bearing games found for this account.",
         "filter_placeholder": "Filter by name or ID…",
         "columns": {
+          "index": "#",
           "game": "Game",
           "id": "ID",
           "cards": "Cards left",
