@@ -8,8 +8,10 @@ function isGenericStatusKey(key: string): boolean {
   return key.split('.').length <= 2;
 }
 
-export function extractErrorKey(error: HttpErrorResponse): string {
-  const keys = (error.error as HttpExceptionResponse | null)?.errorKeys;
+export function extractErrorKey(error: unknown): string {
+  const keys = (
+    (error as HttpErrorResponse | null)?.error as HttpExceptionResponse | null
+  )?.errorKeys;
 
   if (!keys?.length) {
     return FALLBACK_ERROR_KEY;

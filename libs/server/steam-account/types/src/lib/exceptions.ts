@@ -26,4 +26,5 @@ export const SteamAccountExceptionKeys = {
   DisplayedGameNameShouldBeString:
     'errors.steam_account.displayed_game_name_should_be_string',
   DisplayedGameNameTooLong: 'errors.steam_account.displayed_game_name_too_long',
+  CardsUnavailable: 'errors.steam_account.cards_unavailable',
 } as const;

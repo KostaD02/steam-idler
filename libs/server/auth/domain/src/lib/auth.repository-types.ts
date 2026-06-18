@@ -6,7 +6,7 @@ import { BaseUser, UserSettings } from '@steam-idler/server/auth/types';
 
 export type UserCreateDto = Pick<
   BaseUser,
-  'displayName' | 'email' | 'password' | 'role' | 'steamAccounts'
+  'displayName' | 'email' | 'password' | 'role' | 'steamAccounts' | 'settings'
 >;
 
 export type UserUpdateDto = Partial<Pick<BaseUser, UpdatableUserField>>;

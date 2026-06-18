@@ -1,0 +1,259 @@
+:host {
+  display: block;
+}
+
+.cards-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+  }
+
+  &__back {
+    margin-left: auto;
+    font-size: var(--kd-font-size-sm);
+    color: var(--kd-text-secondary);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  &__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--kd-border);
+  }
+
+  &__heading {
+    min-width: 0;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--kd-font-size-xl);
+    font-weight: 600;
+  }
+
+  &__subtitle {
+    margin: 2px 0 0;
+    font-size: var(--kd-font-size-sm);
+    color: var(--kd-text-muted);
+  }
+
+  &__state {
+    margin: 0;
+    font-size: var(--kd-font-size-sm);
+    color: var(--kd-text-muted);
+
+    &--error {
+      padding: 8px 10px;
+      border: 1px solid var(--kd-danger);
+      border-radius: var(--kd-radius-sm);
+      background: var(--kd-danger-soft);
+      color: var(--kd-danger);
+    }
+  }
+
+  &__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  &__filter {
+    flex: 1;
+    min-width: 0;
+    max-width: 320px;
+  }
+
+  &__totals {
+    flex: 0 0 auto;
+    font-size: var(--kd-font-size-xs);
+    color: var(--kd-text-muted);
+  }
+
+  &__table-wrap {
+    max-height: 65vh;
+    overflow: auto;
+    background: var(--kd-bg-elevated);
+    border: 1px solid var(--kd-border);
+    border-radius: var(--kd-radius-sm);
+    scrollbar-width: thin;
+    scrollbar-color: var(--kd-border-strong) transparent;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--kd-border-strong);
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      border-radius: var(--kd-radius-pill);
+    }
+  }
+}
+
+.cards-table {
+  width: 100%;
+  min-width: 520px;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: var(--kd-font-size-sm);
+
+  th,
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--kd-border);
+    text-align: left;
+  }
+
+  th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--kd-bg-elevated);
+    font-size: var(--kd-font-size-xxs);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--kd-text-muted);
+    user-select: none;
+  }
+
+  tr:last-child td {
+    border-bottom: 0;
+  }
+
+  &__sort-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    text-align: inherit;
+    color: inherit;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--kd-text-primary);
+    }
+  }
+
+  &__num &__sort-btn {
+    justify-content: flex-end;
+  }
+
+  &__col-label {
+    min-width: 0;
+    line-height: 1.25;
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+
+  &__sort {
+    flex: 0 0 auto;
+    width: 12px;
+    font-size: 9px;
+    color: var(--kd-accent, var(--kd-text-secondary));
+  }
+
+  &__num {
+    width: 120px;
+    text-align: right;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__game {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  &__icon {
+    flex: 0 0 auto;
+    width: 64px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 3px;
+    border: 1px solid var(--kd-border);
+  }
+
+  &__name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--kd-text-primary);
+
+    &:hover,
+    &:focus-visible {
+      color: var(--kd-accent);
+    }
+  }
+
+  &__id {
+    width: 96px;
+    color: var(--kd-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (max-width: 600px) {
+  .cards-page {
+    &__toolbar {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+
+    &__filter {
+      max-width: none;
+    }
+
+    &__table-wrap {
+      max-height: 60vh;
+    }
+  }
+
+  .cards-table {
+    min-width: 0;
+
+    th,
+    td {
+      padding: 8px;
+    }
+
+    &__num {
+      width: 88px;
+    }
+
+    &__game {
+      gap: 8px;
+    }
+
+    &__icon {
+      width: 40px;
+      height: 19px;
+    }
+  }
+}

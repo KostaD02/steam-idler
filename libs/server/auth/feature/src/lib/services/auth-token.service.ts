@@ -52,6 +52,11 @@ export class AuthTokenService {
       email: signUpDto.email,
       password: signUpDto.password,
       displayName: signUpDto.displayName,
+      settings: {
+        showProfileName: true,
+        showProfileImage: true,
+        maskAccountName: false,
+      },
     };
 
     const user = await this.authRepository.create(payload);

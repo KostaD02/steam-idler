@@ -19,6 +19,7 @@ import {
 } from '@steam-idler/server/steam-account/types';
 
 import { GamesToIdleDto, SteamSignInDto, UpdateAutoReplyDto } from '../dto';
+import { SteamCardsService } from './steam-cards.service';
 
 @Injectable()
 export class SteamUserService {
@@ -31,6 +32,7 @@ export class SteamUserService {
     private readonly authRepository: AuthRepository,
     private readonly exceptionService: ExceptionService,
     private readonly encryptionService: EncryptionService,
+    private readonly steamCardsService: SteamCardsService,
   ) {
     this.init();
   }
@@ -65,14 +67,16 @@ export class SteamUserService {
     this.usersMap.set(steamSignInDto.login, steamUser);
 
     steamUser.on('refreshToken', async (refreshToken: string) => {
-      user.credentials.refreshToken =
-        this.encryptionService.encrypt(refreshToken);
-      await user.save();
+      await this.steamAccountRepository.updateCredentials(user._id.toString(), {
+        refreshToken: this.encryptionService.encrypt(refreshToken),
+      });
     });
 
     steamUser.on('webSession', async (_, cookies: string[]) => {
-      user.credentials.cookies = this.encryptionService.encryptList(cookies);
-      await user.save();
+      await this.steamAccountRepository.updateCredentials(user._id.toString(), {
+        cookies: this.encryptionService.encryptList(cookies),
+      });
+      this.steamCardsService.refreshSilently(login);
     });
 
     // TODO: should I add steamUser.on('error') here?
@@ -92,8 +96,10 @@ export class SteamUserService {
             throw new Error('Steam account not logged in');
           }
 
-          user.credentials.id = steamUser.steamID.getSteamID64();
-          await user.save();
+          await this.steamAccountRepository.updateCredentials(
+            user._id.toString(),
+            { id: steamUser.steamID.getSteamID64() },
+          );
 
           // Maintain the reverse link so `user.steamAccounts` stays in sync
           // with the SteamAccount documents that reference this user.
@@ -243,6 +249,7 @@ export class SteamUserService {
     this.logger.log(
       `Steam user ${steamUserAccount.accountName} is now idling, following games: ${gamesIdsToIdle.join(', ')}`,
     );
+    this.steamCardsService.refreshSilently(steamUserAccount.accountName);
     return this.returnSteamAccountObject(steamUserAccount);
   }
 
@@ -311,7 +318,7 @@ export class SteamUserService {
       `Steam user ${steamUserAccount.accountName} has updated idling games`,
     );
 
-    this.stopIdling(accountName);
+    await this.stopIdling(accountName);
     return this.returnSteamAccountObject(steamUserAccount);
   }
 
@@ -499,8 +506,9 @@ export class SteamUserService {
     steamUser.on('loggedOn', async () => {
       this.logger.log(`Steam user ${user.accountName} logged on`);
       this.usersMap.set(user.accountName, steamUser);
-      user.credentials.id = steamUser?.steamID?.getSteamID64() || '';
-      await user.save();
+      await this.steamAccountRepository.updateCredentials(user._id.toString(), {
+        id: steamUser?.steamID?.getSteamID64() || '',
+      });
       steamUser.setPersona(
         user.idleSettings.personaStatus as SteamUser.EPersonaState,
       );
@@ -509,14 +517,16 @@ export class SteamUserService {
     });
 
     steamUser.on('refreshToken', async (refreshToken) => {
-      user.credentials.refreshToken =
-        this.encryptionService.encrypt(refreshToken);
-      await user.save();
+      await this.steamAccountRepository.updateCredentials(user._id.toString(), {
+        refreshToken: this.encryptionService.encrypt(refreshToken),
+      });
     });
 
     steamUser.on('webSession', async (_, cookies) => {
-      user.credentials.cookies = this.encryptionService.encryptList(cookies);
-      await user.save();
+      await this.steamAccountRepository.updateCredentials(user._id.toString(), {
+        cookies: this.encryptionService.encryptList(cookies),
+      });
+      this.steamCardsService.refreshSilently(user.accountName);
     });
 
     this.registerAutoReply(steamUser, user.accountName);
@@ -545,11 +555,15 @@ export class SteamUserService {
         return;
       }
 
-      account.profile = {
+      const profile = {
         name: persona['player_name'] ?? '',
         avatarUrl: persona['avatar_url_full'] ?? '',
       };
-      await account.save();
+      account.profile = profile;
+      await this.steamAccountRepository.updateProfile(
+        account._id.toString(),
+        profile,
+      );
       await this.steamAccountRepository.evictUserAccounts(account.userId);
     } catch (error) {
       this.logger.error(

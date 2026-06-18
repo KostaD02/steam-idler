@@ -75,7 +75,8 @@
       "auto_reply_template_too_long": "Auto-reply message is too long.",
       "auto_reply_while_idling_should_be_boolean": "Auto-reply scope is invalid.",
       "displayed_game_name_should_be_string": "Display title must be text.",
-      "displayed_game_name_too_long": "Display title is too long."
+      "displayed_game_name_too_long": "Display title is too long.",
+      "cards_unavailable": "Couldn't read trading cards. Make sure the account is signed in."
     }
   },
   "ui": {
@@ -272,6 +273,21 @@
         "add": "Add",
         "empty": "No games added yet.",
         "remove_aria": "Remove game {{id}}"
+      },
+      "cards": {
+        "aria": "View trading cards",
+        "title": "Trading cards",
+        "back": "Back to dashboard",
+        "loading": "Loading trading cards…",
+        "empty": "No card-bearing games found for this account.",
+        "filter_placeholder": "Filter by name or ID…",
+        "columns": {
+          "game": "Game",
+          "id": "ID",
+          "cards": "Cards left",
+          "playtime": "Playtime"
+        },
+        "totals": "{{games}} games · {{cards}} cards remaining"
       },
       "remove_confirm": {
         "title": "Remove account",

@@ -1,0 +1,175 @@
+<section class="cards-page">
+  <header class="cards-page__header">
+    @if (avatarUrl(); as avatar) {
+      <img
+        class="cards-page__avatar"
+        [src]="avatar"
+        alt=""
+        referrerpolicy="no-referrer"
+      />
+    }
+
+    <div class="cards-page__heading">
+      <h1 class="cards-page__title">
+        {{ 'ui.dashboard.cards.title' | translate }}
+      </h1>
+      <p class="cards-page__subtitle">{{ displayName() }}</p>
+    </div>
+
+    <a class="cards-page__back" routerLink="/dashboard">
+      {{ 'ui.dashboard.cards.back' | translate }}
+    </a>
+  </header>
+
+  @if (loading()) {
+    <p class="cards-page__state">
+      {{ 'ui.dashboard.cards.loading' | translate }}
+    </p>
+  } @else if (errorKey(); as key) {
+    <p class="cards-page__state cards-page__state--error" role="alert">
+      {{ key | translate }}
+    </p>
+  } @else {
+    <div class="cards-page__toolbar">
+      <input
+        type="search"
+        class="kd-field-input cards-page__filter"
+        [value]="filter()"
+        (input)="setFilter($any($event.target).value)"
+        [placeholder]="'ui.dashboard.cards.filter_placeholder' | translate"
+      />
+      <span class="cards-page__totals">
+        {{
+          'ui.dashboard.cards.totals'
+            | translate: { games: games().length, cards: totalCards() }
+        }}
+      </span>
+    </div>
+
+    @if (rows().length === 0) {
+      <p class="cards-page__state">
+        {{ 'ui.dashboard.cards.empty' | translate }}
+      </p>
+    } @else {
+      <div class="cards-page__table-wrap">
+        <table cdk-table [dataSource]="rows()" class="cards-table">
+          <ng-container cdkColumnDef="game">
+            <th
+              cdk-header-cell
+              *cdkHeaderCellDef
+              [attr.aria-sort]="ariaSort('name')"
+            >
+              <button
+                type="button"
+                class="cards-table__sort-btn"
+                (click)="toggleSort('name')"
+              >
+                <span class="cards-table__col-label">{{
+                  'ui.dashboard.cards.columns.game' | translate
+                }}</span>
+                <span class="cards-table__sort" aria-hidden="true">{{
+                  sortIndicator('name')
+                }}</span>
+              </button>
+            </th>
+            <td cdk-cell *cdkCellDef="let row" class="cards-table__game">
+              <img
+                class="cards-table__icon"
+                [src]="row.iconUrl"
+                alt=""
+                loading="lazy"
+                referrerpolicy="no-referrer"
+              />
+              <a
+                class="cards-table__name"
+                [href]="'https://store.steampowered.com/app/' + row.appid"
+                target="_blank"
+                rel="noopener noreferrer"
+                [title]="row.name"
+                >{{ row.name }}</a
+              >
+            </td>
+          </ng-container>
+
+          <ng-container cdkColumnDef="appid">
+            <th
+              cdk-header-cell
+              *cdkHeaderCellDef
+              class="cards-table__id"
+              [attr.aria-sort]="ariaSort('appid')"
+            >
+              <button
+                type="button"
+                class="cards-table__sort-btn"
+                (click)="toggleSort('appid')"
+              >
+                <span class="cards-table__col-label">{{
+                  'ui.dashboard.cards.columns.id' | translate
+                }}</span>
+                <span class="cards-table__sort" aria-hidden="true">{{
+                  sortIndicator('appid')
+                }}</span>
+              </button>
+            </th>
+            <td cdk-cell *cdkCellDef="let row" class="cards-table__id">
+              {{ row.appid }}
+            </td>
+          </ng-container>
+
+          <ng-container cdkColumnDef="cardsRemaining">
+            <th
+              cdk-header-cell
+              *cdkHeaderCellDef
+              class="cards-table__num"
+              [attr.aria-sort]="ariaSort('cardsRemaining')"
+            >
+              <button
+                type="button"
+                class="cards-table__sort-btn"
+                (click)="toggleSort('cardsRemaining')"
+              >
+                <span class="cards-table__col-label">{{
+                  'ui.dashboard.cards.columns.cards' | translate
+                }}</span>
+                <span class="cards-table__sort" aria-hidden="true">{{
+                  sortIndicator('cardsRemaining')
+                }}</span>
+              </button>
+            </th>
+            <td cdk-cell *cdkCellDef="let row" class="cards-table__num">
+              {{ row.cardsRemaining }}
+            </td>
+          </ng-container>
+
+          <ng-container cdkColumnDef="playtimeForever">
+            <th
+              cdk-header-cell
+              *cdkHeaderCellDef
+              class="cards-table__num"
+              [attr.aria-sort]="ariaSort('playtimeForever')"
+            >
+              <button
+                type="button"
+                class="cards-table__sort-btn"
+                (click)="toggleSort('playtimeForever')"
+              >
+                <span class="cards-table__col-label">{{
+                  'ui.dashboard.cards.columns.playtime' | translate
+                }}</span>
+                <span class="cards-table__sort" aria-hidden="true">{{
+                  sortIndicator('playtimeForever')
+                }}</span>
+              </button>
+            </th>
+            <td cdk-cell *cdkCellDef="let row" class="cards-table__num">
+              {{ formatPlaytime(row.playtimeForever) }}
+            </td>
+          </ng-container>
+
+          <tr cdk-header-row *cdkHeaderRowDef="displayedColumns()"></tr>
+          <tr cdk-row *cdkRowDef="let row; columns: displayedColumns()"></tr>
+        </table>
+      </div>
+    }
+  }
+</section>

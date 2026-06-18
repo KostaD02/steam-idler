@@ -1,6 +1,8 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
+import { CacheModule } from '@steam-idler/server/infra/cache';
+
 import {
   JwtAuthMiddleware,
   JwtAuthModule,
@@ -12,6 +14,7 @@ import {
 } from '@steam-idler/server/steam-account/domain';
 
 import { SteamAccountOwnershipGuard } from './guards';
+import { SteamCardsService } from './services/steam-cards.service';
 import { SteamUserService } from './services/steam-user.service';
 import { SteamAccountController } from './steam-account.controller';
 import { SteamAccountService } from './steam-account.service';
@@ -19,6 +22,7 @@ import { SteamAccountService } from './steam-account.service';
 @Module({
   imports: [
     JwtAuthModule,
+    CacheModule,
     MongooseModule.forFeature([
       {
         name: SteamAccountEntity.name,
@@ -31,6 +35,7 @@ import { SteamAccountService } from './steam-account.service';
     SteamAccountService,
     SteamAccountRepository,
     SteamUserService,
+    SteamCardsService,
     SteamAccountOwnershipGuard,
   ],
 })

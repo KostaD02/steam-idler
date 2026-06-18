@@ -3,4 +3,5 @@ export const StorageKeysEnum = {
   HasSession: 'has-session',
   I18nLocale: 'i18n.locale',
   I18nSkipCache: 'i18n.skipCache',
+  CardsSort: 'cards.sort',
 } as const;

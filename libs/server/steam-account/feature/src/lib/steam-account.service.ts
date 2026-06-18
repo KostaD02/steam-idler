@@ -14,12 +14,14 @@ import {
   UpdateDisplayedGameNameDto,
   UpdatePersonaDto,
 } from './dto';
+import { SteamCardsService } from './services/steam-cards.service';
 import { SteamUserService } from './services/steam-user.service';
 
 @Injectable()
 export class SteamAccountService {
   constructor(
     private readonly steamUserService: SteamUserService,
+    private readonly steamCardsService: SteamCardsService,
     private readonly exceptionService: ExceptionService,
   ) {}
 
@@ -96,5 +98,9 @@ export class SteamAccountService {
 
   updateAutoReply(name: string, dto: UpdateAutoReplyDto) {
     return this.steamUserService.updateAutoReply(name, dto);
+  }
+
+  getCards(name: string) {
+    return this.steamCardsService.getCards(name);
   }
 }
