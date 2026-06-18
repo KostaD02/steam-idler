@@ -55,6 +55,33 @@ export class SteamAccountController {
     return this.steamAccountService.getSteamAccounts(user._id);
   }
 
+  @Get('cards/:name')
+  @UseGuards(SteamAccountOwnershipGuard)
+  @ApiOperation({
+    summary: 'List trading-card-bearing games for a Steam account',
+    description:
+      "Returns the account's games that have Steam trading cards, each with the number of card drops remaining and total playtime (minutes). Data is scraped from the authenticated Steam badges page and served from cache. The `:name` path param is the Steam account login and must belong to the authenticated user.",
+  })
+  @ApiOkResponse({
+    description:
+      'Array of `{ appid, name, iconUrl, playtimeForever, cardsRemaining }`.',
+  })
+  @ApiBadRequestResponse({
+    description:
+      'The Steam session is not ready or the badges page could not be read. errorKey: `errors.steam_account.cards_unavailable`.',
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'Access token expired (`errors.auth.token_expired`) or no `req.user` resolved by the guard (`errors.auth.invalid_credentials`).',
+  })
+  @ApiNotFoundResponse({
+    description:
+      'The account does not exist or is not owned by the current user. errorKey: `errors.steam_account.not_found`.',
+  })
+  getCards(@Param('name') name: string) {
+    return this.steamAccountService.getCards(name);
+  }
+
   @Post()
   @ApiOperation({
     summary: 'Add and log in a Steam account',

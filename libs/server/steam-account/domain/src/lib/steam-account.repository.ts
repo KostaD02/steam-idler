@@ -18,7 +18,9 @@ import {
 
 import {
   SteamAccount,
+  SteamAccountCredentials,
   SteamAccountExceptionKeys,
+  SteamAccountProfile,
   SteamPersonaStatusEnum,
 } from '@steam-idler/server/steam-account/types';
 
@@ -100,6 +102,25 @@ export class SteamAccountRepository {
     steamAccount: Partial<StrippedMongoObject<SteamAccount>>,
   ) {
     return this.steamAccountModel.findByIdAndUpdate(id, steamAccount);
+  }
+
+  updateProfile(id: string, profile: SteamAccountProfile) {
+    return this.steamAccountModel
+      .findByIdAndUpdate(id, { $set: { profile } })
+      .exec();
+  }
+
+  updateCredentials(id: string, credentials: Partial<SteamAccountCredentials>) {
+    const update = Object.fromEntries(
+      Object.entries(credentials).map(([key, value]) => [
+        `credentials.${key}`,
+        value,
+      ]),
+    );
+
+    return this.steamAccountModel
+      .findByIdAndUpdate(id, { $set: update })
+      .exec();
   }
 
   // Method to evict cache for a user via decorator

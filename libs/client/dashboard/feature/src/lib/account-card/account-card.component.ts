@@ -7,6 +7,7 @@ import {
   output,
   signal,
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { catchError, EMPTY, finalize, Observable, tap } from 'rxjs';
 
@@ -44,7 +45,7 @@ import { PersonaSelectComponent } from '../persona-select/persona-select.compone
   selector: 'si-account-card',
   templateUrl: './account-card.component.html',
   styleUrl: './account-card.component.scss',
-  imports: [CardComponent, TranslatePipe, PersonaSelectComponent],
+  imports: [RouterLink, CardComponent, TranslatePipe, PersonaSelectComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountCardComponent {
