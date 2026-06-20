@@ -8,4 +8,4 @@ export {
   type UserNotSelectedFields,
 } from './lib/user';
 export { type UserSettings } from './lib/user-settings';
-export { type Tokens } from './lib/tokens';
+export { type Tokens, TOKEN_SCOPES, type TokenScope } from './lib/tokens';

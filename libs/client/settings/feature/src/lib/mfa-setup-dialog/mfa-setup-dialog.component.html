@@ -1,0 +1,109 @@
+<si-dialog>
+  <span siDialogHeader>{{ 'ui.settings.mfa.setup.title' | translate }}</span>
+
+  @if (loadErrorKey(); as key) {
+    <div class="mfa-setup__error" role="alert">{{ key | translate }}</div>
+  } @else if (step() === 'loading') {
+    <p class="mfa-setup__hint">
+      {{ 'ui.settings.mfa.setup.generating' | translate }}
+    </p>
+  } @else if (step() === 'enroll') {
+    <p class="mfa-setup__hint">
+      {{ 'ui.settings.mfa.setup.scan_hint' | translate }}
+    </p>
+
+    @if (qrDataUrl(); as qr) {
+      <img class="mfa-setup__qr" [src]="qr" alt="" />
+    }
+
+    <p class="mfa-setup__manual">
+      {{ 'ui.settings.mfa.setup.manual_hint' | translate }}
+      <code class="mfa-setup__secret">{{ secret() }}</code>
+    </p>
+
+    @if (keyType(); as type) {
+      <p class="mfa-setup__type">
+        {{ 'ui.settings.mfa.setup.type_label' | translate }}:
+        <strong>{{
+          (type === 'counter'
+            ? 'ui.settings.mfa.setup.type_counter'
+            : 'ui.settings.mfa.setup.type_time'
+          ) | translate
+        }}</strong>
+      </p>
+    }
+
+    @if (errorKey(); as key) {
+      <div class="mfa-setup__error" role="alert">{{ key | translate }}</div>
+    }
+
+    <form
+      class="mfa-setup__form"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      novalidate
+    >
+      <div class="kd-field-group">
+        <label class="kd-field-label" for="mfa-setup-code">{{
+          'ui.settings.mfa.setup.fields.code.label' | translate
+        }}</label>
+        <input
+          id="mfa-setup-code"
+          type="text"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          class="kd-field-input"
+          [class.kd-invalid]="isInvalid()"
+          formControlName="token"
+          [placeholder]="
+            'ui.settings.mfa.setup.fields.code.placeholder' | translate
+          "
+        />
+        @if (isInvalid()) {
+          <span class="kd-field-error">{{
+            'ui.settings.mfa.setup.fields.code.error' | translate
+          }}</span>
+        }
+      </div>
+    </form>
+  } @else {
+    <p class="mfa-setup__hint">
+      {{ 'ui.settings.mfa.setup.recovery_hint' | translate }}
+    </p>
+
+    <ul class="mfa-setup__codes">
+      @for (code of recoveryCodes(); track code) {
+        <li>{{ code }}</li>
+      }
+    </ul>
+  }
+
+  <ng-container siDialogActions>
+    @if (step() === 'enroll') {
+      <button type="button" class="kd-btn" (click)="close()">
+        {{ 'ui.common.cancel' | translate }}
+      </button>
+      <button
+        type="button"
+        class="kd-btn kd-btn-primary"
+        [disabled]="submitting()"
+        (click)="onSubmit()"
+      >
+        {{
+          (submitting()
+            ? 'ui.settings.mfa.setup.submit_loading'
+            : 'ui.settings.mfa.setup.submit'
+          ) | translate
+        }}
+      </button>
+    } @else if (step() === 'recovery') {
+      <button type="button" class="kd-btn kd-btn-primary" (click)="done()">
+        {{ 'ui.settings.mfa.setup.done' | translate }}
+      </button>
+    } @else {
+      <button type="button" class="kd-btn" (click)="close()">
+        {{ 'ui.common.cancel' | translate }}
+      </button>
+    }
+  </ng-container>
+</si-dialog>

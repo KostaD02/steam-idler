@@ -15,3 +15,4 @@ export { type SteamIdlerValidator } from './lib/validator';
 export { formatRelativeTime } from './lib/time';
 export { formatPlaytime } from './lib/duration';
 export { maskString } from './lib/mask';
+export { QR_COLORS, getQrRenderOptions, type QrRenderOptions } from './lib/qr';

@@ -65,6 +65,38 @@
           </si-toggle>
         </section>
 
+        <section class="settings__preferences">
+          <h3 class="settings__section-title">
+            {{ 'ui.settings.mfa.title' | translate }}
+          </h3>
+
+          @if (currentUser.mfaEnabled) {
+            <p class="settings__mfa-status settings__mfa-status--on">
+              {{ 'ui.settings.mfa.status_enabled' | translate }}
+            </p>
+
+            <button
+              type="button"
+              class="kd-btn kd-btn-danger kd-btn-block"
+              (click)="openMfaDisable()"
+            >
+              {{ 'ui.settings.mfa.disable_trigger' | translate }}
+            </button>
+          } @else {
+            <p class="settings__mfa-status">
+              {{ 'ui.settings.mfa.status_disabled' | translate }}
+            </p>
+
+            <button
+              type="button"
+              class="kd-btn kd-btn-primary kd-btn-block"
+              (click)="openMfaSetup()"
+            >
+              {{ 'ui.settings.mfa.enable_trigger' | translate }}
+            </button>
+          }
+        </section>
+
         @if (errorKey(); as key) {
           <div class="settings__error" role="alert">{{ key | translate }}</div>
         }
