@@ -13,6 +13,7 @@ import { JwtAuthMiddleware } from './middleware';
 import {
   AuthAccountService,
   AuthHelperService,
+  AuthMfaService,
   AuthTokenService,
   AuthValidationService,
 } from './services';
@@ -34,6 +35,7 @@ import { JwtStrategy } from './strategies';
     AuthTokenService,
     AuthAccountService,
     AuthValidationService,
+    AuthMfaService,
     JwtStrategy,
   ],
   exports: [
@@ -43,6 +45,7 @@ import { JwtStrategy } from './strategies';
     AuthTokenService,
     AuthAccountService,
     AuthValidationService,
+    AuthMfaService,
     JwtStrategy,
   ],
 })

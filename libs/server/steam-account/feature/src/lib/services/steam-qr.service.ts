@@ -4,6 +4,8 @@ import { toDataURL } from 'qrcode';
 import { Observable, Subscriber } from 'rxjs';
 import { EAuthTokenPlatformType, LoginSession } from 'steam-session';
 
+import { getQrRenderOptions } from '@steam-idler/infra';
+
 import { MongoId } from '@steam-idler/server/infra/types';
 
 import { SteamAccountRepository } from '@steam-idler/server/steam-account/domain';
@@ -16,11 +18,6 @@ import { SteamUserService } from './steam-user.service';
 
 const QR_LOGIN_TIMEOUT_MS = 180_000;
 
-const QR_COLORS = {
-  light: { dark: '#0a192f', light: '#ffffff' },
-  dark: { dark: '#ccd6f6', light: '#112240' },
-} as const;
-
 @Injectable()
 export class SteamQrService {
   private readonly logger = new Logger(SteamQrService.name);
@@ -31,8 +28,6 @@ export class SteamQrService {
   ) {}
 
   createLoginStream(userId: MongoId, theme?: string): Observable<MessageEvent> {
-    const color = theme === 'dark' ? QR_COLORS.dark : QR_COLORS.light;
-
     return new Observable<MessageEvent>((subscriber) => {
       const session = new LoginSession(EAuthTokenPlatformType.SteamClient);
 
@@ -72,11 +67,10 @@ export class SteamQrService {
             return;
           }
 
-          const qrDataUrl = await toDataURL(qrChallengeUrl, {
-            color,
-            margin: 2,
-            width: 256,
-          });
+          const qrDataUrl = await toDataURL(
+            qrChallengeUrl,
+            getQrRenderOptions(theme),
+          );
           subscriber.next({
             type: QrLoginEventType.Qr,
             data: { qrDataUrl },

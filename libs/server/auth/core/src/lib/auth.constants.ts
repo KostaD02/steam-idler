@@ -19,6 +19,16 @@ export const AUTH_TOKENS = {
   IS_PUBLIC: Symbol('IS_PUBLIC'),
 } as const;
 
+export const MFA_CONFIG = {
+  ISSUER: 'Steam Idler',
+  PENDING_TOKEN_KEY: 'mfa_pending_token',
+  PENDING_TOKEN_EXP: '5m',
+  PENDING_COOKIE_EXP: 5 * 60 * 1000,
+  RECOVERY_CODE_COUNT: 10,
+  RECOVERY_CODE_BYTES: 5,
+  TOTP_WINDOW: 1,
+} as const;
+
 export const UPDATABLE_USER_FIELDS = ['displayName'] as const;
 export type UpdatableUserField = (typeof UPDATABLE_USER_FIELDS)[number];
 

@@ -9,13 +9,18 @@ import {
 } from '@steam-idler/server/auth/types';
 
 import { ChangePasswordDto, SignUpDto } from './dto';
-import { AuthAccountService, AuthTokenService } from './services';
+import {
+  AuthAccountService,
+  AuthMfaService,
+  AuthTokenService,
+} from './services';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly authTokenService: AuthTokenService,
     private readonly authAccountService: AuthAccountService,
+    private readonly authMfaService: AuthMfaService,
   ) {}
 
   getSerializedUser(payload: User) {
@@ -52,5 +57,21 @@ export class AuthService {
 
   updateSettings(user: User, dto: UpdateUserSettingsDto) {
     return this.authAccountService.updateSettings(user, dto);
+  }
+
+  generateMfa(user: User, theme?: string) {
+    return this.authMfaService.generate(user, theme);
+  }
+
+  enableMfa(user: User, token: string) {
+    return this.authMfaService.enable(user, token);
+  }
+
+  disableMfa(user: User, token: string) {
+    return this.authMfaService.disable(user, token);
+  }
+
+  authenticateMfa(user: User, token: string, response: Response) {
+    return this.authMfaService.authenticate(user, token, response);
   }
 }

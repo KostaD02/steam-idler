@@ -1,0 +1,60 @@
+<si-dialog>
+  <span siDialogHeader>{{ 'ui.settings.mfa.disable.title' | translate }}</span>
+
+  <p class="mfa-disable__hint">
+    {{ 'ui.settings.mfa.disable.hint' | translate }}
+  </p>
+
+  @if (errorKey(); as key) {
+    <div class="mfa-disable__error" role="alert">{{ key | translate }}</div>
+  }
+
+  <form
+    class="mfa-disable__form"
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    novalidate
+  >
+    <div class="kd-field-group">
+      <label class="kd-field-label" for="mfa-disable-code">{{
+        'ui.settings.mfa.disable.fields.code.label' | translate
+      }}</label>
+      <input
+        id="mfa-disable-code"
+        type="text"
+        inputmode="numeric"
+        autocomplete="one-time-code"
+        class="kd-field-input"
+        [class.kd-invalid]="isInvalid()"
+        formControlName="token"
+        [placeholder]="
+          'ui.settings.mfa.disable.fields.code.placeholder' | translate
+        "
+      />
+      @if (isInvalid()) {
+        <span class="kd-field-error">{{
+          'ui.settings.mfa.disable.fields.code.error' | translate
+        }}</span>
+      }
+    </div>
+  </form>
+
+  <ng-container siDialogActions>
+    <button type="button" class="kd-btn" (click)="close()">
+      {{ 'ui.common.cancel' | translate }}
+    </button>
+    <button
+      type="button"
+      class="kd-btn kd-btn-danger"
+      [disabled]="submitting()"
+      (click)="onSubmit()"
+    >
+      {{
+        (submitting()
+          ? 'ui.settings.mfa.disable.submit_loading'
+          : 'ui.settings.mfa.disable.submit'
+        ) | translate
+      }}
+    </button>
+  </ng-container>
+</si-dialog>

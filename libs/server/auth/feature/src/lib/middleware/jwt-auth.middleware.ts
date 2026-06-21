@@ -14,6 +14,7 @@ import { AuthRepository } from '@steam-idler/server/auth/domain';
 import {
   AuthenticatedUser,
   AuthExpectionKeys,
+  TOKEN_SCOPES,
   User,
 } from '@steam-idler/server/auth/types';
 
@@ -54,6 +55,15 @@ export class JwtAuthMiddleware implements NestMiddleware {
         );
       }
 
+      this.authTokenService.signOut(res);
+      this.exceptionService.throw(
+        ExceptionStatusKeys.BadRequest,
+        'Invalid token',
+        [AuthExpectionKeys.InvalidToken],
+      );
+    }
+
+    if (decoded.scope === TOKEN_SCOPES.MfaPending) {
       this.authTokenService.signOut(res);
       this.exceptionService.throw(
         ExceptionStatusKeys.BadRequest,

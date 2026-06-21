@@ -29,6 +29,7 @@ export class SignInComponent {
 
   readonly submitting = signal(false);
   readonly errorKey = signal<string | null>(null);
+  readonly mfaRequired = signal(false);
 
   readonly form = this.fb.group({
     email: this.fb.nonNullable.control('', [
@@ -41,8 +42,20 @@ export class SignInComponent {
     ]),
   });
 
+  readonly mfaForm = this.fb.group({
+    token: this.fb.nonNullable.control('', [
+      Validators.required,
+      Validators.minLength(6),
+    ]),
+  });
+
   isInvalid(controlName: keyof typeof this.form.controls): boolean {
     const control = this.form.controls[controlName];
+    return control.invalid && (control.dirty || control.touched);
+  }
+
+  isMfaInvalid(): boolean {
+    const control = this.mfaForm.controls.token;
     return control.invalid && (control.dirty || control.touched);
   }
 
@@ -57,6 +70,35 @@ export class SignInComponent {
 
     this.authService
       .signIn(this.form.getRawValue())
+      .pipe(
+        tap((result) => {
+          if ('mfaRequired' in result) {
+            this.mfaRequired.set(true);
+            return;
+          }
+
+          this.router.navigateByUrl('/dashboard');
+        }),
+        catchError((err: HttpErrorResponse) => {
+          this.errorKey.set(extractErrorKey(err));
+          return EMPTY;
+        }),
+        finalize(() => this.submitting.set(false)),
+      )
+      .subscribe();
+  }
+
+  onMfaSubmit(): void {
+    if (this.mfaForm.invalid || this.submitting()) {
+      this.mfaForm.markAllAsTouched();
+      return;
+    }
+
+    this.submitting.set(true);
+    this.errorKey.set(null);
+
+    this.authService
+      .mfaAuthenticate(this.mfaForm.getRawValue().token)
       .pipe(
         tap(() => this.router.navigateByUrl('/dashboard')),
         catchError((err: HttpErrorResponse) => {

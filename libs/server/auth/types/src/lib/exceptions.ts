@@ -28,6 +28,12 @@ export const AuthExpectionKeys = {
   PasswordChanged: 'errors.auth.password_changed',
   NoUpdateFieldsProvided: 'errors.auth.no_update_fields_provided',
   SettingShouldBeBoolean: 'errors.auth.setting_should_be_boolean',
+  MfaRequired: 'errors.auth.mfa_required',
+  MfaInvalidCode: 'errors.auth.mfa_invalid_code',
+  MfaCodeRequired: 'errors.auth.mfa_code_required',
+  MfaAlreadyEnabled: 'errors.auth.mfa_already_enabled',
+  MfaNotEnabled: 'errors.auth.mfa_not_enabled',
+  MfaNotInitialized: 'errors.auth.mfa_not_initialized',
 } as const;
 
 export const UserExceptionKeys = {
