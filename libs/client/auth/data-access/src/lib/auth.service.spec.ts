@@ -2,7 +2,10 @@ import { TestBed } from '@angular/core/testing';
 
 import { of, throwError } from 'rxjs';
 
-import { LocalStorageService } from '@steam-idler/client/infra/core';
+import {
+  LocalStorageService,
+  ThemeService,
+} from '@steam-idler/client/infra/core';
 import { StorageKeysEnum } from '@steam-idler/client/infra/types';
 import { LoggerService } from '@steam-idler/client/infra/util';
 
@@ -48,6 +51,7 @@ const setup = () => {
         provide: LoggerService,
         useValue: { log: jest.fn(), error: jest.fn(), warn: jest.fn() },
       },
+      { provide: ThemeService, useValue: { selectedTheme: () => 'dark' } },
     ],
   });
   const service = TestBed.inject(AuthService);
