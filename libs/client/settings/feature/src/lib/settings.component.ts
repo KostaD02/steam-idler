@@ -25,6 +25,8 @@ import {
 } from '@steam-idler/server/auth/types';
 
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
+import { MfaDisableDialogComponent } from './mfa-disable-dialog/mfa-disable-dialog.component';
+import { MfaSetupDialogComponent } from './mfa-setup-dialog/mfa-setup-dialog.component';
 
 @Component({
   selector: 'si-settings',
@@ -57,6 +59,14 @@ export class SettingsComponent {
 
   openChangePassword(): void {
     this.dialogService.open(ChangePasswordDialogComponent);
+  }
+
+  openMfaSetup(): void {
+    this.dialogService.open(MfaSetupDialogComponent);
+  }
+
+  openMfaDisable(): void {
+    this.dialogService.open(MfaDisableDialogComponent);
   }
 
   updateSetting(dto: UpdateUserSettingsDto): void {

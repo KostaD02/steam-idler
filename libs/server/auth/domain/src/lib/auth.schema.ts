@@ -87,6 +87,26 @@ export class UserEntity implements StrippedMongoObject<BaseUser> {
     },
   })
   settings!: UserSettings;
+
+  @Prop({
+    type: Boolean,
+    default: false,
+  })
+  mfaEnabled!: boolean;
+
+  @Prop({
+    type: String,
+    select: false,
+    required: false,
+  })
+  totpSecret?: string;
+
+  @Prop({
+    type: [String],
+    select: false,
+    default: undefined,
+  })
+  mfaRecoveryCodes?: string[];
 }
 
 export type UserDocument = HydratedDocument<UserEntity>;

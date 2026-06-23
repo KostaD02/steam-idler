@@ -98,7 +98,10 @@ export class AuthAccountService {
     );
     this.authValidationService.checkUserExistence(updated);
 
-    return this.authTokenService.signIn(updated.toObject<User>(), response);
+    return this.authTokenService.issueSession(
+      updated.toObject<User>(),
+      response,
+    );
   }
 
   async updateUser(user: User, dto: UpdateUserDto) {

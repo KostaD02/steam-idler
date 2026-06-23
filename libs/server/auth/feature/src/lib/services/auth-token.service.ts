@@ -6,13 +6,20 @@ import { Response } from 'express';
 import { ExceptionService } from '@steam-idler/server/infra/services';
 import { ExceptionStatusKeys } from '@steam-idler/server/infra/types';
 
-import { AUTH_CONFIG, hashText } from '@steam-idler/server/auth/core';
+import {
+  AUTH_CONFIG,
+  hashText,
+  MFA_CONFIG,
+} from '@steam-idler/server/auth/core';
 import { AuthRepository, UserCreateDto } from '@steam-idler/server/auth/domain';
 import {
   AuthenticatedUser,
   AuthExpectionKeys,
   BaseUser,
+  MfaChallengeResponse,
   SignUpDto,
+  TOKEN_SCOPES,
+  Tokens,
   User,
   UserRoleEnum,
 } from '@steam-idler/server/auth/types';
@@ -60,23 +67,48 @@ export class AuthTokenService {
     };
 
     const user = await this.authRepository.create(payload);
-    const { password: _, ...safeUser } = user.toObject<BaseUser>();
-    return this.signIn(safeUser, response);
+    const { password: _password, ...safeUser } = user.toObject<BaseUser>();
+    return this.issueSession(safeUser, response);
   }
 
-  signIn(user: User | AuthenticatedUser, response: Response) {
-    return this.setAndGetUserTokens(user, response);
+  signIn(user: User, response: Response): Tokens | MfaChallengeResponse {
+    if (user.mfaEnabled) {
+      return this.issueMfaChallenge(user, response);
+    }
+
+    return this.issueSession(user, response);
   }
 
-  setAndGetUserTokens(user: User, response: Response) {
-    const tokens = this.getSignInToken(user);
+  issueSession(user: User, response: Response): Tokens {
+    const tokens = this.getSignInTokens(user);
     this.setSignInTokens(tokens, response);
+    response.clearCookie(MFA_CONFIG.PENDING_TOKEN_KEY);
     return tokens;
+  }
+
+  issueMfaChallenge(user: User, response: Response): MfaChallengeResponse {
+    response.clearCookie(AUTH_CONFIG.ACCESS_TOKEN_KEY);
+    response.clearCookie(AUTH_CONFIG.REFRESH_TOKEN_KEY);
+
+    const pendingToken = this.jwtService.sign(
+      { _id: String(user._id), scope: TOKEN_SCOPES.MfaPending },
+      { expiresIn: MFA_CONFIG.PENDING_TOKEN_EXP },
+    );
+
+    response.cookie(MFA_CONFIG.PENDING_TOKEN_KEY, pendingToken, {
+      expires: new Date(Date.now() + MFA_CONFIG.PENDING_COOKIE_EXP),
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+    });
+
+    return { mfaRequired: true };
   }
 
   signOut(response: Response) {
     response.clearCookie(AUTH_CONFIG.ACCESS_TOKEN_KEY);
     response.clearCookie(AUTH_CONFIG.REFRESH_TOKEN_KEY);
+    response.clearCookie(MFA_CONFIG.PENDING_TOKEN_KEY);
     return {
       success: true,
     };
@@ -106,24 +138,25 @@ export class AuthTokenService {
       user.passwordChangedAt,
       response,
     );
-    return this.signIn(user.toObject<User>(), response);
+    return this.issueSession(user.toObject<User>(), response);
   }
 
-  private getSignInToken(user: User) {
-    const accessToken = this.jwtService.sign(user);
-    const refreshToken = this.jwtService.sign(user, {
-      expiresIn: AUTH_CONFIG.REFRESH_TOKEN_EXP,
+  private getSignInTokens(user: User): Tokens {
+    const accessToken = this.jwtService.sign({
+      ...user,
+      scope: TOKEN_SCOPES.Access,
     });
+    const refreshToken = this.jwtService.sign(
+      { ...user, scope: TOKEN_SCOPES.Refresh },
+      { expiresIn: AUTH_CONFIG.REFRESH_TOKEN_EXP },
+    );
     return {
       access_token: accessToken,
       refresh_token: refreshToken,
     };
   }
 
-  private setSignInTokens(
-    tokens: { access_token: string; refresh_token: string },
-    response: Response,
-  ) {
+  private setSignInTokens(tokens: Tokens, response: Response) {
     const accessTokenExpiresIn =
       this.authHelperService.calculateJWTExpirationDate(
         AUTH_CONFIG.ACCESS_TOKEN_COOKIE_EXP,

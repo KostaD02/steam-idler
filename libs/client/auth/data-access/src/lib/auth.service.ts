@@ -1,13 +1,27 @@
 import { computed, DOCUMENT, inject, Injectable, signal } from '@angular/core';
 
-import { catchError, finalize, Observable, of, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  finalize,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 
-import { LocalStorageService } from '@steam-idler/client/infra/core';
+import {
+  LocalStorageService,
+  ThemeService,
+} from '@steam-idler/client/infra/core';
 import { StorageKeysEnum } from '@steam-idler/client/infra/types';
 import { LoggerService } from '@steam-idler/client/infra/util';
 
 import {
   ChangePasswordDto,
+  MfaChallengeResponse,
+  MfaEnableResponse,
+  MfaGenerateResponse,
   SignInDto,
   SignUpDto,
   UpdateUserDto,
@@ -20,6 +34,7 @@ import { AuthApiService } from './auth-api.service';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly document = inject(DOCUMENT);
+  private readonly themeService = inject(ThemeService);
   private readonly loggerService = inject(LoggerService);
   private readonly authApiService = inject(AuthApiService);
   private readonly localStorageService = inject(LocalStorageService);
@@ -62,9 +77,37 @@ export class AuthService {
       .pipe(switchMap(() => this.fetchAndStoreUser()));
   }
 
-  signIn(signInDto: SignInDto): Observable<User> {
+  signIn(signInDto: SignInDto): Observable<User | MfaChallengeResponse> {
     return this.authApiService
       .signIn(signInDto)
+      .pipe(
+        switchMap((result) =>
+          'mfaRequired' in result ? of(result) : this.fetchAndStoreUser(),
+        ),
+      );
+  }
+
+  mfaAuthenticate(token: string): Observable<User> {
+    return this.authApiService
+      .mfaAuthenticate(token)
+      .pipe(switchMap(() => this.fetchAndStoreUser()));
+  }
+
+  generateMfa(): Observable<MfaGenerateResponse> {
+    return this.authApiService.mfaGenerate(this.themeService.selectedTheme());
+  }
+
+  enableMfa(token: string): Observable<MfaEnableResponse> {
+    return this.authApiService
+      .mfaEnable(token)
+      .pipe(
+        switchMap((result) => this.fetchAndStoreUser().pipe(map(() => result))),
+      );
+  }
+
+  disableMfa(token: string): Observable<User> {
+    return this.authApiService
+      .mfaDisable(token)
       .pipe(switchMap(() => this.fetchAndStoreUser()));
   }
 

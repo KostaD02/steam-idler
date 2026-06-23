@@ -1,0 +1,19 @@
+.mfa-disable {
+  &__hint {
+    margin: 0 0 16px;
+    font-size: var(--kd-font-size-xs);
+    line-height: 1.5;
+    color: var(--kd-text-muted);
+  }
+
+  &__error {
+    margin-bottom: 16px;
+    padding: 10px 12px;
+    background: var(--kd-danger-soft);
+    border: 1px solid var(--kd-danger);
+    border-radius: var(--kd-radius-sm);
+    color: var(--kd-danger);
+    font-size: var(--kd-font-size-xs);
+    line-height: 1.4;
+  }
+}

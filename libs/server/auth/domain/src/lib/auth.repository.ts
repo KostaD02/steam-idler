@@ -49,6 +49,56 @@ export class AuthRepository {
     return this.userModel.exists({ email }).exec();
   }
 
+  getByIdWithMfa(id: string) {
+    return this.userModel
+      .findById(id)
+      .select('+totpSecret +mfaRecoveryCodes')
+      .exec();
+  }
+
+  setTotpSecret(id: string, encryptedSecret: string) {
+    return this.userModel
+      .findByIdAndUpdate(
+        id,
+        { totpSecret: encryptedSecret, mfaEnabled: false },
+        { returnDocument: 'after' },
+      )
+      .exec();
+  }
+
+  enableMfa(id: string, hashedRecoveryCodes: string[]) {
+    return this.userModel
+      .findByIdAndUpdate(
+        id,
+        { mfaEnabled: true, mfaRecoveryCodes: hashedRecoveryCodes },
+        { returnDocument: 'after' },
+      )
+      .exec();
+  }
+
+  disableMfa(id: string) {
+    return this.userModel
+      .findByIdAndUpdate(
+        id,
+        {
+          $set: { mfaEnabled: false },
+          $unset: { totpSecret: '', mfaRecoveryCodes: '' },
+        },
+        { returnDocument: 'after' },
+      )
+      .exec();
+  }
+
+  pullRecoveryCode(id: string, hashedCode: string) {
+    return this.userModel
+      .findByIdAndUpdate(
+        id,
+        { $pull: { mfaRecoveryCodes: hashedCode } },
+        { returnDocument: 'after' },
+      )
+      .exec();
+  }
+
   create(dto: UserCreateDto) {
     return this.userModel.create(dto);
   }

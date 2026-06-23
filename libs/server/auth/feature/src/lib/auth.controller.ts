@@ -5,6 +5,7 @@ import {
   Get,
   Patch,
   Post,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -29,12 +30,13 @@ import { AuthService } from './auth.service';
 import { Auth, CurrentUser } from './decorators';
 import {
   ChangePasswordDto,
+  MfaTokenDto,
   SignInDto,
   SignUpDto,
   UpdateUserDto,
   UpdateUserSettingsDto,
 } from './dto';
-import { LocalAuthGuard, RefreshJwtGuard } from './guards';
+import { LocalAuthGuard, MfaPendingGuard, RefreshJwtGuard } from './guards';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -179,11 +181,11 @@ export class AuthController {
   @ApiOperation({
     summary: 'Authenticate with email and password',
     description:
-      'Validates credentials via the local Passport strategy, sets `access_token` and `refresh_token` httpOnly cookies, and returns both tokens.',
+      'Validates credentials via the local Passport strategy. If the account has two-factor authentication enabled, sets a short-lived `mfa_pending_token` cookie and returns `{ mfaRequired: true }` instead of a session; the client must then call `POST /auth/mfa/authenticate` with a code. Otherwise sets `access_token` and `refresh_token` httpOnly cookies and returns both tokens.',
   })
   @ApiCreatedResponse({
     description:
-      'Authenticated. Body: `{ access_token, refresh_token }`. Cookies are set on the response.',
+      'Authenticated. Body: `{ access_token, refresh_token }` (cookies set), or `{ mfaRequired: true }` when two-factor is enabled (an `mfa_pending_token` cookie is set instead).',
   })
   @ApiBadRequestResponse({
     description:
@@ -284,5 +286,94 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
   ) {
     return this.authService.changePassword(user, dto, response);
+  }
+
+  @Post('mfa/generate')
+  @Auth()
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Begin authenticator (TOTP) enrollment',
+    description:
+      'Generates a TOTP secret for the current user and returns a QR code data URL plus the raw secret for manual entry. The secret is stored but two-factor stays disabled until confirmed via `POST /auth/mfa/enable`.',
+  })
+  @ApiCreatedResponse({
+    description:
+      'Enrollment started. Body: `{ qrDataUrl, secret, otpauthUrl }`.',
+  })
+  @ApiConflictResponse({
+    description:
+      'Two-factor authentication is already enabled. errorKey: `errors.auth.mfa_already_enabled`.',
+  })
+  generateMfa(@CurrentUser() user: User, @Query('theme') theme?: string) {
+    return this.authService.generateMfa(user, theme);
+  }
+
+  @Post('mfa/enable')
+  @Auth()
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Confirm and enable the authenticator',
+    description:
+      'Verifies a TOTP code against the pending secret and enables two-factor authentication. Returns one-time recovery codes that are shown only once.',
+  })
+  @ApiCreatedResponse({
+    description: 'Two-factor enabled. Body: `{ recoveryCodes: string[] }`.',
+  })
+  @ApiBadRequestResponse({
+    description:
+      'The code is invalid or enrollment was not started. Possible errorKeys: `errors.auth.mfa_invalid_code`, `errors.auth.mfa_not_initialized`, `errors.auth.mfa_code_required`.',
+  })
+  @ApiConflictResponse({
+    description:
+      'Two-factor authentication is already enabled. errorKey: `errors.auth.mfa_already_enabled`.',
+  })
+  enableMfa(@CurrentUser() user: User, @Body() dto: MfaTokenDto) {
+    return this.authService.enableMfa(user, dto.token);
+  }
+
+  @Post('mfa/disable')
+  @Auth()
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Disable the authenticator',
+    description:
+      'Verifies a TOTP or recovery code, then removes the stored secret and recovery codes and turns two-factor authentication off.',
+  })
+  @ApiCreatedResponse({
+    description: 'Two-factor disabled. Body: `{ success: true }`.',
+  })
+  @ApiBadRequestResponse({
+    description:
+      'Two-factor authentication is not enabled. errorKey: `errors.auth.mfa_not_enabled`.',
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'The verification code is invalid. errorKey: `errors.auth.mfa_invalid_code`.',
+  })
+  disableMfa(@CurrentUser() user: User, @Body() dto: MfaTokenDto) {
+    return this.authService.disableMfa(user, dto.token);
+  }
+
+  @Post('mfa/authenticate')
+  @UseGuards(MfaPendingGuard)
+  @ApiOperation({
+    summary: 'Complete sign-in with a two-factor code',
+    description:
+      'Exchanges the short-lived `mfa_pending_token` cookie (set by `POST /auth/sign-in` when two-factor is enabled) plus a TOTP or recovery code for a full session. Sets `access_token` and `refresh_token` cookies and clears the pending cookie.',
+  })
+  @ApiCreatedResponse({
+    description:
+      'Authenticated. Body: `{ access_token, refresh_token }`. Cookies are set on the response.',
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'The pending session is missing/expired or the code is invalid. Possible errorKeys: `errors.auth.mfa_required`, `errors.auth.invalid_token`, `errors.auth.mfa_invalid_code`.',
+  })
+  authenticateMfa(
+    @CurrentUser() user: User,
+    @Body() dto: MfaTokenDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    return this.authService.authenticateMfa(user, dto.token, response);
   }
 }

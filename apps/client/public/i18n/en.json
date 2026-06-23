@@ -50,6 +50,12 @@
       "password_changed": "Your password was changed. Please sign in again.",
       "no_update_fields_provided": "No fields were provided to update.",
       "setting_should_be_boolean": "This setting must be true or false.",
+      "mfa_required": "Two-factor authentication is required.",
+      "mfa_invalid_code": "That verification code is incorrect.",
+      "mfa_code_required": "A verification code is required.",
+      "mfa_already_enabled": "Two-factor authentication is already enabled.",
+      "mfa_not_enabled": "Two-factor authentication is not enabled.",
+      "mfa_not_initialized": "Start two-factor setup before confirming.",
       "user_not_found": "We couldn't find an account that matches.",
       "role_not_sufficient": "You don't have permission to do that."
     },
@@ -137,6 +143,19 @@
         "switch_text": "Already have an account?",
         "switch_action": "Sign in"
       },
+      "mfa": {
+        "title": "Two-factor verification",
+        "hint": "Enter the 6-digit code from your authenticator app, or one of your recovery codes.",
+        "submit": "Verify",
+        "submit_loading": "Verifying…",
+        "fields": {
+          "code": {
+            "label": "Verification code",
+            "placeholder": "123456",
+            "error": "Enter your 6-digit code or a recovery code."
+          }
+        }
+      },
       "fields": {
         "display_name": {
           "label": "Display name",
@@ -200,6 +219,46 @@
             "placeholder": "Re-enter your new password",
             "error": "Please confirm your new password.",
             "mismatch": "Passwords don't match."
+          }
+        }
+      },
+      "mfa": {
+        "title": "Two-factor authentication",
+        "status_enabled": "Two-factor authentication is on.",
+        "status_disabled": "Add an extra layer of security with an authenticator app.",
+        "enable_trigger": "Enable two-factor",
+        "disable_trigger": "Disable two-factor",
+        "setup": {
+          "title": "Enable two-factor",
+          "generating": "Preparing your authenticator setup…",
+          "scan_hint": "Scan this QR code with your authenticator app (Google Authenticator, Authy, 1Password…).",
+          "manual_hint": "Can't scan? Enter this key manually:",
+          "type_label": "Key type",
+          "type_time": "Time-based (TOTP)",
+          "type_counter": "Counter-based (HOTP)",
+          "recovery_hint": "Save these recovery codes somewhere safe. Each one can be used once if you lose access to your authenticator. They won't be shown again.",
+          "submit": "Verify and enable",
+          "submit_loading": "Verifying…",
+          "done": "Done",
+          "fields": {
+            "code": {
+              "label": "Verification code",
+              "placeholder": "123456",
+              "error": "Enter the 6-digit code from your app."
+            }
+          }
+        },
+        "disable": {
+          "title": "Disable two-factor",
+          "hint": "Enter a code from your authenticator app or a recovery code to turn two-factor off.",
+          "submit": "Disable",
+          "submit_loading": "Disabling…",
+          "fields": {
+            "code": {
+              "label": "Verification code",
+              "placeholder": "123456",
+              "error": "Enter your 6-digit code or a recovery code."
+            }
           }
         }
       },

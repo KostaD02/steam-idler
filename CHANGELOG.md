@@ -1,3 +1,13 @@
+## 2.13.0 (2026-06-21)
+
+### 🚀 Features
+
+- add optional two-factor authentication via authenticator app ([#74](https://github.com/KostaD02/steam-idler/pull/74))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.12.0 (2026-06-18)
 
 ### 🚀 Features
