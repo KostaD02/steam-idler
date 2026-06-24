@@ -13,7 +13,7 @@
       "!{projectRoot}/src/test-setup.[jt]s",
       "!{projectRoot}/test-setup.[jt]s"
     ],
-    "sharedGlobals": []
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/*.yml"]
   },
   "plugins": [
     {
@@ -143,5 +143,6 @@
       "commitMessage": "chore(release): {version} [skip ci]",
       "tag": true
     }
-  }
+  },
+  "nxCloudId": "6a3b8aee407541c5d71ef270"
 }
