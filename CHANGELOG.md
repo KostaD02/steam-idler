@@ -1,3 +1,13 @@
+## 2.15.1 (2026-06-24)
+
+### 🩹 Fixes
+
+- local docker setup ([bffddd1](https://github.com/KostaD02/steam-idler/commit/bffddd1))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.15.0 (2026-06-24)
 
 ### 🚀 Features
