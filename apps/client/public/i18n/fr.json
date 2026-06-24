@@ -1,0 +1,415 @@
+{
+  "errors": {
+    "not_found": "Ressource introuvable.",
+    "forbidden": "Vous n'avez pas l'autorisation d'effectuer cette action.",
+    "bad_request": "La requête était invalide.",
+    "payment_required": "Un paiement est requis.",
+    "unauthorized": "Vous devez être connecté.",
+    "conflict": "Cela entre en conflit avec une ressource existante.",
+    "teapot": "Je suis une théière.",
+    "payload_too_large": "Le contenu de la requête est trop volumineux.",
+    "unsupported_media_type": "Le type de média n'est pas pris en charge.",
+    "enhance_your_calm": "Veuillez ralentir.",
+    "too_many_requests": "Trop de requêtes. Veuillez réessayer plus tard.",
+    "internal_server_error": "Une erreur est survenue de notre côté.",
+    "common": {
+      "app_error": "Une erreur est survenue. Veuillez réessayer.",
+      "endpoint_not_found": "Point de terminaison introuvable.",
+      "invalid_json": "Le corps de la requête n'est pas un JSON valide.",
+      "incorrect_mongoose_id": "Format d'identifiant invalide.",
+      "property_should_not_exist": "Une propriété inattendue a été envoyée.",
+      "event_payload_required": "Le contenu de l'événement est requis."
+    },
+    "auth": {
+      "incorrect_email_or_password": "L'e-mail ou le mot de passe est incorrect.",
+      "email_in_use": "Un compte associé à cet e-mail existe déjà.",
+      "phone_number_in_use": "Un compte associé à ce numéro de téléphone existe déjà.",
+      "token_invalid": "Votre session est invalide.",
+      "token_expired": "Votre session a expiré.",
+      "token_not_found": "Aucun jeton de session n'a été trouvé.",
+      "invalid_email": "Cette adresse e-mail semble invalide.",
+      "invalid_password": "Le mot de passe est invalide.",
+      "invalid_old_password": "Le mot de passe actuel est incorrect.",
+      "invalid_change_password": "Le nouveau mot de passe est invalide.",
+      "invalid_credentials": "L'e-mail ou le mot de passe est incorrect.",
+      "invalid_token": "Votre session est invalide.",
+      "display_name_too_short": "Le nom d'affichage est trop court.",
+      "display_name_too_long": "Le nom d'affichage est trop long.",
+      "display_name_should_be_string": "Le nom d'affichage doit être du texte.",
+      "password_too_short": "Le mot de passe est trop court.",
+      "password_too_long": "Le mot de passe est trop long.",
+      "password_should_be_string": "Le mot de passe doit être du texte.",
+      "old_password_too_short": "Le mot de passe actuel est trop court.",
+      "old_password_too_long": "Le mot de passe actuel est trop long.",
+      "old_password_should_be_string": "Le mot de passe actuel doit être du texte.",
+      "new_password_too_short": "Le nouveau mot de passe est trop court.",
+      "new_password_too_long": "Le nouveau mot de passe est trop long.",
+      "new_password_should_be_string": "Le nouveau mot de passe doit être du texte.",
+      "should_provide_email": "L'e-mail est requis.",
+      "should_provide_password": "Le mot de passe est requis.",
+      "password_changed": "Votre mot de passe a été modifié. Veuillez vous reconnecter.",
+      "no_update_fields_provided": "Aucun champ à mettre à jour n'a été fourni.",
+      "setting_should_be_boolean": "Ce paramètre doit être vrai ou faux.",
+      "mfa_required": "L'authentification à deux facteurs est requise.",
+      "mfa_invalid_code": "Ce code de vérification est incorrect.",
+      "mfa_code_required": "Un code de vérification est requis.",
+      "mfa_already_enabled": "L'authentification à deux facteurs est déjà activée.",
+      "mfa_not_enabled": "L'authentification à deux facteurs n'est pas activée.",
+      "mfa_not_initialized": "Démarrez la configuration de l'authentification à deux facteurs avant de confirmer.",
+      "user_not_found": "Nous n'avons trouvé aucun compte correspondant.",
+      "role_not_sufficient": "Vous n'avez pas l'autorisation d'effectuer cette action."
+    },
+    "steam_account": {
+      "not_found": "Compte Steam introuvable.",
+      "user_already_has_steam_account": "Vous avez déjà associé un compte Steam.",
+      "login_is_required": "L'identifiant Steam est requis.",
+      "login_should_be_string": "L'identifiant Steam doit être du texte.",
+      "password_is_required": "Le mot de passe Steam est requis.",
+      "password_should_be_string": "Le mot de passe Steam doit être du texte.",
+      "two_factor_code_is_required": "Un code Steam Guard est requis.",
+      "two_factor_code_too_short": "Le code Steam Guard est trop court.",
+      "two_factor_code_too_long": "Le code Steam Guard est trop long.",
+      "two_factor_code_should_be_string": "Le code Steam Guard doit être du texte.",
+      "login_error": "Échec de la connexion à Steam.",
+      "guard_code_is_invalid": "Le code Steam Guard est invalide.",
+      "invalid_credentials": "Les identifiants Steam sont incorrects.",
+      "rate_limit_exceeded": "Limite de fréquence Steam atteinte. Veuillez patienter et réessayer.",
+      "games_ids_should_be_array": "Les identifiants de jeux doivent être une liste.",
+      "games_ids_must_be_numbers": "Les identifiants de jeux doivent être des nombres.",
+      "invalid_persona_status": "Ce statut en ligne n'est pas valide.",
+      "auto_reply_template_should_be_string": "Le message de réponse automatique doit être du texte.",
+      "auto_reply_template_too_long": "Le message de réponse automatique est trop long.",
+      "auto_reply_while_idling_should_be_boolean": "La portée de la réponse automatique est invalide.",
+      "displayed_game_name_should_be_string": "Le titre affiché doit être du texte.",
+      "displayed_game_name_too_long": "Le titre affiché est trop long.",
+      "cards_unavailable": "Impossible de lire les cartes à échanger. Assurez-vous que le compte est connecté.",
+      "qr_timeout": "Le code QR a expiré avant d'être scanné. Générez-en un nouveau.",
+      "qr_failed": "Échec de la connexion par QR. Veuillez réessayer."
+    }
+  },
+  "ui": {
+    "common": {
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "close": "Fermer"
+    },
+    "accounts": {
+      "add": {
+        "title": "Ajouter un compte Steam",
+        "subtitle": "Connectez-vous avec vos identifiants Steam pour commencer à faire tourner des jeux.",
+        "submit": "Ajouter le compte",
+        "submit_loading": "Ajout du compte…"
+      },
+      "tabs": {
+        "credentials": "Identifiants",
+        "qr": "Code QR"
+      },
+      "qr": {
+        "connecting": "Génération du code QR…",
+        "instructions": "Ouvrez l'application mobile Steam, appuyez sur le scanner de QR code et scannez ce code.",
+        "scanned": "Scanné ! Approuvez la connexion sur votre téléphone.",
+        "retry": "Générer un nouveau code"
+      },
+      "fields": {
+        "login": {
+          "label": "Identifiant Steam",
+          "placeholder": "Le nom de votre compte Steam",
+          "error": "L'identifiant Steam est requis."
+        },
+        "password": {
+          "label": "Mot de passe Steam",
+          "placeholder": "Votre mot de passe Steam",
+          "error": "Le mot de passe Steam est requis."
+        },
+        "two_factor_code": {
+          "label": "Code Steam Guard",
+          "placeholder": "Code à 5 caractères",
+          "error": "Saisissez votre code Steam Guard à 5 caractères."
+        }
+      }
+    },
+    "auth": {
+      "sign_in": {
+        "title": "Connexion",
+        "submit": "Se connecter",
+        "submit_loading": "Connexion…",
+        "switch_text": "Pas encore de compte ?",
+        "switch_action": "En créer un"
+      },
+      "sign_up": {
+        "title": "Créer un compte",
+        "submit": "Créer un compte",
+        "submit_loading": "Création du compte…",
+        "switch_text": "Vous avez déjà un compte ?",
+        "switch_action": "Se connecter"
+      },
+      "mfa": {
+        "title": "Vérification à deux facteurs",
+        "hint": "Saisissez le code à 6 chiffres de votre application d'authentification, ou l'un de vos codes de récupération.",
+        "submit": "Vérifier",
+        "submit_loading": "Vérification…",
+        "fields": {
+          "code": {
+            "label": "Code de vérification",
+            "placeholder": "123456",
+            "error": "Saisissez votre code à 6 chiffres ou un code de récupération."
+          }
+        }
+      },
+      "fields": {
+        "display_name": {
+          "label": "Nom d'affichage",
+          "placeholder": "InigoMontoya",
+          "error": "Le nom d'affichage doit comporter entre 2 et 30 caractères."
+        },
+        "email": {
+          "label": "E-mail",
+          "placeholder": "john@doe.com",
+          "error": "Saisissez une adresse e-mail valide."
+        },
+        "password": {
+          "label": "Mot de passe",
+          "placeholder_signin": "••••••••",
+          "placeholder_signup": "Au moins 8 caractères",
+          "error_signin": "Le mot de passe doit comporter au moins 8 caractères.",
+          "error_signup": "Le mot de passe doit comporter entre 8 et 64 caractères."
+        }
+      }
+    },
+    "settings": {
+      "title": "Paramètres du compte",
+      "subtitle": "Les détails de votre compte. L'e-mail et le nom d'affichage ne peuvent pas être modifiés ici.",
+      "fields": {
+        "email": {
+          "label": "E-mail"
+        },
+        "display_name": {
+          "label": "Nom d'affichage"
+        },
+        "password": {
+          "label": "Mot de passe",
+          "value": "••••••••"
+        }
+      },
+      "display": {
+        "title": "Préférences d'affichage",
+        "show_profile_name": "Afficher le nom du profil Steam",
+        "show_profile_image": "Afficher l'image du profil Steam",
+        "mask_account_name": "Masquer le nom du compte"
+      },
+      "change_password": {
+        "trigger": "Changer le mot de passe",
+        "title": "Changer le mot de passe",
+        "hint": "Saisissez votre mot de passe actuel et choisissez-en un nouveau.",
+        "submit": "Mettre à jour le mot de passe",
+        "submit_loading": "Mise à jour…",
+        "fields": {
+          "old_password": {
+            "label": "Mot de passe actuel",
+            "placeholder": "Votre mot de passe actuel",
+            "error": "Le mot de passe actuel est requis."
+          },
+          "new_password": {
+            "label": "Nouveau mot de passe",
+            "placeholder": "Au moins 8 caractères",
+            "error": "Le nouveau mot de passe doit comporter entre 8 et 64 caractères."
+          },
+          "confirm_password": {
+            "label": "Confirmer le nouveau mot de passe",
+            "placeholder": "Saisissez à nouveau votre nouveau mot de passe",
+            "error": "Veuillez confirmer votre nouveau mot de passe.",
+            "mismatch": "Les mots de passe ne correspondent pas."
+          }
+        }
+      },
+      "mfa": {
+        "title": "Authentification à deux facteurs",
+        "status_enabled": "L'authentification à deux facteurs est activée.",
+        "status_disabled": "Ajoutez une couche de sécurité supplémentaire avec une application d'authentification.",
+        "enable_trigger": "Activer l'authentification à deux facteurs",
+        "disable_trigger": "Désactiver l'authentification à deux facteurs",
+        "setup": {
+          "title": "Activer l'authentification à deux facteurs",
+          "generating": "Préparation de la configuration de votre application d'authentification…",
+          "scan_hint": "Scannez ce code QR avec votre application d'authentification (Google Authenticator, Authy, 1Password…).",
+          "manual_hint": "Impossible de scanner ? Saisissez cette clé manuellement :",
+          "type_label": "Type de clé",
+          "type_time": "Basée sur le temps (TOTP)",
+          "type_counter": "Basée sur un compteur (HOTP)",
+          "recovery_hint": "Conservez ces codes de récupération en lieu sûr. Chacun peut être utilisé une fois si vous perdez l'accès à votre application d'authentification. Ils ne seront plus affichés.",
+          "submit": "Vérifier et activer",
+          "submit_loading": "Vérification…",
+          "done": "Terminé",
+          "fields": {
+            "code": {
+              "label": "Code de vérification",
+              "placeholder": "123456",
+              "error": "Saisissez le code à 6 chiffres de votre application."
+            }
+          }
+        },
+        "disable": {
+          "title": "Désactiver l'authentification à deux facteurs",
+          "hint": "Saisissez un code de votre application d'authentification ou un code de récupération pour désactiver l'authentification à deux facteurs.",
+          "submit": "Désactiver",
+          "submit_loading": "Désactivation…",
+          "fields": {
+            "code": {
+              "label": "Code de vérification",
+              "placeholder": "123456",
+              "error": "Saisissez votre code à 6 chiffres ou un code de récupération."
+            }
+          }
+        }
+      },
+      "delete_account": {
+        "trigger": "Supprimer le compte",
+        "confirm": {
+          "title": "Supprimer le compte",
+          "body": "Cela supprime définitivement votre compte et dissocie tous vos comptes Steam. Cette action est irréversible.",
+          "ok": "Supprimer le compte",
+          "cancel": "Annuler"
+        }
+      }
+    },
+    "header": {
+      "aria": {
+        "theme_light": "Passer au thème clair",
+        "theme_dark": "Passer au thème sombre",
+        "github": "Voir le code source sur GitHub",
+        "sign_out": "Se déconnecter",
+        "menu_open": "Ouvrir le menu",
+        "menu_close": "Fermer le menu",
+        "language": "Choisir la langue"
+      },
+      "nav": {
+        "dashboard": "Tableau de bord",
+        "accounts": "Comptes",
+        "auth": "Authentification",
+        "settings": "Paramètres",
+        "api": "API"
+      }
+    },
+    "dashboard": {
+      "overview": {
+        "title": "Vos comptes Steam",
+        "subtitle": "Surveillez les comptes que vous avez associés pour le farming."
+      },
+      "stats": {
+        "accounts": "Comptes associés",
+        "idling": "Actifs maintenant",
+        "games": "Jeux en cours"
+      },
+      "card": {
+        "presence": "Présence",
+        "games_idling": "Jeux en cours",
+        "auto_reply": "Réponse automatique",
+        "auto_reply_on": "Activée",
+        "auto_reply_off": "Désactivée",
+        "last_updated": "Dernière mise à jour",
+        "status": {
+          "idling": "Actif",
+          "paused": "En pause"
+        }
+      },
+      "actions": {
+        "start": "Démarrer le farming",
+        "pause": "Mettre en pause",
+        "edit_games": "Modifier les jeux",
+        "auto_reply_start": "Activer la réponse automatique",
+        "auto_reply_stop": "Arrêter la réponse automatique",
+        "edit_auto_reply": "Modifier la réponse automatique",
+        "edit_now_playing": "Modifier le jeu en cours",
+        "remove": "Retirer",
+        "no_games_hint": "Ajoutez des jeux avant de pouvoir démarrer le farming."
+      },
+      "edit_now_playing": {
+        "title": "En cours de jeu",
+        "hint": "Un titre personnalisé affiché comme le jeu auquel vous jouez dans votre liste d'amis pendant le farming. Laissez vide pour n'afficher que vos jeux en cours.",
+        "label": "Titre affiché",
+        "placeholder": "ex. Idling via Steam Idler"
+      },
+      "edit_auto_reply": {
+        "title": "Modifier la réponse automatique",
+        "hint": "Envoyez une réponse automatique aux amis qui écrivent à ce compte.",
+        "template_label": "Message de réponse",
+        "template_placeholder": "ex. Je suis absent pour le moment - ceci est une réponse automatique.",
+        "while_idling_label": "Répondre uniquement pendant le farming"
+      },
+      "edit_games": {
+        "title": "Modifier les jeux en cours",
+        "hint": "Ajoutez les identifiants d'applications Steam que ce compte doit faire tourner, puis enregistrez.",
+        "find_ids": "Trouver les identifiants d'applications sur SteamDB",
+        "placeholder": "Identifiant d'application (ex. 1245620)",
+        "add": "Ajouter",
+        "empty": "Aucun jeu ajouté pour le moment.",
+        "remove_aria": "Retirer le jeu {{id}}"
+      },
+      "cards": {
+        "aria": "Voir les cartes à échanger",
+        "title": "Cartes à échanger",
+        "back": "Retour au tableau de bord",
+        "loading": "Chargement des cartes à échanger…",
+        "empty": "Aucun jeu trouvé pour ce compte.",
+        "filter_placeholder": "Filtrer par nom ou identifiant…",
+        "columns": {
+          "index": "#",
+          "game": "Jeu",
+          "id": "Identifiant",
+          "cards": "Cartes restantes",
+          "playtime": "Temps de jeu"
+        },
+        "totals": "{{games}} jeux · {{cards}} cartes restantes",
+        "no_cards_hint": "Ce jeu n'a pas de cartes à échanger Steam.",
+        "no_cards_disclaimer": "X = ce jeu n'a pas de cartes à échanger Steam, il n'en obtiendra donc jamais."
+      },
+      "remove_confirm": {
+        "title": "Retirer le compte",
+        "body": "Cela arrête le farming et dissocie ce compte Steam. Vous pourrez l'ajouter à nouveau plus tard.",
+        "ok": "Retirer",
+        "cancel": "Annuler"
+      },
+      "persona": {
+        "aria": "Changer le statut en ligne",
+        "offline": "Hors ligne",
+        "online": "En ligne",
+        "busy": "Occupé",
+        "away": "Absent",
+        "snooze": "En veille",
+        "looking_to_trade": "Cherche à échanger",
+        "looking_to_play": "Cherche à jouer",
+        "invisible": "Invisible",
+        "unknown": "Inconnu"
+      },
+      "states": {
+        "loading": "Chargement de vos comptes…",
+        "error": {
+          "title": "Impossible de charger vos comptes",
+          "description": "Une erreur est survenue lors de la récupération de vos comptes Steam. Veuillez réessayer.",
+          "retry": "Réessayer"
+        }
+      },
+      "info": {
+        "empty": {
+          "title": "Aucun compte pour le moment",
+          "cta_action": "Ajouter un compte Steam",
+          "description": "pour commencer à faire tourner vos jeux"
+        },
+        "not-authenticated": {
+          "title": "Votre tableau de bord",
+          "cta_action": "Se connecter",
+          "description": "pour voir et gérer vos comptes Steam"
+        }
+      }
+    },
+    "not_found": {
+      "placeholder": "not-found works!"
+    },
+    "api": {
+      "no_config": "L'URL de base de l'API n'est pas configurée."
+    },
+    "i18n": {
+      "load_error": "Impossible de charger cette langue. Veuillez réessayer."
+    }
+  }
+}

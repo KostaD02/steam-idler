@@ -160,11 +160,11 @@
         "display_name": {
           "label": "Display name",
           "placeholder": "InigoMontoya",
-          "error": "Display name must be 2–30 characters."
+          "error": "Display name must be 2-30 characters."
         },
         "email": {
           "label": "Email",
-          "placeholder": "vigac@vigacashvili.ge",
+          "placeholder": "john@doe.com",
           "error": "Enter a valid email address."
         },
         "password": {
@@ -172,7 +172,7 @@
           "placeholder_signin": "••••••••",
           "placeholder_signup": "At least 8 characters",
           "error_signin": "Password must be at least 8 characters.",
-          "error_signup": "Password must be 8–64 characters."
+          "error_signup": "Password must be 8-64 characters."
         }
       }
     },
