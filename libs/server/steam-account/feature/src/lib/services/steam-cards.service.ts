@@ -184,7 +184,8 @@ export class SteamCardsService implements OnModuleInit, OnModuleDestroy {
 
     return [...games.values()].sort(
       (a, b) =>
-        b.cardsRemaining - a.cardsRemaining || a.name.localeCompare(b.name),
+        (b.cardsRemaining ?? 0) - (a.cardsRemaining ?? 0) ||
+        a.name.localeCompare(b.name),
     );
   }
 
@@ -260,7 +261,10 @@ export class SteamCardsService implements OnModuleInit, OnModuleDestroy {
 
       const existing = games.get(appid);
 
-      if (!existing || game.cardsRemaining > existing.cardsRemaining) {
+      if (
+        !existing ||
+        (game.cardsRemaining ?? 0) > (existing.cardsRemaining ?? 0)
+      ) {
         games.set(appid, game);
       }
     }

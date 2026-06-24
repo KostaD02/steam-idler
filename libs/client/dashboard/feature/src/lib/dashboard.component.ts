@@ -40,7 +40,9 @@ export class DashboardComponent {
     stream: () => this.accountsService.getSteamAccounts(),
   });
 
-  readonly accounts = computed(() => this.accountsResource.value() ?? []);
+  readonly accounts = computed(() =>
+    this.accountsResource.hasValue() ? this.accountsResource.value() : [],
+  );
 
   readonly isInitialLoad = computed(
     () => this.accountsResource.status() === 'loading',

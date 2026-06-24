@@ -86,7 +86,7 @@ export class JwtAuthMiddleware implements NestMiddleware {
       res,
     );
 
-    req.user = user.toObject<User>();
+    (req as Request & { user: User }).user = user.toObject<User>();
     return next();
   }
 

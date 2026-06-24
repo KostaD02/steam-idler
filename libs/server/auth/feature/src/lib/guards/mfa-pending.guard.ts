@@ -67,7 +67,7 @@ export class MfaPendingGuard implements CanActivate {
     const user = await this.authRepository.getById(String(decoded._id));
     this.authValidationService.checkUserExistence(user);
 
-    request.user = user.toObject<User>();
+    (request as Request & { user: User }).user = user.toObject<User>();
     return true;
   }
 }
