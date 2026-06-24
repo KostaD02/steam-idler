@@ -1,0 +1,415 @@
+{
+  "errors": {
+    "not_found": "Kaynak bulunamadı.",
+    "forbidden": "Bunu yapma iznin yok.",
+    "bad_request": "İstek geçersizdi.",
+    "payment_required": "Ödeme gerekli.",
+    "unauthorized": "Giriş yapmış olmalısın.",
+    "conflict": "Bu, mevcut bir kaynakla çakışıyor.",
+    "teapot": "Ben bir çaydanlığım.",
+    "payload_too_large": "İstek verisi çok büyük.",
+    "unsupported_media_type": "Bu medya türü desteklenmiyor.",
+    "enhance_your_calm": "Lütfen biraz yavaşla.",
+    "too_many_requests": "Çok fazla istek. Lütfen daha sonra tekrar dene.",
+    "internal_server_error": "Bizim tarafımızda bir şeyler ters gitti.",
+    "common": {
+      "app_error": "Bir şeyler ters gitti. Lütfen tekrar dene.",
+      "endpoint_not_found": "Uç nokta bulunamadı.",
+      "invalid_json": "İstek gövdesi geçerli bir JSON değil.",
+      "incorrect_mongoose_id": "Geçersiz kimlik biçimi.",
+      "property_should_not_exist": "Beklenmeyen bir özellik gönderildi.",
+      "event_payload_required": "Olay verisi gerekli."
+    },
+    "auth": {
+      "incorrect_email_or_password": "E-posta veya şifre hatalı.",
+      "email_in_use": "Bu e-posta ile zaten bir hesap var.",
+      "phone_number_in_use": "Bu telefon numarası ile zaten bir hesap var.",
+      "token_invalid": "Oturumun geçersiz.",
+      "token_expired": "Oturumunun süresi doldu.",
+      "token_not_found": "Oturum jetonu bulunamadı.",
+      "invalid_email": "Bu e-posta adresi geçersiz görünüyor.",
+      "invalid_password": "Şifre geçersiz.",
+      "invalid_old_password": "Mevcut şifre hatalı.",
+      "invalid_change_password": "Yeni şifre geçersiz.",
+      "invalid_credentials": "E-posta veya şifre hatalı.",
+      "invalid_token": "Oturumun geçersiz.",
+      "display_name_too_short": "Görünen ad çok kısa.",
+      "display_name_too_long": "Görünen ad çok uzun.",
+      "display_name_should_be_string": "Görünen ad metin olmalı.",
+      "password_too_short": "Şifre çok kısa.",
+      "password_too_long": "Şifre çok uzun.",
+      "password_should_be_string": "Şifre metin olmalı.",
+      "old_password_too_short": "Mevcut şifre çok kısa.",
+      "old_password_too_long": "Mevcut şifre çok uzun.",
+      "old_password_should_be_string": "Mevcut şifre metin olmalı.",
+      "new_password_too_short": "Yeni şifre çok kısa.",
+      "new_password_too_long": "Yeni şifre çok uzun.",
+      "new_password_should_be_string": "Yeni şifre metin olmalı.",
+      "should_provide_email": "E-posta gerekli.",
+      "should_provide_password": "Şifre gerekli.",
+      "password_changed": "Şifren değiştirildi. Lütfen tekrar giriş yap.",
+      "no_update_fields_provided": "Güncellenecek hiçbir alan girilmedi.",
+      "setting_should_be_boolean": "Bu ayar doğru veya yanlış olmalı.",
+      "mfa_required": "İki adımlı kimlik doğrulama gerekli.",
+      "mfa_invalid_code": "Bu doğrulama kodu hatalı.",
+      "mfa_code_required": "Bir doğrulama kodu gerekli.",
+      "mfa_already_enabled": "İki adımlı kimlik doğrulama zaten etkin.",
+      "mfa_not_enabled": "İki adımlı kimlik doğrulama etkin değil.",
+      "mfa_not_initialized": "Onaylamadan önce iki adımlı kurulumu başlat.",
+      "user_not_found": "Eşleşen bir hesap bulamadık.",
+      "role_not_sufficient": "Bunu yapma iznin yok."
+    },
+    "steam_account": {
+      "not_found": "Steam hesabı bulunamadı.",
+      "user_already_has_steam_account": "Zaten bir Steam hesabı bağladın.",
+      "login_is_required": "Steam girişi gerekli.",
+      "login_should_be_string": "Steam girişi metin olmalı.",
+      "password_is_required": "Steam şifresi gerekli.",
+      "password_should_be_string": "Steam şifresi metin olmalı.",
+      "two_factor_code_is_required": "Bir Steam Guard kodu gerekli.",
+      "two_factor_code_too_short": "Steam Guard kodu çok kısa.",
+      "two_factor_code_too_long": "Steam Guard kodu çok uzun.",
+      "two_factor_code_should_be_string": "Steam Guard kodu metin olmalı.",
+      "login_error": "Steam'e giriş yapılamadı.",
+      "guard_code_is_invalid": "Steam Guard kodu geçersiz.",
+      "invalid_credentials": "Steam kimlik bilgileri hatalı.",
+      "rate_limit_exceeded": "Steam hız sınırına ulaşıldı. Lütfen bekleyip tekrar dene.",
+      "games_ids_should_be_array": "Oyun kimlikleri bir liste olmalı.",
+      "games_ids_must_be_numbers": "Oyun kimlikleri sayı olmalı.",
+      "invalid_persona_status": "Bu çevrimiçi durum geçerli değil.",
+      "auto_reply_template_should_be_string": "Otomatik yanıt mesajı metin olmalı.",
+      "auto_reply_template_too_long": "Otomatik yanıt mesajı çok uzun.",
+      "auto_reply_while_idling_should_be_boolean": "Otomatik yanıt kapsamı geçersiz.",
+      "displayed_game_name_should_be_string": "Görünen başlık metin olmalı.",
+      "displayed_game_name_too_long": "Görünen başlık çok uzun.",
+      "cards_unavailable": "Ticaret kartları okunamadı. Hesabın giriş yapmış olduğundan emin ol.",
+      "qr_timeout": "QR kodu taranmadan önce süresi doldu. Yenisini oluştur.",
+      "qr_failed": "QR ile giriş başarısız oldu. Lütfen tekrar dene."
+    }
+  },
+  "ui": {
+    "common": {
+      "save": "Kaydet",
+      "cancel": "İptal",
+      "close": "Kapat"
+    },
+    "accounts": {
+      "add": {
+        "title": "Steam hesabı ekle",
+        "subtitle": "Oyunları idle etmeye başlamak için Steam kimlik bilgilerinle giriş yap.",
+        "submit": "Hesap ekle",
+        "submit_loading": "Hesap ekleniyor…"
+      },
+      "tabs": {
+        "credentials": "Kimlik bilgileri",
+        "qr": "QR kodu"
+      },
+      "qr": {
+        "connecting": "QR kodu oluşturuluyor…",
+        "instructions": "Steam mobil uygulamasını aç, QR tarayıcısına dokun ve bu kodu tara.",
+        "scanned": "Tarandı! Telefonundan girişi onayla.",
+        "retry": "Yeni bir kod oluştur"
+      },
+      "fields": {
+        "login": {
+          "label": "Steam girişi",
+          "placeholder": "Steam hesap adın",
+          "error": "Steam girişi gerekli."
+        },
+        "password": {
+          "label": "Steam şifresi",
+          "placeholder": "Steam şifren",
+          "error": "Steam şifresi gerekli."
+        },
+        "two_factor_code": {
+          "label": "Steam Guard kodu",
+          "placeholder": "5 karakterli kod",
+          "error": "5 karakterli Steam Guard kodunu gir."
+        }
+      }
+    },
+    "auth": {
+      "sign_in": {
+        "title": "Giriş yap",
+        "submit": "Giriş yap",
+        "submit_loading": "Giriş yapılıyor…",
+        "switch_text": "Henüz hesabın yok mu?",
+        "switch_action": "Bir tane oluştur"
+      },
+      "sign_up": {
+        "title": "Hesap oluştur",
+        "submit": "Hesap oluştur",
+        "submit_loading": "Hesap oluşturuluyor…",
+        "switch_text": "Zaten bir hesabın var mı?",
+        "switch_action": "Giriş yap"
+      },
+      "mfa": {
+        "title": "İki adımlı doğrulama",
+        "hint": "Kimlik doğrulayıcı uygulamandaki 6 haneli kodu ya da kurtarma kodlarından birini gir.",
+        "submit": "Doğrula",
+        "submit_loading": "Doğrulanıyor…",
+        "fields": {
+          "code": {
+            "label": "Doğrulama kodu",
+            "placeholder": "123456",
+            "error": "6 haneli kodunu ya da bir kurtarma kodunu gir."
+          }
+        }
+      },
+      "fields": {
+        "display_name": {
+          "label": "Görünen ad",
+          "placeholder": "InigoMontoya",
+          "error": "Görünen ad 2-30 karakter olmalı."
+        },
+        "email": {
+          "label": "E-posta",
+          "placeholder": "john@doe.com",
+          "error": "Geçerli bir e-posta adresi gir."
+        },
+        "password": {
+          "label": "Şifre",
+          "placeholder_signin": "••••••••",
+          "placeholder_signup": "En az 8 karakter",
+          "error_signin": "Şifre en az 8 karakter olmalı.",
+          "error_signup": "Şifre 8-64 karakter olmalı."
+        }
+      }
+    },
+    "settings": {
+      "title": "Hesap ayarları",
+      "subtitle": "Hesap bilgilerin. E-posta ve görünen ad buradan değiştirilemez.",
+      "fields": {
+        "email": {
+          "label": "E-posta"
+        },
+        "display_name": {
+          "label": "Görünen ad"
+        },
+        "password": {
+          "label": "Şifre",
+          "value": "••••••••"
+        }
+      },
+      "display": {
+        "title": "Görünüm tercihleri",
+        "show_profile_name": "Steam profil adını göster",
+        "show_profile_image": "Steam profil resmini göster",
+        "mask_account_name": "Hesap adını gizle"
+      },
+      "change_password": {
+        "trigger": "Şifreyi değiştir",
+        "title": "Şifreyi değiştir",
+        "hint": "Mevcut şifreni gir ve yeni bir tane seç.",
+        "submit": "Şifreyi güncelle",
+        "submit_loading": "Güncelleniyor…",
+        "fields": {
+          "old_password": {
+            "label": "Mevcut şifre",
+            "placeholder": "Mevcut şifren",
+            "error": "Mevcut şifre gerekli."
+          },
+          "new_password": {
+            "label": "Yeni şifre",
+            "placeholder": "En az 8 karakter",
+            "error": "Yeni şifre 8-64 karakter olmalı."
+          },
+          "confirm_password": {
+            "label": "Yeni şifreyi onayla",
+            "placeholder": "Yeni şifreni tekrar gir",
+            "error": "Lütfen yeni şifreni onayla.",
+            "mismatch": "Şifreler eşleşmiyor."
+          }
+        }
+      },
+      "mfa": {
+        "title": "İki adımlı kimlik doğrulama",
+        "status_enabled": "İki adımlı kimlik doğrulama açık.",
+        "status_disabled": "Bir kimlik doğrulayıcı uygulamayla ekstra bir güvenlik katmanı ekle.",
+        "enable_trigger": "İki adımlıyı etkinleştir",
+        "disable_trigger": "İki adımlıyı devre dışı bırak",
+        "setup": {
+          "title": "İki adımlıyı etkinleştir",
+          "generating": "Kimlik doğrulayıcı kurulumun hazırlanıyor…",
+          "scan_hint": "Bu QR kodunu kimlik doğrulayıcı uygulamanla tara (Google Authenticator, Authy, 1Password…).",
+          "manual_hint": "Tarayamıyor musun? Bu anahtarı elle gir:",
+          "type_label": "Anahtar türü",
+          "type_time": "Zaman tabanlı (TOTP)",
+          "type_counter": "Sayaç tabanlı (HOTP)",
+          "recovery_hint": "Bu kurtarma kodlarını güvenli bir yere kaydet. Kimlik doğrulayıcına erişimini kaybedersen her biri bir kez kullanılabilir. Tekrar gösterilmeyecekler.",
+          "submit": "Doğrula ve etkinleştir",
+          "submit_loading": "Doğrulanıyor…",
+          "done": "Tamam",
+          "fields": {
+            "code": {
+              "label": "Doğrulama kodu",
+              "placeholder": "123456",
+              "error": "Uygulamandaki 6 haneli kodu gir."
+            }
+          }
+        },
+        "disable": {
+          "title": "İki adımlıyı devre dışı bırak",
+          "hint": "İki adımlıyı kapatmak için kimlik doğrulayıcı uygulamandan bir kod ya da bir kurtarma kodu gir.",
+          "submit": "Devre dışı bırak",
+          "submit_loading": "Devre dışı bırakılıyor…",
+          "fields": {
+            "code": {
+              "label": "Doğrulama kodu",
+              "placeholder": "123456",
+              "error": "6 haneli kodunu ya da bir kurtarma kodunu gir."
+            }
+          }
+        }
+      },
+      "delete_account": {
+        "trigger": "Hesabı sil",
+        "confirm": {
+          "title": "Hesabı sil",
+          "body": "Bu, hesabını kalıcı olarak siler ve tüm Steam hesaplarının bağlantısını kaldırır. Bu geri alınamaz.",
+          "ok": "Hesabı sil",
+          "cancel": "İptal"
+        }
+      }
+    },
+    "header": {
+      "aria": {
+        "theme_light": "Açık temaya geç",
+        "theme_dark": "Koyu temaya geç",
+        "github": "Kaynağı GitHub'da görüntüle",
+        "sign_out": "Çıkış yap",
+        "menu_open": "Menüyü aç",
+        "menu_close": "Menüyü kapat",
+        "language": "Dil seç"
+      },
+      "nav": {
+        "dashboard": "Panel",
+        "accounts": "Hesaplar",
+        "auth": "Kimlik",
+        "settings": "Ayarlar",
+        "api": "API"
+      }
+    },
+    "dashboard": {
+      "overview": {
+        "title": "Steam hesapların",
+        "subtitle": "Idle için bağladığın hesapları takip et."
+      },
+      "stats": {
+        "accounts": "Bağlı hesaplar",
+        "idling": "Şu an idle",
+        "games": "Idle edilen oyunlar"
+      },
+      "card": {
+        "presence": "Durum",
+        "games_idling": "Idle edilen oyunlar",
+        "auto_reply": "Otomatik yanıt",
+        "auto_reply_on": "Açık",
+        "auto_reply_off": "Kapalı",
+        "last_updated": "Son güncelleme",
+        "status": {
+          "idling": "Idle ediliyor",
+          "paused": "Duraklatıldı"
+        }
+      },
+      "actions": {
+        "start": "Idle'ı başlat",
+        "pause": "Idle'ı duraklat",
+        "edit_games": "Oyunları düzenle",
+        "auto_reply_start": "Otomatik yanıtı başlat",
+        "auto_reply_stop": "Otomatik yanıtı durdur",
+        "edit_auto_reply": "Otomatik yanıtı düzenle",
+        "edit_now_playing": "Şu an oynananı düzenle",
+        "remove": "Kaldır",
+        "no_games_hint": "Idle'ı başlatabilmek için önce oyun ekle."
+      },
+      "edit_now_playing": {
+        "title": "Şu an oynanıyor",
+        "hint": "Idle ederken arkadaş listende oynadığın oyun olarak gösterilen özel bir başlık. Yalnızca idle oyunlarını göstermek için boş bırak.",
+        "label": "Görünen başlık",
+        "placeholder": "örn. Steam Idler ile Idle Ediliyor"
+      },
+      "edit_auto_reply": {
+        "title": "Otomatik yanıtı düzenle",
+        "hint": "Bu hesaba mesaj atan arkadaşlara otomatik bir yanıt gönder.",
+        "template_label": "Yanıt mesajı",
+        "template_placeholder": "örn. Şu an uzaktayım - bu otomatik bir yanıttır.",
+        "while_idling_label": "Yalnızca idle ederken yanıtla"
+      },
+      "edit_games": {
+        "title": "Idle oyunlarını düzenle",
+        "hint": "Bu hesabın idle edeceği Steam app kimliklerini ekle, sonra kaydet.",
+        "find_ids": "App kimliklerini SteamDB'de bul",
+        "placeholder": "App kimliği (örn. 1245620)",
+        "add": "Ekle",
+        "empty": "Henüz oyun eklenmedi.",
+        "remove_aria": "{{id}} oyununu kaldır"
+      },
+      "cards": {
+        "aria": "Ticaret kartlarını görüntüle",
+        "title": "Ticaret kartları",
+        "back": "Panele dön",
+        "loading": "Ticaret kartları yükleniyor…",
+        "empty": "Bu hesap için oyun bulunamadı.",
+        "filter_placeholder": "Ad ya da kimliğe göre filtrele…",
+        "columns": {
+          "index": "#",
+          "game": "Oyun",
+          "id": "Kimlik",
+          "cards": "Kalan kart",
+          "playtime": "Oynama süresi"
+        },
+        "totals": "{{games}} oyun · {{cards}} kart kaldı",
+        "no_cards_hint": "Bu oyunun Steam ticaret kartı yok.",
+        "no_cards_disclaimer": "X = bu oyunun Steam ticaret kartı yok, bu yüzden hiç kart düşmez."
+      },
+      "remove_confirm": {
+        "title": "Hesabı kaldır",
+        "body": "Bu, idle'ı durdurur ve bu Steam hesabının bağlantısını kaldırır. Daha sonra tekrar ekleyebilirsin.",
+        "ok": "Kaldır",
+        "cancel": "İptal"
+      },
+      "persona": {
+        "aria": "Çevrimiçi durumunu değiştir",
+        "offline": "Çevrimdışı",
+        "online": "Çevrimiçi",
+        "busy": "Meşgul",
+        "away": "Uzakta",
+        "snooze": "Uykuda",
+        "looking_to_trade": "Takas arıyor",
+        "looking_to_play": "Oyun arıyor",
+        "invisible": "Görünmez",
+        "unknown": "Bilinmiyor"
+      },
+      "states": {
+        "loading": "Hesapların yükleniyor…",
+        "error": {
+          "title": "Hesapların yüklenemedi",
+          "description": "Steam hesapların getirilirken bir şeyler ters gitti. Lütfen tekrar dene.",
+          "retry": "Tekrar dene"
+        }
+      },
+      "info": {
+        "empty": {
+          "title": "Henüz hesap yok",
+          "cta_action": "Steam hesabı ekle",
+          "description": "ve oyunlarını idle etmeye başla"
+        },
+        "not-authenticated": {
+          "title": "Panelin",
+          "cta_action": "Giriş yap",
+          "description": "ve Steam hesaplarını görüntüleyip yönet"
+        }
+      }
+    },
+    "not_found": {
+      "placeholder": "not-found çalışıyor!"
+    },
+    "api": {
+      "no_config": "API temel URL'si yapılandırılmamış."
+    },
+    "i18n": {
+      "load_error": "Bu dil yüklenemedi. Lütfen tekrar dene."
+    }
+  }
+}

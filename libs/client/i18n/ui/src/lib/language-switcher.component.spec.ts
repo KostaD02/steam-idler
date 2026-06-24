@@ -180,6 +180,8 @@ describe('LanguageSwitcherComponent', () => {
       keydown(fixture, 'ArrowDown');
       expect(component.activeIndex()).toBe(1);
 
+      component.activeIndex.set(component.locales.length - 1);
+
       keydown(fixture, 'ArrowDown');
       expect(component.activeIndex()).toBe(component.locales.length - 1);
     });

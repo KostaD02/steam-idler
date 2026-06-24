@@ -17,4 +17,4 @@ export const DEFAULT_LOCALE = 'en';
 export const ERROR_KEY_PATTERN = /['"`](errors\.[a-z0-9_.]+)['"`]/g;
 
 export const LABEL_PATTERN =
-  /^\s*([a-z]{2}(?:-[a-zA-Z]{2,})?):\s*['"`]([^'"`]+)['"`]/gm;
+  /^\s*['"`]?([a-z]{2}(?:-[a-zA-Z]{2,})?)['"`]?:\s*['"`]([^'"`]+)['"`]/gm;

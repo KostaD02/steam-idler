@@ -109,8 +109,14 @@ describe('I18nService', () => {
       expect(service.locale()).toBe('ka');
     });
 
+    it('uses an exact regional navigator language when it is supported', () => {
+      const { service } = setup('pt-BR');
+
+      expect(service.locale()).toBe('pt-BR');
+    });
+
     it('falls back to the default locale for an unsupported navigator language', () => {
-      const { service } = setup('fr-FR');
+      const { service } = setup('ja-JP');
 
       expect(service.locale()).toBe(DEFAULT_LOCALE);
     });
@@ -156,7 +162,7 @@ describe('I18nService', () => {
     it('returns false for an unsupported locale', async () => {
       const { service, http } = setup();
 
-      await expect(service.setLocale('de' as never)).resolves.toBe(false);
+      await expect(service.setLocale('ja' as never)).resolves.toBe(false);
       expect(http.get).not.toHaveBeenCalled();
     });
 

@@ -1,0 +1,415 @@
+{
+  "errors": {
+    "not_found": "未找到资源。",
+    "forbidden": "你没有执行该操作的权限。",
+    "bad_request": "请求无效。",
+    "payment_required": "需要付款。",
+    "unauthorized": "你必须先登录。",
+    "conflict": "与现有资源冲突。",
+    "teapot": "我是一个茶壶。",
+    "payload_too_large": "请求负载过大。",
+    "unsupported_media_type": "不支持该媒体类型。",
+    "enhance_your_calm": "请放慢速度。",
+    "too_many_requests": "请求过于频繁，请稍后重试。",
+    "internal_server_error": "我们这边出了点问题。",
+    "common": {
+      "app_error": "出了点问题，请重试。",
+      "endpoint_not_found": "未找到接口。",
+      "invalid_json": "请求体不是有效的 JSON。",
+      "incorrect_mongoose_id": "ID 格式无效。",
+      "property_should_not_exist": "发送了意外的属性。",
+      "event_payload_required": "需要提供事件负载。"
+    },
+    "auth": {
+      "incorrect_email_or_password": "邮箱或密码不正确。",
+      "email_in_use": "该邮箱已被注册。",
+      "phone_number_in_use": "该手机号已被注册。",
+      "token_invalid": "你的会话无效。",
+      "token_expired": "你的会话已过期。",
+      "token_not_found": "未找到会话令牌。",
+      "invalid_email": "该邮箱地址似乎无效。",
+      "invalid_password": "密码无效。",
+      "invalid_old_password": "当前密码不正确。",
+      "invalid_change_password": "新密码无效。",
+      "invalid_credentials": "邮箱或密码不正确。",
+      "invalid_token": "你的会话无效。",
+      "display_name_too_short": "显示名称过短。",
+      "display_name_too_long": "显示名称过长。",
+      "display_name_should_be_string": "显示名称必须为文本。",
+      "password_too_short": "密码过短。",
+      "password_too_long": "密码过长。",
+      "password_should_be_string": "密码必须为文本。",
+      "old_password_too_short": "当前密码过短。",
+      "old_password_too_long": "当前密码过长。",
+      "old_password_should_be_string": "当前密码必须为文本。",
+      "new_password_too_short": "新密码过短。",
+      "new_password_too_long": "新密码过长。",
+      "new_password_should_be_string": "新密码必须为文本。",
+      "should_provide_email": "请输入邮箱。",
+      "should_provide_password": "请输入密码。",
+      "password_changed": "你的密码已更改，请重新登录。",
+      "no_update_fields_provided": "未提供任何要更新的字段。",
+      "setting_should_be_boolean": "该设置必须为开或关。",
+      "mfa_required": "需要进行两步验证。",
+      "mfa_invalid_code": "该验证码不正确。",
+      "mfa_code_required": "需要提供验证码。",
+      "mfa_already_enabled": "两步验证已启用。",
+      "mfa_not_enabled": "尚未启用两步验证。",
+      "mfa_not_initialized": "请先开始两步验证设置，再进行确认。",
+      "user_not_found": "未找到匹配的账户。",
+      "role_not_sufficient": "你没有执行该操作的权限。"
+    },
+    "steam_account": {
+      "not_found": "未找到 Steam 账户。",
+      "user_already_has_steam_account": "你已经关联了一个 Steam 账户。",
+      "login_is_required": "需要提供 Steam 登录名。",
+      "login_should_be_string": "Steam 登录名必须为文本。",
+      "password_is_required": "需要提供 Steam 密码。",
+      "password_should_be_string": "Steam 密码必须为文本。",
+      "two_factor_code_is_required": "需要提供 Steam Guard 验证码。",
+      "two_factor_code_too_short": "Steam Guard 验证码过短。",
+      "two_factor_code_too_long": "Steam Guard 验证码过长。",
+      "two_factor_code_should_be_string": "Steam Guard 验证码必须为文本。",
+      "login_error": "登录 Steam 失败。",
+      "guard_code_is_invalid": "Steam Guard 验证码无效。",
+      "invalid_credentials": "Steam 凭据不正确。",
+      "rate_limit_exceeded": "触发了 Steam 的速率限制，请稍候再试。",
+      "games_ids_should_be_array": "游戏 ID 必须是一个列表。",
+      "games_ids_must_be_numbers": "游戏 ID 必须是数字。",
+      "invalid_persona_status": "该在线状态无效。",
+      "auto_reply_template_should_be_string": "自动回复消息必须为文本。",
+      "auto_reply_template_too_long": "自动回复消息过长。",
+      "auto_reply_while_idling_should_be_boolean": "自动回复范围无效。",
+      "displayed_game_name_should_be_string": "显示标题必须为文本。",
+      "displayed_game_name_too_long": "显示标题过长。",
+      "cards_unavailable": "无法读取集换式卡牌。请确认该账户已登录。",
+      "qr_timeout": "QR 码在扫描前已过期。请重新生成。",
+      "qr_failed": "QR 登录失败，请重试。"
+    }
+  },
+  "ui": {
+    "common": {
+      "save": "保存",
+      "cancel": "取消",
+      "close": "关闭"
+    },
+    "accounts": {
+      "add": {
+        "title": "添加 Steam 账户",
+        "subtitle": "使用你的 Steam 凭据登录，开始挂机游戏。",
+        "submit": "添加账户",
+        "submit_loading": "正在添加账户…"
+      },
+      "tabs": {
+        "credentials": "凭据",
+        "qr": "QR 码"
+      },
+      "qr": {
+        "connecting": "正在生成 QR 码…",
+        "instructions": "打开 Steam 手机应用，点击 QR 扫描器，扫描此二维码。",
+        "scanned": "已扫描！请在手机上确认登录。",
+        "retry": "生成新的二维码"
+      },
+      "fields": {
+        "login": {
+          "label": "Steam 登录名",
+          "placeholder": "你的 Steam 账户名",
+          "error": "需要提供 Steam 登录名。"
+        },
+        "password": {
+          "label": "Steam 密码",
+          "placeholder": "你的 Steam 密码",
+          "error": "需要提供 Steam 密码。"
+        },
+        "two_factor_code": {
+          "label": "Steam Guard 验证码",
+          "placeholder": "5 位字符验证码",
+          "error": "请输入你的 5 位 Steam Guard 验证码。"
+        }
+      }
+    },
+    "auth": {
+      "sign_in": {
+        "title": "登录",
+        "submit": "登录",
+        "submit_loading": "正在登录…",
+        "switch_text": "还没有账户？",
+        "switch_action": "创建账户"
+      },
+      "sign_up": {
+        "title": "创建账户",
+        "submit": "创建账户",
+        "submit_loading": "正在创建账户…",
+        "switch_text": "已经有账户了？",
+        "switch_action": "登录"
+      },
+      "mfa": {
+        "title": "两步验证",
+        "hint": "输入身份验证器应用中的 6 位验证码，或其中一个恢复码。",
+        "submit": "验证",
+        "submit_loading": "正在验证…",
+        "fields": {
+          "code": {
+            "label": "验证码",
+            "placeholder": "123456",
+            "error": "请输入你的 6 位验证码或恢复码。"
+          }
+        }
+      },
+      "fields": {
+        "display_name": {
+          "label": "显示名称",
+          "placeholder": "InigoMontoya",
+          "error": "显示名称必须为 2-30 个字符。"
+        },
+        "email": {
+          "label": "邮箱",
+          "placeholder": "john@doe.com",
+          "error": "请输入有效的邮箱地址。"
+        },
+        "password": {
+          "label": "密码",
+          "placeholder_signin": "••••••••",
+          "placeholder_signup": "至少 8 个字符",
+          "error_signin": "密码至少需要 8 个字符。",
+          "error_signup": "密码必须为 8-64 个字符。"
+        }
+      }
+    },
+    "settings": {
+      "title": "账户设置",
+      "subtitle": "你的账户详情。邮箱和显示名称无法在此处更改。",
+      "fields": {
+        "email": {
+          "label": "邮箱"
+        },
+        "display_name": {
+          "label": "显示名称"
+        },
+        "password": {
+          "label": "密码",
+          "value": "••••••••"
+        }
+      },
+      "display": {
+        "title": "显示偏好",
+        "show_profile_name": "显示 Steam 个人资料名称",
+        "show_profile_image": "显示 Steam 个人资料头像",
+        "mask_account_name": "隐藏账户名称"
+      },
+      "change_password": {
+        "trigger": "更改密码",
+        "title": "更改密码",
+        "hint": "输入当前密码并设置一个新密码。",
+        "submit": "更新密码",
+        "submit_loading": "正在更新…",
+        "fields": {
+          "old_password": {
+            "label": "当前密码",
+            "placeholder": "你的当前密码",
+            "error": "需要提供当前密码。"
+          },
+          "new_password": {
+            "label": "新密码",
+            "placeholder": "至少 8 个字符",
+            "error": "新密码必须为 8-64 个字符。"
+          },
+          "confirm_password": {
+            "label": "确认新密码",
+            "placeholder": "再次输入你的新密码",
+            "error": "请确认你的新密码。",
+            "mismatch": "两次输入的密码不一致。"
+          }
+        }
+      },
+      "mfa": {
+        "title": "两步验证",
+        "status_enabled": "两步验证已开启。",
+        "status_disabled": "使用身份验证器应用添加一层额外的安全保护。",
+        "enable_trigger": "启用两步验证",
+        "disable_trigger": "停用两步验证",
+        "setup": {
+          "title": "启用两步验证",
+          "generating": "正在准备你的身份验证器设置…",
+          "scan_hint": "使用身份验证器应用扫描此 QR 码（Google Authenticator、Authy、1Password…）。",
+          "manual_hint": "无法扫描？手动输入此密钥：",
+          "type_label": "密钥类型",
+          "type_time": "基于时间（TOTP）",
+          "type_counter": "基于计数器（HOTP）",
+          "recovery_hint": "请将这些恢复码保存在安全的地方。如果你无法使用身份验证器，每个恢复码可使用一次。它们不会再次显示。",
+          "submit": "验证并启用",
+          "submit_loading": "正在验证…",
+          "done": "完成",
+          "fields": {
+            "code": {
+              "label": "验证码",
+              "placeholder": "123456",
+              "error": "请输入应用中的 6 位验证码。"
+            }
+          }
+        },
+        "disable": {
+          "title": "停用两步验证",
+          "hint": "输入身份验证器应用中的验证码或恢复码以关闭两步验证。",
+          "submit": "停用",
+          "submit_loading": "正在停用…",
+          "fields": {
+            "code": {
+              "label": "验证码",
+              "placeholder": "123456",
+              "error": "请输入你的 6 位验证码或恢复码。"
+            }
+          }
+        }
+      },
+      "delete_account": {
+        "trigger": "删除账户",
+        "confirm": {
+          "title": "删除账户",
+          "body": "此操作将永久删除你的账户并解除你所有 Steam 账户的关联。此操作无法撤销。",
+          "ok": "删除账户",
+          "cancel": "取消"
+        }
+      }
+    },
+    "header": {
+      "aria": {
+        "theme_light": "切换到浅色主题",
+        "theme_dark": "切换到深色主题",
+        "github": "在 GitHub 上查看源代码",
+        "sign_out": "退出登录",
+        "menu_open": "打开菜单",
+        "menu_close": "关闭菜单",
+        "language": "选择语言"
+      },
+      "nav": {
+        "dashboard": "仪表盘",
+        "accounts": "账户",
+        "auth": "认证",
+        "settings": "设置",
+        "api": "API"
+      }
+    },
+    "dashboard": {
+      "overview": {
+        "title": "你的 Steam 账户",
+        "subtitle": "监控你为挂机关联的账户。"
+      },
+      "stats": {
+        "accounts": "已关联账户",
+        "idling": "正在挂机",
+        "games": "挂机游戏数"
+      },
+      "card": {
+        "presence": "在线状态",
+        "games_idling": "挂机游戏",
+        "auto_reply": "自动回复",
+        "auto_reply_on": "开",
+        "auto_reply_off": "关",
+        "last_updated": "最后更新",
+        "status": {
+          "idling": "挂机中",
+          "paused": "已暂停"
+        }
+      },
+      "actions": {
+        "start": "开始挂机",
+        "pause": "暂停挂机",
+        "edit_games": "编辑游戏",
+        "auto_reply_start": "开启自动回复",
+        "auto_reply_stop": "停止自动回复",
+        "edit_auto_reply": "编辑自动回复",
+        "edit_now_playing": "编辑当前游戏",
+        "remove": "移除",
+        "no_games_hint": "请先添加游戏，然后才能开始挂机。"
+      },
+      "edit_now_playing": {
+        "title": "当前游戏",
+        "hint": "挂机时在好友列表中显示为你正在玩的游戏的自定义标题。留空则仅显示你的挂机游戏。",
+        "label": "显示标题",
+        "placeholder": "例如：通过 Steam Idler 挂机"
+      },
+      "edit_auto_reply": {
+        "title": "编辑自动回复",
+        "hint": "向给此账户发消息的好友发送自动回复。",
+        "template_label": "回复消息",
+        "template_placeholder": "例如：我现在不在 - 这是一条自动回复。",
+        "while_idling_label": "仅在挂机时回复"
+      },
+      "edit_games": {
+        "title": "编辑挂机游戏",
+        "hint": "添加此账户要挂机的 Steam 应用 ID，然后保存。",
+        "find_ids": "在 SteamDB 上查找应用 ID",
+        "placeholder": "应用 ID（例如：1245620）",
+        "add": "添加",
+        "empty": "尚未添加游戏。",
+        "remove_aria": "移除游戏 {{id}}"
+      },
+      "cards": {
+        "aria": "查看集换式卡牌",
+        "title": "集换式卡牌",
+        "back": "返回仪表盘",
+        "loading": "正在加载集换式卡牌…",
+        "empty": "未找到此账户的游戏。",
+        "filter_placeholder": "按名称或 ID 筛选…",
+        "columns": {
+          "index": "#",
+          "game": "游戏",
+          "id": "ID",
+          "cards": "剩余卡牌",
+          "playtime": "游戏时长"
+        },
+        "totals": "{{games}} 款游戏 · 剩余 {{cards}} 张卡牌",
+        "no_cards_hint": "此游戏没有 Steam 集换式卡牌。",
+        "no_cards_disclaimer": "X = 此游戏没有 Steam 集换式卡牌，因此永远不会掉落卡牌。"
+      },
+      "remove_confirm": {
+        "title": "移除账户",
+        "body": "此操作将停止挂机并解除此 Steam 账户的关联。你之后可以重新添加。",
+        "ok": "移除",
+        "cancel": "取消"
+      },
+      "persona": {
+        "aria": "更改在线状态",
+        "offline": "离线",
+        "online": "在线",
+        "busy": "忙碌",
+        "away": "离开",
+        "snooze": "打盹",
+        "looking_to_trade": "想要交易",
+        "looking_to_play": "想要组队",
+        "invisible": "隐身",
+        "unknown": "未知"
+      },
+      "states": {
+        "loading": "正在加载你的账户…",
+        "error": {
+          "title": "无法加载你的账户",
+          "description": "获取你的 Steam 账户时出了点问题，请重试。",
+          "retry": "重试"
+        }
+      },
+      "info": {
+        "empty": {
+          "title": "暂无账户",
+          "cta_action": "添加 Steam 账户",
+          "description": "以开始挂机你的游戏"
+        },
+        "not-authenticated": {
+          "title": "你的仪表盘",
+          "cta_action": "登录",
+          "description": "以查看和管理你的 Steam 账户"
+        }
+      }
+    },
+    "not_found": {
+      "placeholder": "not-found 正常工作！"
+    },
+    "api": {
+      "no_config": "尚未配置 API 基础 URL。"
+    },
+    "i18n": {
+      "load_error": "无法加载该语言，请重试。"
+    }
+  }
+}
