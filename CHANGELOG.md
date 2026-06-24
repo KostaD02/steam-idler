@@ -1,3 +1,13 @@
+## 2.14.0 (2026-06-24)
+
+### 🚀 Features
+
+- add unit tests for Steam account features ([#78](https://github.com/KostaD02/steam-idler/pull/78))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.13.0 (2026-06-21)
 
 ### 🚀 Features
