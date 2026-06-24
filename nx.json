@@ -13,7 +13,7 @@
       "!{projectRoot}/src/test-setup.[jt]s",
       "!{projectRoot}/test-setup.[jt]s"
     ],
-    "sharedGlobals": []
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/*.yml"]
   },
   "plugins": [
     {
@@ -28,15 +28,24 @@
       },
       "exclude": ["tools/generators/**/*"]
     },
-    { "plugin": "@nx/eslint/plugin", "options": { "targetName": "lint" } },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    },
     {
       "plugin": "@nx/jest/plugin",
-      "options": { "targetName": "test" },
+      "options": {
+        "targetName": "test"
+      },
       "exclude": ["apps/server-e2e/**/*", "tools/generators/**/*"]
     },
     {
       "plugin": "@nx/playwright/plugin",
-      "options": { "targetName": "e2e" },
+      "options": {
+        "targetName": "e2e"
+      },
       "exclude": ["tools/generators/**/*"]
     }
   ],
@@ -59,8 +68,13 @@
       "style": "scss",
       "unitTestRunner": "jest"
     },
-    "@nx/angular:library": { "linter": "eslint", "unitTestRunner": "jest" },
-    "@nx/angular:component": { "style": "scss" }
+    "@nx/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nx/angular:component": {
+      "style": "scss"
+    }
   },
   "release": {
     "projects": ["infra"],
@@ -72,13 +86,48 @@
     },
     "conventionalCommits": {
       "types": {
-        "refactor": { "semverBump": "none", "changelog": { "hidden": false } },
-        "chore": { "semverBump": "none", "changelog": { "hidden": false } },
-        "docs": { "semverBump": "none", "changelog": { "hidden": false } },
-        "style": { "semverBump": "none", "changelog": { "hidden": false } },
-        "test": { "semverBump": "none", "changelog": { "hidden": false } },
-        "ci": { "semverBump": "none", "changelog": { "hidden": false } },
-        "build": { "semverBump": "none", "changelog": { "hidden": false } }
+        "refactor": {
+          "semverBump": "none",
+          "changelog": {
+            "hidden": false
+          }
+        },
+        "chore": {
+          "semverBump": "none",
+          "changelog": {
+            "hidden": false
+          }
+        },
+        "docs": {
+          "semverBump": "none",
+          "changelog": {
+            "hidden": false
+          }
+        },
+        "style": {
+          "semverBump": "none",
+          "changelog": {
+            "hidden": false
+          }
+        },
+        "test": {
+          "semverBump": "none",
+          "changelog": {
+            "hidden": false
+          }
+        },
+        "ci": {
+          "semverBump": "none",
+          "changelog": {
+            "hidden": false
+          }
+        },
+        "build": {
+          "semverBump": "none",
+          "changelog": {
+            "hidden": false
+          }
+        }
       }
     },
     "changelog": {
