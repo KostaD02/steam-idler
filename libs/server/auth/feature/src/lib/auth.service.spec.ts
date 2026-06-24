@@ -16,12 +16,19 @@ const setup = () => {
     updateUser: jest.fn().mockReturnValue('updateUser'),
     updateSettings: jest.fn().mockReturnValue('updateSettings'),
   };
+  const authMfaService = {
+    generate: jest.fn().mockReturnValue('generate'),
+    enable: jest.fn().mockReturnValue('enable'),
+    disable: jest.fn().mockReturnValue('disable'),
+    authenticate: jest.fn().mockReturnValue('authenticate'),
+  };
   const service = new AuthService(
     authTokenService as never,
     authAccountService as never,
+    authMfaService as never,
   );
 
-  return { service, authTokenService, authAccountService };
+  return { service, authTokenService, authAccountService, authMfaService };
 };
 
 const user = { _id: 'user-id' } as never;
@@ -101,5 +108,39 @@ describe('AuthService', () => {
 
     expect(service.updateSettings(user, dto)).toBe('updateSettings');
     expect(authAccountService.updateSettings).toHaveBeenCalledWith(user, dto);
+  });
+
+  it('delegates generateMfa to the mfa service', () => {
+    const { service, authMfaService } = setup();
+
+    expect(service.generateMfa(user, 'dark')).toBe('generate');
+    expect(authMfaService.generate).toHaveBeenCalledWith(user, 'dark');
+  });
+
+  it('delegates enableMfa to the mfa service', () => {
+    const { service, authMfaService } = setup();
+
+    expect(service.enableMfa(user, '123456')).toBe('enable');
+    expect(authMfaService.enable).toHaveBeenCalledWith(user, '123456');
+  });
+
+  it('delegates disableMfa to the mfa service', () => {
+    const { service, authMfaService } = setup();
+
+    expect(service.disableMfa(user, '123456')).toBe('disable');
+    expect(authMfaService.disable).toHaveBeenCalledWith(user, '123456');
+  });
+
+  it('delegates authenticateMfa to the mfa service', () => {
+    const { service, authMfaService } = setup();
+
+    expect(service.authenticateMfa(user, '123456', response)).toBe(
+      'authenticate',
+    );
+    expect(authMfaService.authenticate).toHaveBeenCalledWith(
+      user,
+      '123456',
+      response,
+    );
   });
 });

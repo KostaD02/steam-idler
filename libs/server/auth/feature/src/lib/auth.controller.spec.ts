@@ -13,6 +13,10 @@ const setup = () => {
     signOut: jest.fn().mockReturnValue('signOut'),
     refreshToken: jest.fn().mockReturnValue('refreshToken'),
     changePassword: jest.fn().mockReturnValue('changePassword'),
+    generateMfa: jest.fn().mockReturnValue('generateMfa'),
+    enableMfa: jest.fn().mockReturnValue('enableMfa'),
+    disableMfa: jest.fn().mockReturnValue('disableMfa'),
+    authenticateMfa: jest.fn().mockReturnValue('authenticateMfa'),
   };
   const controller = new AuthController(authService as never);
 
@@ -94,6 +98,44 @@ describe('AuthController', () => {
     expect(authService.changePassword).toHaveBeenCalledWith(
       user,
       dto,
+      response,
+    );
+  });
+
+  it('starts mfa enrollment with the optional theme', () => {
+    const { controller, authService } = setup();
+
+    expect(controller.generateMfa(user, 'dark')).toBe('generateMfa');
+    expect(authService.generateMfa).toHaveBeenCalledWith(user, 'dark');
+  });
+
+  it('enables mfa with the submitted token', () => {
+    const { controller, authService } = setup();
+
+    expect(controller.enableMfa(user, { token: '123456' } as never)).toBe(
+      'enableMfa',
+    );
+    expect(authService.enableMfa).toHaveBeenCalledWith(user, '123456');
+  });
+
+  it('disables mfa with the submitted token', () => {
+    const { controller, authService } = setup();
+
+    expect(controller.disableMfa(user, { token: '123456' } as never)).toBe(
+      'disableMfa',
+    );
+    expect(authService.disableMfa).toHaveBeenCalledWith(user, '123456');
+  });
+
+  it('completes mfa authentication with the token and response', () => {
+    const { controller, authService } = setup();
+
+    expect(
+      controller.authenticateMfa(user, { token: '123456' } as never, response),
+    ).toBe('authenticateMfa');
+    expect(authService.authenticateMfa).toHaveBeenCalledWith(
+      user,
+      '123456',
       response,
     );
   });

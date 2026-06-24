@@ -2,6 +2,8 @@ import { HttpException } from '@nestjs/common';
 
 import { NextFunction, Request, Response } from 'express';
 
+import { TOKEN_SCOPES } from '@steam-idler/server/auth/types';
+
 import { JwtAuthMiddleware } from './jwt-auth.middleware';
 
 const buildExceptionService = () => ({
@@ -129,6 +131,29 @@ describe('JwtAuthMiddleware', () => {
       const { middleware, jwtService, exceptionService, authTokenService } =
         setup();
       jwtService.verifyAsync.mockRejectedValue({ name: 'JsonWebTokenError' });
+      const res = buildResponse();
+      const req = buildRequest({
+        cookies: { access_token: 'cookie-token' },
+      });
+
+      await expect(
+        middleware.use(req, res, jest.fn() as NextFunction),
+      ).rejects.toThrow(HttpException);
+      expect(authTokenService.signOut).toHaveBeenCalledWith(res);
+      expect(exceptionService.throw).toHaveBeenCalledWith(
+        'errors.bad_request',
+        'Invalid token',
+        ['errors.auth.invalid_token'],
+      );
+    });
+
+    it('rejects an mfa-pending token used as an access token', async () => {
+      const { middleware, jwtService, authTokenService, exceptionService } =
+        setup();
+      jwtService.verifyAsync.mockResolvedValue({
+        _id: 'user-id',
+        scope: TOKEN_SCOPES.MfaPending,
+      });
       const res = buildResponse();
       const req = buildRequest({
         cookies: { access_token: 'cookie-token' },

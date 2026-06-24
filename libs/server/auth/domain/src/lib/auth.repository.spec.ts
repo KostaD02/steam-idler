@@ -107,6 +107,82 @@ describe('AuthRepository', () => {
     });
   });
 
+  describe('getByIdWithMfa', () => {
+    it('selects the totp secret and recovery codes', async () => {
+      const { repository, userModel } = setup();
+      const select = jest.fn().mockReturnValue(exec('user'));
+      userModel.findById.mockReturnValue({ select });
+
+      await expect(repository.getByIdWithMfa('id-1')).resolves.toBe('user');
+      expect(userModel.findById).toHaveBeenCalledWith('id-1');
+      expect(select).toHaveBeenCalledWith('+totpSecret +mfaRecoveryCodes');
+    });
+  });
+
+  describe('setTotpSecret', () => {
+    it('stores the encrypted secret and keeps mfa disabled', async () => {
+      const { repository, userModel } = setup();
+      userModel.findByIdAndUpdate.mockReturnValue(exec('updated'));
+
+      await expect(repository.setTotpSecret('id-1', 'enc')).resolves.toBe(
+        'updated',
+      );
+      expect(userModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        'id-1',
+        { totpSecret: 'enc', mfaEnabled: false },
+        { returnDocument: 'after' },
+      );
+    });
+  });
+
+  describe('enableMfa', () => {
+    it('enables mfa and stores the hashed recovery codes', async () => {
+      const { repository, userModel } = setup();
+      userModel.findByIdAndUpdate.mockReturnValue(exec('updated'));
+
+      await repository.enableMfa('id-1', ['h1', 'h2']);
+
+      expect(userModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        'id-1',
+        { mfaEnabled: true, mfaRecoveryCodes: ['h1', 'h2'] },
+        { returnDocument: 'after' },
+      );
+    });
+  });
+
+  describe('disableMfa', () => {
+    it('disables mfa and unsets the secret and recovery codes', async () => {
+      const { repository, userModel } = setup();
+      userModel.findByIdAndUpdate.mockReturnValue(exec('updated'));
+
+      await repository.disableMfa('id-1');
+
+      expect(userModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        'id-1',
+        {
+          $set: { mfaEnabled: false },
+          $unset: { totpSecret: '', mfaRecoveryCodes: '' },
+        },
+        { returnDocument: 'after' },
+      );
+    });
+  });
+
+  describe('pullRecoveryCode', () => {
+    it('removes the consumed recovery code', async () => {
+      const { repository, userModel } = setup();
+      userModel.findByIdAndUpdate.mockReturnValue(exec('updated'));
+
+      await repository.pullRecoveryCode('id-1', 'hashed-1');
+
+      expect(userModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        'id-1',
+        { $pull: { mfaRecoveryCodes: 'hashed-1' } },
+        { returnDocument: 'after' },
+      );
+    });
+  });
+
   describe('create', () => {
     it('forwards the dto to the model', async () => {
       const { repository, userModel } = setup();

@@ -42,7 +42,7 @@ const setup = () => {
     updateSettings: jest.fn(),
   };
   const authTokenService = {
-    signIn: jest.fn().mockReturnValue('tokens'),
+    issueSession: jest.fn().mockReturnValue('tokens'),
     signOut: jest.fn().mockReturnValue({ success: true }),
   };
   const authValidationService = {
@@ -173,7 +173,7 @@ describe('AuthAccountService', () => {
         'user-id',
         'new-hash',
       );
-      expect(authTokenService.signIn).toHaveBeenCalled();
+      expect(authTokenService.issueSession).toHaveBeenCalled();
       expect(result).toBe('tokens');
     });
 

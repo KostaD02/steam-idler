@@ -7,7 +7,7 @@ jest.mock('@steam-idler/server/auth/core', () => ({
   hashText: jest.fn(),
 }));
 
-import { hashText } from '@steam-idler/server/auth/core';
+import { hashText, MFA_CONFIG } from '@steam-idler/server/auth/core';
 
 import { AuthTokenService } from './auth-token.service';
 
@@ -152,6 +152,46 @@ describe('AuthTokenService', () => {
         'access_token',
         'signed-token',
         expect.objectContaining({ httpOnly: true, secure: true }),
+      );
+      expect(result).toEqual({
+        access_token: 'signed-token',
+        refresh_token: 'signed-token',
+      });
+    });
+
+    it('issues an mfa challenge when the user has two-factor enabled', () => {
+      const { service } = setup();
+      const response = buildResponse();
+
+      const result = service.signIn(
+        { _id: 'user-id', mfaEnabled: true } as never,
+        response,
+      );
+
+      expect(result).toEqual({ mfaRequired: true });
+      expect(response.clearCookie).toHaveBeenCalledWith('access_token');
+      expect(response.clearCookie).toHaveBeenCalledWith('refresh_token');
+      expect(response.cookie).toHaveBeenCalledWith(
+        MFA_CONFIG.PENDING_TOKEN_KEY,
+        'signed-token',
+        expect.objectContaining({ httpOnly: true, secure: true }),
+      );
+    });
+  });
+
+  describe('issueSession', () => {
+    it('signs tokens, sets cookies, and clears any pending mfa cookie', () => {
+      const { service, jwtService } = setup();
+      const response = buildResponse();
+
+      const result = service.issueSession(
+        { _id: 'user-id' } as never,
+        response,
+      );
+
+      expect(jwtService.sign).toHaveBeenCalledTimes(2);
+      expect(response.clearCookie).toHaveBeenCalledWith(
+        MFA_CONFIG.PENDING_TOKEN_KEY,
       );
       expect(result).toEqual({
         access_token: 'signed-token',
