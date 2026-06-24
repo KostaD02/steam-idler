@@ -1,3 +1,13 @@
+## 2.15.0 (2026-06-24)
+
+### 🚀 Features
+
+- set up nx workspace ([#79](https://github.com/KostaD02/steam-idler/pull/79))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.14.0 (2026-06-24)
 
 ### 🚀 Features
