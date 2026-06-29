@@ -88,7 +88,7 @@ jobs:
         run: sed "s/__VERSION__/${{ steps.v.outputs.version }}/g" .github/release-template.md > release-notes.md
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
