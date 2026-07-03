@@ -96,7 +96,7 @@ export class AccountCardComponent {
   );
 
   readonly lastUpdated = computed(() =>
-    formatRelativeTime(this.account().updatedAt),
+    formatRelativeTime(this.account().updatedAt, this.i18n.locale()),
   );
 
   readonly personaStatus = computed(
