@@ -144,7 +144,13 @@ export class I18nService {
     }
 
     const nav = typeof navigator !== 'undefined' ? navigator.language : '';
+
+    if (isLocale(nav, SUPPORTED_LOCALES as unknown as string[])) {
+      return nav;
+    }
+
     const prefix = nav.split('-')[0];
+
     return isLocale(prefix, SUPPORTED_LOCALES as unknown as string[])
       ? prefix
       : DEFAULT_LOCALE;
