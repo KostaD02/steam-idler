@@ -6,7 +6,7 @@
     "payment_required": "Se requiere un pago.",
     "unauthorized": "Debes iniciar sesión.",
     "conflict": "Eso entra en conflicto con un recurso existente.",
-    "teapot": "Soy una tetera.",
+    "teapot": "Mantén la calma.",
     "payload_too_large": "El contenido de la solicitud es demasiado grande.",
     "unsupported_media_type": "El tipo de medio no es compatible.",
     "enhance_your_calm": "Por favor, ve más despacio.",
@@ -23,7 +23,6 @@
     "auth": {
       "incorrect_email_or_password": "El correo o la contraseña son incorrectos.",
       "email_in_use": "Ya existe una cuenta con este correo.",
-      "phone_number_in_use": "Ya existe una cuenta con este número de teléfono.",
       "token_invalid": "Tu sesión no es válida.",
       "token_expired": "Tu sesión ha caducado.",
       "token_not_found": "No se encontró ningún token de sesión.",
@@ -164,7 +163,7 @@
         },
         "email": {
           "label": "Correo",
-          "placeholder": "john@doe.com",
+          "placeholder": "vigac@vigacashvili.ge",
           "error": "Introduce una dirección de correo válida."
         },
         "password": {

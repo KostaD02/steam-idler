@@ -6,7 +6,7 @@
     "payment_required": "É necessário efetuar o pagamento.",
     "unauthorized": "Você precisa estar conectado.",
     "conflict": "Isso entra em conflito com um recurso existente.",
-    "teapot": "Sou um bule de chá.",
+    "teapot": "Mantenha a calma.",
     "payload_too_large": "O conteúdo da requisição é grande demais.",
     "unsupported_media_type": "Esse tipo de mídia não é suportado.",
     "enhance_your_calm": "Vai com calma.",
@@ -23,7 +23,6 @@
     "auth": {
       "incorrect_email_or_password": "E-mail ou senha incorretos.",
       "email_in_use": "Já existe uma conta com este e-mail.",
-      "phone_number_in_use": "Já existe uma conta com este número de telefone.",
       "token_invalid": "Sua sessão é inválida.",
       "token_expired": "Sua sessão expirou.",
       "token_not_found": "Nenhum token de sessão foi encontrado.",
@@ -144,7 +143,7 @@
         "switch_action": "Entrar"
       },
       "mfa": {
-        "title": "Verificação em dois fatores",
+        "title": "Verificação de dois fatores",
         "hint": "Digite o código de 6 dígitos do seu app autenticador ou um dos seus códigos de recuperação.",
         "submit": "Verificar",
         "submit_loading": "Verificando…",
@@ -164,7 +163,7 @@
         },
         "email": {
           "label": "E-mail",
-          "placeholder": "john@doe.com",
+          "placeholder": "vigac@vigacashvili.ge",
           "error": "Digite um endereço de e-mail válido."
         },
         "password": {

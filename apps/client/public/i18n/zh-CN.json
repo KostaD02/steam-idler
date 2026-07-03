@@ -6,7 +6,7 @@
     "payment_required": "需要付款。",
     "unauthorized": "你必须先登录。",
     "conflict": "与现有资源冲突。",
-    "teapot": "我是一个茶壶。",
+    "teapot": "请保持冷静。",
     "payload_too_large": "请求负载过大。",
     "unsupported_media_type": "不支持该媒体类型。",
     "enhance_your_calm": "请放慢速度。",
@@ -23,7 +23,6 @@
     "auth": {
       "incorrect_email_or_password": "邮箱或密码不正确。",
       "email_in_use": "该邮箱已被注册。",
-      "phone_number_in_use": "该手机号已被注册。",
       "token_invalid": "你的会话无效。",
       "token_expired": "你的会话已过期。",
       "token_not_found": "未找到会话令牌。",
@@ -106,9 +105,9 @@
       },
       "qr": {
         "connecting": "正在生成 QR 码…",
-        "instructions": "打开 Steam 手机应用，点击 QR 扫描器，扫描此二维码。",
+        "instructions": "打开 Steam 手机应用，点击 QR 扫描器，扫描此 QR 码。",
         "scanned": "已扫描！请在手机上确认登录。",
-        "retry": "生成新的二维码"
+        "retry": "生成新的 QR 码"
       },
       "fields": {
         "login": {
@@ -164,7 +163,7 @@
         },
         "email": {
           "label": "邮箱",
-          "placeholder": "john@doe.com",
+          "placeholder": "vigac@vigacashvili.ge",
           "error": "请输入有效的邮箱地址。"
         },
         "password": {
@@ -377,7 +376,7 @@
         "away": "离开",
         "snooze": "打盹",
         "looking_to_trade": "想要交易",
-        "looking_to_play": "想要组队",
+        "looking_to_play": "想玩游戏",
         "invisible": "隐身",
         "unknown": "未知"
       },

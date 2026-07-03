@@ -6,7 +6,7 @@
     "payment_required": "Eine Zahlung ist erforderlich.",
     "unauthorized": "Du musst angemeldet sein.",
     "conflict": "Das steht im Konflikt mit einer vorhandenen Ressource.",
-    "teapot": "Ich bin eine Teekanne.",
+    "teapot": "Bewahre die Ruhe.",
     "payload_too_large": "Die Anfrage ist zu groß.",
     "unsupported_media_type": "Der Medientyp wird nicht unterstützt.",
     "enhance_your_calm": "Bitte mach langsamer.",
@@ -23,7 +23,6 @@
     "auth": {
       "incorrect_email_or_password": "E-Mail oder Passwort ist falsch.",
       "email_in_use": "Mit dieser E-Mail existiert bereits ein Konto.",
-      "phone_number_in_use": "Mit dieser Telefonnummer existiert bereits ein Konto.",
       "token_invalid": "Deine Sitzung ist ungültig.",
       "token_expired": "Deine Sitzung ist abgelaufen.",
       "token_not_found": "Es wurde kein Sitzungstoken gefunden.",
@@ -164,7 +163,7 @@
         },
         "email": {
           "label": "E-Mail",
-          "placeholder": "john@doe.com",
+          "placeholder": "vigac@vigacashvili.ge",
           "error": "Gib eine gültige E-Mail-Adresse ein."
         },
         "password": {
@@ -195,7 +194,7 @@
         "title": "Anzeigeeinstellungen",
         "show_profile_name": "Steam-Profilnamen anzeigen",
         "show_profile_image": "Steam-Profilbild anzeigen",
-        "mask_account_name": "Kontoname maskieren"
+        "mask_account_name": "Kontonamen maskieren"
       },
       "change_password": {
         "trigger": "Passwort ändern",
@@ -297,7 +296,7 @@
       },
       "stats": {
         "accounts": "Verknüpfte Konten",
-        "idling": "Idlen jetzt",
+        "idling": "Gerade am Idlen",
         "games": "Spiele im Idle"
       },
       "card": {

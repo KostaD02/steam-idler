@@ -6,7 +6,7 @@
     "payment_required": "Un paiement est requis.",
     "unauthorized": "Vous devez être connecté.",
     "conflict": "Cela entre en conflit avec une ressource existante.",
-    "teapot": "Je suis une théière.",
+    "teapot": "Gardez votre calme.",
     "payload_too_large": "Le contenu de la requête est trop volumineux.",
     "unsupported_media_type": "Le type de média n'est pas pris en charge.",
     "enhance_your_calm": "Veuillez ralentir.",
@@ -23,7 +23,6 @@
     "auth": {
       "incorrect_email_or_password": "L'e-mail ou le mot de passe est incorrect.",
       "email_in_use": "Un compte associé à cet e-mail existe déjà.",
-      "phone_number_in_use": "Un compte associé à ce numéro de téléphone existe déjà.",
       "token_invalid": "Votre session est invalide.",
       "token_expired": "Votre session a expiré.",
       "token_not_found": "Aucun jeton de session n'a été trouvé.",
@@ -96,7 +95,7 @@
     "accounts": {
       "add": {
         "title": "Ajouter un compte Steam",
-        "subtitle": "Connectez-vous avec vos identifiants Steam pour commencer à faire tourner des jeux.",
+        "subtitle": "Connectez-vous avec vos identifiants Steam pour commencer à farmer des jeux.",
         "submit": "Ajouter le compte",
         "submit_loading": "Ajout du compte…"
       },
@@ -106,7 +105,7 @@
       },
       "qr": {
         "connecting": "Génération du code QR…",
-        "instructions": "Ouvrez l'application mobile Steam, appuyez sur le scanner de QR code et scannez ce code.",
+        "instructions": "Ouvrez l'application mobile Steam, appuyez sur le scanner de code QR et scannez ce code.",
         "scanned": "Scanné ! Approuvez la connexion sur votre téléphone.",
         "retry": "Générer un nouveau code"
       },
@@ -164,7 +163,7 @@
         },
         "email": {
           "label": "E-mail",
-          "placeholder": "john@doe.com",
+          "placeholder": "vigac@vigacashvili.ge",
           "error": "Saisissez une adresse e-mail valide."
         },
         "password": {
@@ -327,7 +326,7 @@
         "title": "En cours de jeu",
         "hint": "Un titre personnalisé affiché comme le jeu auquel vous jouez dans votre liste d'amis pendant le farming. Laissez vide pour n'afficher que vos jeux en cours.",
         "label": "Titre affiché",
-        "placeholder": "ex. Idling via Steam Idler"
+        "placeholder": "ex. Farming via Steam Idler"
       },
       "edit_auto_reply": {
         "title": "Modifier la réponse automatique",
@@ -338,7 +337,7 @@
       },
       "edit_games": {
         "title": "Modifier les jeux en cours",
-        "hint": "Ajoutez les identifiants d'applications Steam que ce compte doit faire tourner, puis enregistrez.",
+        "hint": "Ajoutez les identifiants d'applications Steam que ce compte doit farmer, puis enregistrez.",
         "find_ids": "Trouver les identifiants d'applications sur SteamDB",
         "placeholder": "Identifiant d'application (ex. 1245620)",
         "add": "Ajouter",
@@ -361,7 +360,7 @@
         },
         "totals": "{{games}} jeux · {{cards}} cartes restantes",
         "no_cards_hint": "Ce jeu n'a pas de cartes à échanger Steam.",
-        "no_cards_disclaimer": "X = ce jeu n'a pas de cartes à échanger Steam, il n'en obtiendra donc jamais."
+        "no_cards_disclaimer": "X = ce jeu n'a pas de cartes à échanger Steam, vous n'en obtiendrez donc jamais."
       },
       "remove_confirm": {
         "title": "Retirer le compte",
@@ -393,7 +392,7 @@
         "empty": {
           "title": "Aucun compte pour le moment",
           "cta_action": "Ajouter un compte Steam",
-          "description": "pour commencer à faire tourner vos jeux"
+          "description": "pour commencer à farmer vos jeux"
         },
         "not-authenticated": {
           "title": "Votre tableau de bord",

@@ -6,7 +6,7 @@
     "payment_required": "Wymagana jest płatność.",
     "unauthorized": "Musisz być zalogowany.",
     "conflict": "To koliduje z istniejącym zasobem.",
-    "teapot": "Jestem czajniczkiem.",
+    "teapot": "Zachowaj spokój.",
     "payload_too_large": "Ładunek żądania jest zbyt duży.",
     "unsupported_media_type": "Ten typ multimediów nie jest obsługiwany.",
     "enhance_your_calm": "Zwolnij tempo.",
@@ -23,7 +23,6 @@
     "auth": {
       "incorrect_email_or_password": "Nieprawidłowy e-mail lub hasło.",
       "email_in_use": "Konto z tym adresem e-mail już istnieje.",
-      "phone_number_in_use": "Konto z tym numerem telefonu już istnieje.",
       "token_invalid": "Twoja sesja jest nieprawidłowa.",
       "token_expired": "Twoja sesja wygasła.",
       "token_not_found": "Nie znaleziono tokenu sesji.",
@@ -164,7 +163,7 @@
         },
         "email": {
           "label": "E-mail",
-          "placeholder": "john@doe.com",
+          "placeholder": "vigac@vigacashvili.ge",
           "error": "Wprowadź prawidłowy adres e-mail."
         },
         "password": {
@@ -361,7 +360,7 @@
         },
         "totals": "{{games}} gier · pozostało {{cards}} kart",
         "no_cards_hint": "Ta gra nie ma kart kolekcjonerskich Steam.",
-        "no_cards_disclaimer": "X = ta gra nie ma kart kolekcjonerskich Steam, więc nigdy żadnej nie wypuści."
+        "no_cards_disclaimer": "X = ta gra nie ma kart kolekcjonerskich Steam, więc nigdy żadna z niej nie wypadnie."
       },
       "remove_confirm": {
         "title": "Usuń konto",
@@ -398,7 +397,7 @@
         "not-authenticated": {
           "title": "Twój panel",
           "cta_action": "Zaloguj się",
-          "description": "aby przeglądać i zarządzać kontami Steam"
+          "description": "aby przeglądać konta Steam i zarządzać nimi"
         }
       }
     },

@@ -6,7 +6,7 @@
     "payment_required": "Потрібна оплата.",
     "unauthorized": "Потрібно увійти.",
     "conflict": "Це конфліктує з наявним ресурсом.",
-    "teapot": "Я чайник.",
+    "teapot": "Зберігайте спокій.",
     "payload_too_large": "Вміст запиту завеликий.",
     "unsupported_media_type": "Цей тип медіа не підтримується.",
     "enhance_your_calm": "Будь ласка, не поспішайте.",
@@ -23,7 +23,6 @@
     "auth": {
       "incorrect_email_or_password": "Неправильна електронна пошта або пароль.",
       "email_in_use": "Обліковий запис із цією електронною поштою вже існує.",
-      "phone_number_in_use": "Обліковий запис із цим номером телефону вже існує.",
       "token_invalid": "Ваша сесія недійсна.",
       "token_expired": "Термін дії вашої сесії минув.",
       "token_not_found": "Токен сесії не знайдено.",
@@ -164,7 +163,7 @@
         },
         "email": {
           "label": "Електронна пошта",
-          "placeholder": "john@doe.com",
+          "placeholder": "vigac@vigacashvili.ge",
           "error": "Введіть дійсну адресу електронної пошти."
         },
         "password": {

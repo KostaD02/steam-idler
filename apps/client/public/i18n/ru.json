@@ -6,7 +6,7 @@
     "payment_required": "Требуется оплата.",
     "unauthorized": "Необходимо войти в систему.",
     "conflict": "Это конфликтует с существующим ресурсом.",
-    "teapot": "Я чайник.",
+    "teapot": "Сохраняйте спокойствие.",
     "payload_too_large": "Тело запроса слишком большое.",
     "unsupported_media_type": "Тип данных не поддерживается.",
     "enhance_your_calm": "Пожалуйста, помедленнее.",
@@ -23,7 +23,6 @@
     "auth": {
       "incorrect_email_or_password": "Неверная почта или пароль.",
       "email_in_use": "Аккаунт с такой почтой уже существует.",
-      "phone_number_in_use": "Аккаунт с таким номером телефона уже существует.",
       "token_invalid": "Ваша сессия недействительна.",
       "token_expired": "Срок вашей сессии истёк.",
       "token_not_found": "Токен сессии не найден.",
@@ -123,8 +122,8 @@
         },
         "two_factor_code": {
           "label": "Код Steam Guard",
-          "placeholder": "5-значный код",
-          "error": "Введите 5-значный код Steam Guard."
+          "placeholder": "Код из 5 символов",
+          "error": "Введите код Steam Guard из 5 символов."
         }
       }
     },
@@ -164,7 +163,7 @@
         },
         "email": {
           "label": "Почта",
-          "placeholder": "john@doe.com",
+          "placeholder": "vigac@vigacashvili.ge",
           "error": "Введите корректный адрес почты."
         },
         "password": {
