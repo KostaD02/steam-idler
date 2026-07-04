@@ -80,7 +80,22 @@ The application can be easily set up using Docker Compose:
 mkdir steam-idler
 cd steam-idler
 curl -o docker-compose.yml https://raw.githubusercontent.com/KostaD02/steam-idler/main/docker-compose.yml
+curl -o .env https://raw.githubusercontent.com/KostaD02/steam-idler/main/.env.example
 ```
+
+Generate a secret and paste it into `JWT_SECRET` in `.env`, then repeat for `CREDENTIALS_SECRET`:
+
+```
+openssl rand -hex 64
+```
+
+No `openssl`? Generate it with the server image instead (it gets downloaded anyway):
+
+```
+docker run --rm kostad02/steam-idler-server:latest node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+```
+
+Then start the application:
 
 ```
 docker compose up -d
@@ -90,11 +105,11 @@ docker compose up -d
 > That was it, you are ready to use it!
 
 > [!NOTE]
-> Opening the client from another device? Set `SERVER_IP` to the address of the machine running Steam Idler in a `.env` file next to `docker-compose.yml`, the browser needs it to reach the API. Behind a reverse proxy, set `API_BASE` to the full API URL instead.
+> The client automatically points the browser at the API on the same host it was opened from, so it works from other devices out of the box. Set `SERVER_IP` in `.env` to force a specific API host, or `API_BASE` to the full API URL when running behind a reverse proxy.
 
 > [!CAUTION]
-> The compose file ships with default secrets so it works out of the box.
-> If the application is reachable by anyone but you, override `JWT_SECRET` and `CREDENTIALS_SECRET` in a `.env` file next to `docker-compose.yml`.
+> The compose file ships with default secrets so it works out of the box even without a `.env` file.
+> If the application is reachable by anyone but you, make sure `JWT_SECRET` and `CREDENTIALS_SECRET` are replaced with generated values as shown above.
 
 ## How does it work
 
@@ -132,13 +147,14 @@ cd steam-idler
 pnpm install
 ```
 
-Create a `.env` file similar to `.env.example` and generate the secrets:
+Create a `.env` file from the example and generate the secrets:
 
 ```
+cp .env.example .env
 pnpm g:secret
 ```
 
-Run it twice and paste the values into `JWT_SECRET` and `CREDENTIALS_SECRET`.
+Run `pnpm g:secret` twice and paste the values into `JWT_SECRET` and `CREDENTIALS_SECRET`.
 
 Then start the database containers:
 

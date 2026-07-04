@@ -29,13 +29,7 @@ function loadRuntimeConfig() {
     );
   }
 
-  const { API_BASE, SERVER_IP, SERVER_PORT, CLIENT_LOG_TYPE } = process.env;
-
-  if (API_BASE) {
-    config.apiBase = API_BASE;
-  } else if (SERVER_IP || SERVER_PORT) {
-    config.apiBase = `http://${SERVER_IP || 'localhost'}:${SERVER_PORT || '2221'}/api`;
-  }
+  const { CLIENT_LOG_TYPE } = process.env;
 
   if (CLIENT_LOG_TYPE !== undefined) {
     config.logType = toLogType(CLIENT_LOG_TYPE);
@@ -44,10 +38,26 @@ function loadRuntimeConfig() {
   return config;
 }
 
+function resolveApiBase(req) {
+  const { API_BASE, SERVER_IP, SERVER_PORT } = process.env;
+
+  if (API_BASE) {
+    return API_BASE;
+  }
+
+  if (SERVER_IP) {
+    return `http://${SERVER_IP}:${SERVER_PORT || '2221'}/api`;
+  }
+
+  const hostname = req.hostname || 'localhost';
+
+  return `${req.protocol}://${hostname}:${SERVER_PORT || '2221'}/api`;
+}
+
 const runtimeConfig = loadRuntimeConfig();
 
 app.get('/config.json', (req, res) => {
-  res.json(runtimeConfig);
+  res.json({ ...runtimeConfig, apiBase: resolveApiBase(req) });
 });
 
 app.use(express.static(BASE_URL));

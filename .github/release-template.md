@@ -18,5 +18,3 @@ The easiest way to run Steam Idler is Docker Compose, check [how to set up](http
 - `apps/server` - compiled NestJS server
 
 ---
-
-## 📝 Changes in this version
