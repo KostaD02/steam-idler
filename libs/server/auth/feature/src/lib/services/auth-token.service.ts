@@ -98,7 +98,7 @@ export class AuthTokenService {
     response.cookie(MFA_CONFIG.PENDING_TOKEN_KEY, pendingToken, {
       expires: new Date(Date.now() + MFA_CONFIG.PENDING_COOKIE_EXP),
       httpOnly: true,
-      secure: true,
+      secure: response.req.secure,
       sameSite: 'strict',
     });
 
@@ -172,13 +172,13 @@ export class AuthTokenService {
     response.cookie(AUTH_CONFIG.ACCESS_TOKEN_KEY, tokens.access_token, {
       expires: new Date(accessTokenExpiresIn),
       httpOnly: true,
-      secure: true,
+      secure: response.req.secure,
       sameSite: 'strict',
     });
     response.cookie(AUTH_CONFIG.REFRESH_TOKEN_KEY, tokens.refresh_token, {
       expires: new Date(refreshTokenExpiresIn),
       httpOnly: true,
-      secure: true,
+      secure: response.req.secure,
       sameSite: 'strict',
     });
   }
