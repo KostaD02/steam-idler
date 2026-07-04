@@ -1,3 +1,13 @@
+## 2.18.1 (2026-07-04)
+
+### 🩹 Fixes
+
+- skip server port in api base for domain hosts ([#91](https://github.com/KostaD02/steam-idler/pull/91))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.18.0 (2026-07-04)
 
 ### 🚀 Features
