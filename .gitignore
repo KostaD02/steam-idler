@@ -49,3 +49,7 @@ Thumbs.db
 .env.*.local
 **/.env
 !**/.env.example
+
+.nx/polygraph
+.nx/self-healing
+.nx/migrate-runs
