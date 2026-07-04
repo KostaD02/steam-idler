@@ -65,12 +65,12 @@ const setup = () => {
   };
 };
 
-const buildResponse = () =>
+const buildResponse = (secure = false) =>
   ({
     cookie: jest.fn(),
     clearCookie: jest.fn(),
     getHeader: jest.fn(),
-    req: { cookies: {}, headers: {}, body: {} },
+    req: { cookies: {}, headers: {}, body: {}, secure },
   }) as unknown as Response;
 
 const buildUserDoc = () => ({
@@ -152,12 +152,25 @@ describe('AuthTokenService', () => {
       expect(response.cookie).toHaveBeenCalledWith(
         'access_token',
         'signed-token',
-        expect.objectContaining({ httpOnly: true, secure: true }),
+        expect.objectContaining({ httpOnly: true, secure: false }),
       );
       expect(result).toEqual({
         access_token: 'signed-token',
         refresh_token: 'signed-token',
       });
+    });
+
+    it('marks cookies secure when the request is https', () => {
+      const { service } = setup();
+      const response = buildResponse(true);
+
+      service.signIn({ _id: 'user-id' } as never, response);
+
+      expect(response.cookie).toHaveBeenCalledWith(
+        'access_token',
+        'signed-token',
+        expect.objectContaining({ httpOnly: true, secure: true }),
+      );
     });
 
     it('issues an mfa challenge when the user has two-factor enabled', () => {
@@ -175,7 +188,7 @@ describe('AuthTokenService', () => {
       expect(response.cookie).toHaveBeenCalledWith(
         MFA_CONFIG.PENDING_TOKEN_KEY,
         'signed-token',
-        expect.objectContaining({ httpOnly: true, secure: true }),
+        expect.objectContaining({ httpOnly: true, secure: false }),
       );
     });
   });

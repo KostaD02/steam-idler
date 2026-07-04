@@ -1,5 +1,6 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import cookieParser from 'cookie-parser';
@@ -15,10 +16,11 @@ import { HttpExceptionsFilter } from './app/http-exceptions.filter';
 async function bootstrap() {
   const globalPrefix = 'api';
   const logger = new Logger(bootstrap.name);
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const env = app.get(EnvironmentService);
   const reflector = app.get(Reflector);
 
+  app.set('trust proxy', 1);
   app.use(cookieParser());
   app.setGlobalPrefix(globalPrefix);
   app.enableCors({
