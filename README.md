@@ -57,7 +57,7 @@ The previous version is kept at [steam-idler-legacy](https://github.com/KostaD02
 - Custom game display while idling
 - Trading card drops overview per account
 - Optional two-factor authentication (TOTP) for your Steam Idler account
-- Translations (English, ქართული)
+- Translations (English, ქართული, Español, Deutsch, Português (Brasil), Українська, Türkçe, Français, Polski, Русский, 简体中文)
 - Light and dark theme
 - Docker support
 
