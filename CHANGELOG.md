@@ -1,3 +1,13 @@
+## 2.18.0 (2026-07-04)
+
+### 🚀 Features
+
+- add pwa manifest, svg logo and readme preview ([#90](https://github.com/KostaD02/steam-idler/pull/90))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.17.2 (2026-07-04)
 
 ### 🩹 Fixes
