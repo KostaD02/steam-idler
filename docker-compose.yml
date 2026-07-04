@@ -54,7 +54,7 @@ services:
     environment:
       CLIENT_PORT: ${CLIENT_PORT:-2222}
       CLIENT_LOG_TYPE: ${CLIENT_LOG_TYPE:-2}
-      SERVER_IP: ${SERVER_IP:-localhost}
+      SERVER_IP: ${SERVER_IP:-}
       SERVER_PORT: ${SERVER_PORT:-2221}
       API_BASE: ${API_BASE:-}
     networks:
