@@ -28,7 +28,7 @@ jobs:
         run: echo "value=Steam-Idler-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}" >> "$GITHUB_OUTPUT"
 
       - name: Download dist
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: ${{ inputs.dist-artifact }}
           path: dist
