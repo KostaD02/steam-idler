@@ -1,3 +1,13 @@
+## 2.17.1 (2026-07-04)
+
+### 🩹 Fixes
+
+- update environment variable documentation and API base resolution ([#88](https://github.com/KostaD02/steam-idler/pull/88))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.17.0 (2026-07-04)
 
 ### 🚀 Features
