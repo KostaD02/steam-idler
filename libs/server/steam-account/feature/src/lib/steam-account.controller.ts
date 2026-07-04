@@ -218,7 +218,7 @@ export class SteamAccountController {
   @ApiOperation({
     summary: 'Update the games to idle',
     description:
-      'Replaces the list of Steam app ids the account idles, then restarts idling with the new list. The `:name` path param is the Steam account login and must belong to the authenticated user.',
+      'Replaces the list of Steam app ids the account idles and stops the current idling session; call `POST /steam-account/idle/start/:name` to idle the new list. The `:name` path param is the Steam account login and must belong to the authenticated user.',
   })
   @ApiOkResponse({ description: 'Idling games updated.' })
   @ApiBadRequestResponse({

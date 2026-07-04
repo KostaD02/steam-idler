@@ -8,6 +8,7 @@ jest.mock('@steam-idler/server/auth/core', () => ({
 }));
 
 import { hashText, MFA_CONFIG } from '@steam-idler/server/auth/core';
+import { TOKEN_SCOPES } from '@steam-idler/server/auth/types';
 
 import { AuthTokenService } from './auth-token.service';
 
@@ -218,7 +219,10 @@ describe('AuthTokenService', () => {
       const { service, jwtService, authRepository } = setup();
       const response = buildResponse();
       response.req.cookies = { refresh_token: 'refresh' };
-      jwtService.verify.mockReturnValue({ _id: 'user-id' });
+      jwtService.verify.mockReturnValue({
+        _id: 'user-id',
+        scope: TOKEN_SCOPES.Refresh,
+      });
       authRepository.getById.mockResolvedValue(buildUserDoc());
 
       const result = await service.refreshToken({} as Request, response);
@@ -228,6 +232,23 @@ describe('AuthTokenService', () => {
         access_token: 'signed-token',
         refresh_token: 'signed-token',
       });
+    });
+
+    it('rejects a token whose scope is not refresh', async () => {
+      const { service, jwtService, authRepository, authValidationService } =
+        setup();
+      const response = buildResponse();
+      response.req.cookies = { refresh_token: 'refresh' };
+      jwtService.verify.mockReturnValue({
+        _id: 'user-id',
+        scope: TOKEN_SCOPES.Access,
+      });
+
+      await expect(
+        service.refreshToken({} as Request, response),
+      ).rejects.toThrow(HttpException);
+      expect(authValidationService.throwInvalidRefreshToken).toHaveBeenCalled();
+      expect(authRepository.getById).not.toHaveBeenCalled();
     });
 
     it('throws an invalid token error when verification fails', async () => {

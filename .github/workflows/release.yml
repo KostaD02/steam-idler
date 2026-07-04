@@ -1,45 +1,78 @@
 name: Release
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version bump (auto derives it from conventional commits since the last tag)'
+        type: choice
+        default: auto
+        options:
+          - auto
+          - patch
+          - minor
+          - major
 
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  # Decide the bump from conventional commits since the last tag:
-  # breaking -> major, feat -> minor, fix -> patch, anything else -> none (no release).
   check:
-    name: Check for releasable commits
+    name: Check permissions and version bump
     runs-on: ubuntu-latest
     outputs:
       specifier: ${{ steps.bump.outputs.specifier }}
     steps:
+      - name: Ensure the actor is a repository admin
+        uses: actions/github-script@v9
+        with:
+          script: |
+            if (context.ref !== 'refs/heads/main') {
+              core.setFailed(`Releases can only run from main, got '${context.ref}'.`);
+              return;
+            }
+
+            const { data } = await github.rest.repos.getCollaboratorPermissionLevel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              username: context.actor,
+            });
+
+            if (data.permission !== 'admin') {
+              core.setFailed(`Only repository admins can run a release, '${context.actor}' has '${data.permission}' permission.`);
+            }
+
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Determine version bump
         id: bump
+        env:
+          REQUESTED: ${{ inputs.version }}
         run: |
-          LAST_TAG=$(git describe --tags --abbrev=0 --match 'v*' 2>/dev/null || true)
-          if [ -n "$LAST_TAG" ]; then RANGE="$LAST_TAG..HEAD"; else RANGE="HEAD"; fi
-          SUBJECTS=$(git log "$RANGE" --format='%s')
-          BODIES=$(git log "$RANGE" --format='%b')
-          if echo "$SUBJECTS" | grep -qE '^[a-z]+(\([^)]*\))?!:' || echo "$BODIES" | grep -qE 'BREAKING[ -]CHANGE'; then
-            SPECIFIER=major
-          elif echo "$SUBJECTS" | grep -qE '^feat(\([^)]*\))?:'; then
-            SPECIFIER=minor
-          elif echo "$SUBJECTS" | grep -qE '^fix(\([^)]*\))?:'; then
-            SPECIFIER=patch
+          if [ "$REQUESTED" != "auto" ]; then
+            SPECIFIER="$REQUESTED"
+            echo "Using requested bump '${SPECIFIER}'"
           else
-            SPECIFIER=none
-            echo "::notice::No feat/fix/breaking commits since ${LAST_TAG:-start} - skipping release."
+            LAST_TAG=$(git describe --tags --abbrev=0 --match 'v*' 2>/dev/null || true)
+            if [ -n "$LAST_TAG" ]; then RANGE="$LAST_TAG..HEAD"; else RANGE="HEAD"; fi
+            SUBJECTS=$(git log "$RANGE" --format='%s')
+            BODIES=$(git log "$RANGE" --format='%b')
+            if echo "$SUBJECTS" | grep -qE '^[a-z]+(\([^)]*\))?!:' || echo "$BODIES" | grep -qE 'BREAKING[ -]CHANGE'; then
+              SPECIFIER=major
+            elif echo "$SUBJECTS" | grep -qE '^feat(\([^)]*\))?:'; then
+              SPECIFIER=minor
+            elif echo "$SUBJECTS" | grep -qE '^fix(\([^)]*\))?:'; then
+              SPECIFIER=patch
+            else
+              SPECIFIER=none
+              echo "::notice::No feat/fix/breaking commits since ${LAST_TAG:-start} - nothing to release."
+            fi
+            echo "Range '${RANGE}' -> bump '${SPECIFIER}'"
           fi
           echo "specifier=$SPECIFIER" >> "$GITHUB_OUTPUT"
-          echo "Range '${RANGE}' -> bump '${SPECIFIER}'"
 
   release:
     name: Release
