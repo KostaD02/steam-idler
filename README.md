@@ -26,6 +26,7 @@
   - [Prerequisites](#prerequisites)
   - [How to set up](#how-to-set-up)
   - [Configuration](#configuration)
+  - [Reverse proxy and Cloudflare Tunnel](#reverse-proxy-and-cloudflare-tunnel)
 - [How does it work](#how-does-it-work)
 - [Development](#development)
 - [Usage](#usage)
@@ -134,7 +135,7 @@ That was it, you are ready to use it!
 Open `http://<host-ip>:2222` in the browser, other devices work out of the box too since the client automatically points the browser at the API on the same host the page was opened from.
 
 > [!TIP]
-> Set `SERVER_IP` in `.env` to force a specific API host, or `API_BASE` to the full API URL when running behind a reverse proxy.
+> Set `SERVER_IP` in `.env` to force a specific API host, or `API_BASE` to the full API URL. Hosting on a domain? Check [Reverse proxy and Cloudflare Tunnel](#reverse-proxy-and-cloudflare-tunnel).
 
 > [!CAUTION]
 > The compose file ships with default secrets so it works out of the box even without a `.env` file.
@@ -157,6 +158,36 @@ Everything in `.env` is optional, the compose file has working defaults.
 | `DATABASE_URL`                                               | local Mongo   | Only used outside Docker, the compose file wires MongoDB internally.                                                                                                           |
 | `REDIS_ENABLED`                                              | `true`        | Set to `false` to use an in-memory cache instead of Redis.                                                                                                                     |
 | `REDIS_HOST` / `REDIS_PORT` / `REDIS_PASSWORD` / `REDIS_TTL` | bundled Redis | Cache connection, only relevant outside Docker or with an external Redis. `REDIS_TTL` is in milliseconds.                                                                      |
+
+### Reverse proxy and Cloudflare Tunnel
+
+The recommended way to expose Steam Idler on a domain is a single hostname where `/api` is routed to the server and everything else to the client.
+The browser then talks to one origin, so there is no CORS to deal with and access layers like Cloudflare Access keep working.
+
+Example `cloudflared` ingress with the tunnel container attached to the compose network (use `http://localhost:2221` / `http://localhost:2222` instead when `cloudflared` runs on the host):
+
+```yaml
+ingress:
+  - hostname: idler.example.com
+    path: ^/api(/.*)?$
+    service: http://steam-idler-server:2221
+  - hostname: idler.example.com
+    service: http://steam-idler-client:2222
+  - service: http_status:404
+```
+
+Then point the client at that hostname in `.env` and recreate the client container:
+
+```
+SERVER_IP=idler.example.com
+```
+
+The same pattern works with any reverse proxy (nginx, Caddy, Traefik): route `/api` by path to the server port and everything else to the client port.
+
+> [!WARNING]
+> Avoid a separate hostname for the API (e.g. `api.idler.example.com`) when an authentication layer like Cloudflare Access, Authelia or authentik sits in front of it.
+> Browsers send CORS preflight requests without credentials, the auth layer rejects them and every API call fails.
+> With the single hostname setup above this problem cannot happen.
 
 ## How does it work
 
@@ -181,6 +212,7 @@ This data is required to prevent the need to log in again whenever the server is
 
 > [!CAUTION]
 > Since your password is sent during the sign-in process, it is recommended to put the application behind HTTPS in your hosted environment, for example with a [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy), a [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/) or a similar approach.
+> Check [Reverse proxy and Cloudflare Tunnel](#reverse-proxy-and-cloudflare-tunnel) for the recommended setup.
 
 ## Development
 
