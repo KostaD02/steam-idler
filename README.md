@@ -1,7 +1,7 @@
 <h1 align="center">Steam Idler</h1>
 
 <p align="center">
-  <img src="./apps/client/public/steam-idler.png" alt="steam-idler-logo" width="240px" height="240px"/>
+  <img src="./apps/client/public/steam-idler.svg" alt="steam-idler-logo" width="240px" height="240px"/>
   <br>
   <em>open-source idling application.</em>
 </p>
@@ -21,6 +21,7 @@
 
 - [Introduction](#introduction)
 - [Features](#features)
+- [Preview](#preview)
 - [Getting started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [How to set up](#how-to-set-up)
@@ -48,18 +49,45 @@ The previous version is kept at [steam-idler-legacy](https://github.com/KostaD02
 
 ## Features
 
-- Simple managing UI
-- Parallel multi-account idling
-- Idling multiple games in parallel
-- Sign in to Steam with credentials or by scanning a QR code
-- Managing Steam persona status while idling
-- Custom message replies while idling
-- Custom game display while idling
-- Trading card drops overview per account
-- Optional two-factor authentication (TOTP) for your Steam Idler account
-- Translations (English, ქართული, Español, Deutsch, Português (Brasil), Українська, Türkçe, Français, Polski, Русский, 简体中文)
-- Light and dark theme
-- Docker support
+- **Dashboard** - all linked accounts at a glance: idling status, presence, games idling, auto-reply state and last update, with quick actions on every card
+- **Parallel idling** - idle multiple games on multiple accounts at the same time
+- **Two ways to link a Steam account** - credentials with a Steam Guard code, or scanning a QR code with the Steam mobile app
+- **Persona control** - pick the online status the account shows while idling (online, away, invisible and more)
+- **Auto-reply** - answer friends who message an idling account with a custom message, optionally only while idling
+- **Custom now playing** - show any title as the game you are playing on your friends list
+- **Trading cards overview** - remaining card drops and playtime per game, with filtering by name or ID
+- **Display preferences** - show or hide the Steam profile name and image, or mask the account name entirely (handy for screenshots and streams)
+- **Account security** - optional two-factor authentication (TOTP) with recovery codes, plus password change
+- **REST API** - everything the UI does is available over the API, documented with Swagger
+- **Translations** - English, ქართული, Español, Deutsch, Português (Brasil), Українська, Türkçe, Français, Polski, Русский, 简体中文. Translations were done with AI, so grammar and wording corrections from native speakers are very welcome, feel free to open a [pull request](https://github.com/KostaD02/steam-idler/pulls)
+- **Light and dark theme**
+- **Docker support**
+
+## Preview
+
+![Dashboard](./screenshots/dashboard-en-dark.png)
+
+<details>
+<summary><strong>More screenshots</strong></summary>
+<br>
+
+|             Add account with credentials             |              Add account by QR code              |
+| :--------------------------------------------------: | :----------------------------------------------: |
+| ![Credentials](./screenshots/accounts-en-dark-1.png) | ![QR code](./screenshots/accounts-en-dark-2.png) |
+
+|      Settings, display preferences and 2FA      |                  Trading cards overview                   |
+| :---------------------------------------------: | :-------------------------------------------------------: |
+| ![Settings](./screenshots/settings-en-dark.png) | ![Trading cards](./screenshots/trading-cards-en-dark.png) |
+
+|                     Light theme                      |             Translated UI (ქართული)              |
+| :--------------------------------------------------: | :----------------------------------------------: |
+| ![Light theme](./screenshots/dashboard-en-white.png) | ![Georgian](./screenshots/dashboard-ka-dark.png) |
+
+|             Swagger API docs              |
+| :---------------------------------------: |
+| ![Swagger](./screenshots/api-en-dark.png) |
+
+</details>
 
 ## Getting started
 
@@ -101,11 +129,11 @@ Then start the application:
 docker compose up -d
 ```
 
-> [!NOTE]
-> That was it, you are ready to use it!
+That was it, you are ready to use it!
+Open `http://<host-ip>:2222` in the browser, other devices work out of the box too since the client automatically points the browser at the API on the same host the page was opened from.
 
-> [!NOTE]
-> The client automatically points the browser at the API on the same host it was opened from, so it works from other devices out of the box. Set `SERVER_IP` in `.env` to force a specific API host, or `API_BASE` to the full API URL when running behind a reverse proxy.
+> [!TIP]
+> Set `SERVER_IP` in `.env` to force a specific API host, or `API_BASE` to the full API URL when running behind a reverse proxy.
 
 > [!CAUTION]
 > The compose file ships with default secrets so it works out of the box even without a `.env` file.
@@ -114,7 +142,7 @@ docker compose up -d
 ## How does it work
 
 The first question might be: Is it safe?
-Yes, this application uses the [steam-user](https://www.npmjs.com/package/steam-user) and [steam-session](https://www.npmjs.com/package/steam-session) packages, which allow interaction with the Steam API through Node.js.
+**Yes**, this application uses the [steam-user](https://www.npmjs.com/package/steam-user) and [steam-session](https://www.npmjs.com/package/steam-session) packages, which allow interaction with the Steam API through Node.js.
 
 To start idling for an account, you need to sign it in first. There are two ways:
 
