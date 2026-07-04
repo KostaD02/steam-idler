@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640">
+  <rect width="1280" height="640" fill="#0a192f"/>
+  <g transform="translate(221 84) scale(0.55)">
+    <rect x="118" y="132" width="276" height="200" rx="28" fill="none" stroke="#e6f1ff" stroke-width="22"/>
+    <circle cx="256" cy="232" r="72" fill="none" stroke="#e6f1ff" stroke-width="13"/>
+    <path d="M256 182v50l40 27" fill="none" stroke="#64ffda" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="256" cy="232" r="10" fill="#64ffda"/>
+    <path d="M234 343h44l10 30h-64z" fill="#e6f1ff"/>
+    <rect x="192" y="373" width="128" height="18" rx="9" fill="#e6f1ff"/>
+  </g>
+  <text x="484" y="262" font-family="Segoe UI, Arial, sans-serif" font-size="100" font-weight="600" fill="#ccd6f6">Steam Idler</text>
+  <text x="640" y="430" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="54" font-weight="500" fill="#8892b0">An open-source self-hosted app to idle</text>
+  <text x="640" y="500" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="54" font-weight="500" fill="#8892b0">Steam games and farm trading cards</text>
+</svg>
