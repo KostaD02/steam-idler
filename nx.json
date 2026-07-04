@@ -78,7 +78,6 @@
   },
   "release": {
     "projects": ["infra"],
-    "releaseTagPattern": "v{version}",
     "version": {
       "conventionalCommits": true,
       "fallbackCurrentVersionResolver": "disk",
@@ -142,6 +141,9 @@
       "commit": true,
       "commitMessage": "chore(release): {version} [skip ci]",
       "tag": true
+    },
+    "releaseTag": {
+      "pattern": "v{version}"
     }
   },
   "nxCloudId": "6a3b8aee407541c5d71ef270"

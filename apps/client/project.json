@@ -9,6 +9,7 @@
     "build": {
       "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/client",
         "browser": "apps/client/src/main.ts",
@@ -46,12 +47,12 @@
           "extractLicenses": false,
           "sourceMap": true
         }
-      },
-      "defaultConfiguration": "production"
+      }
     },
     "serve": {
       "continuous": true,
       "executor": "@angular/build:dev-server",
+      "defaultConfiguration": "development",
       "options": {
         "port": 2222
       },
@@ -62,16 +63,15 @@
         "development": {
           "buildTarget": "client:build:development"
         }
-      },
-      "defaultConfiguration": "development"
+      }
     },
     "serve-with-server": {
       "executor": "@angular/build:dev-server",
+      "dependsOn": ["server:serve"],
       "options": {
         "buildTarget": "client:build",
         "port": 2222
-      },
-      "dependsOn": ["server:serve"]
+      }
     },
     "lint": {
       "executor": "@nx/eslint:lint"
