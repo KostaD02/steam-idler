@@ -131,6 +131,10 @@ export class AuthTokenService {
       this.authValidationService.throwInvalidRefreshToken();
     }
 
+    if (decoded.scope !== TOKEN_SCOPES.Refresh) {
+      this.authValidationService.throwInvalidRefreshToken();
+    }
+
     const user = await this.authRepository.getById(String(decoded._id));
     this.authValidationService.checkUserExistence(user);
     this.authValidationService.checkTokenFreshness(
