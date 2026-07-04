@@ -1,3 +1,32 @@
+## 2.17.0 (2026-07-04)
+
+### 🚀 Features
+
+- release to docker hub ([#86](https://github.com/KostaD02/steam-idler/pull/86))
+
+### 🩹 Fixes
+
+- add runtime configuration for client and update docker-compose files ([#85](https://github.com/KostaD02/steam-idler/pull/85))
+- nx release ([#87](https://github.com/KostaD02/steam-idler/pull/87))
+
+### 🏡 Chore
+
+- leftovers before publish ([#84](https://github.com/KostaD02/steam-idler/pull/84))
+- **deps:** bump the nestjs group across 1 directory with 3 updates ([#76](https://github.com/KostaD02/steam-idler/pull/76))
+- **deps-dev:** bump lint-staged from 16.4.0 to 17.0.8 ([#46](https://github.com/KostaD02/steam-idler/pull/46))
+- **deps-dev:** bump the nx group across 1 directory with 11 updates ([#44](https://github.com/KostaD02/steam-idler/pull/44))
+- **deps-dev:** bump @types/node in the types group across 1 directory ([#37](https://github.com/KostaD02/steam-idler/pull/37))
+
+### 🤖 CI
+
+- bump actions/checkout from 6 to 7 ([#75](https://github.com/KostaD02/steam-idler/pull/75))
+- bump softprops/action-gh-release from 2 to 3 ([#54](https://github.com/KostaD02/steam-idler/pull/54))
+- bump actions/download-artifact from 5 to 8 ([#53](https://github.com/KostaD02/steam-idler/pull/53))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.16.0 (2026-07-03)
 
 ### 🚀 Features
