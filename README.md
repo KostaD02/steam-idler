@@ -89,6 +89,9 @@ docker compose up -d
 > [!NOTE]
 > That was it, you are ready to use it!
 
+> [!NOTE]
+> Opening the client from another device? Set `SERVER_IP` to the address of the machine running Steam Idler in a `.env` file next to `docker-compose.yml`, the browser needs it to reach the API. Behind a reverse proxy, set `API_BASE` to the full API URL instead.
+
 > [!CAUTION]
 > The compose file ships with default secrets so it works out of the box.
 > If the application is reachable by anyone but you, override `JWT_SECRET` and `CREDENTIALS_SECRET` in a `.env` file next to `docker-compose.yml`.
