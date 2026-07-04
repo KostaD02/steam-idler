@@ -1,3 +1,13 @@
+## 2.17.2 (2026-07-04)
+
+### 🩹 Fixes
+
+- derive auth cookie secure flag from request protocol ([#89](https://github.com/KostaD02/steam-idler/pull/89))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.17.1 (2026-07-04)
 
 ### 🩹 Fixes
