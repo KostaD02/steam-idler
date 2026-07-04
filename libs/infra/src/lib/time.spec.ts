@@ -34,6 +34,32 @@ describe('formatRelativeTime', () => {
     );
   });
 
+  it('formats using the given locale', () => {
+    expect(formatRelativeTime(isoFromNow(-5 * 60 * 1000), 'zh-CN')).toBe(
+      '5分钟前',
+    );
+    expect(formatRelativeTime(isoFromNow(-5 * 60 * 1000), 'ka')).toBe(
+      '5 წუთის წინ',
+    );
+  });
+
+  it('falls back to bundled patterns when Intl lacks the locale', () => {
+    jest
+      .spyOn(Intl.RelativeTimeFormat, 'supportedLocalesOf')
+      .mockReturnValue([]);
+
+    jest.isolateModules(() => {
+      const { formatRelativeTime: isolated } =
+        jest.requireActual<typeof import('./time')>('./time');
+
+      expect(isolated(isoFromNow(-5 * 60 * 1000), 'ka')).toBe('5 წუთის წინ');
+      expect(isolated(isoFromNow(-1 * 60 * 60 * 1000), 'ka')).toBe(
+        '1 საათის წინ',
+      );
+      expect(isolated(isoFromNow(2 * 60 * 60 * 1000), 'ka')).toBe('2 საათში');
+    });
+  });
+
   it('falls back to years for very old timestamps', () => {
     expect(
       formatRelativeTime(isoFromNow(-2 * 365 * 24 * 60 * 60 * 1000)),

@@ -1,7 +1,6 @@
 export const AuthExpectionKeys = {
   IncorrectEmailOrPassword: 'errors.auth.incorrect_email_or_password',
   EmailInUse: 'errors.auth.email_in_use',
-  PhoneNumberInUse: 'errors.auth.phone_number_in_use',
   TokenInvalid: 'errors.auth.token_invalid',
   TokenExpired: 'errors.auth.token_expired',
   TokenNotFound: 'errors.auth.token_not_found',

@@ -1,3 +1,13 @@
+## 2.16.0 (2026-07-03)
+
+### 🚀 Features
+
+- new languages support ([#83](https://github.com/KostaD02/steam-idler/pull/83))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.15.1 (2026-06-24)
 
 ### 🩹 Fixes

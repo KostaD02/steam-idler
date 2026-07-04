@@ -6,7 +6,7 @@
     "payment_required": "Payment is required.",
     "unauthorized": "You must be signed in.",
     "conflict": "That conflicts with an existing resource.",
-    "teapot": "I'm a teapot.",
+    "teapot": "Keep calm.",
     "payload_too_large": "The request payload is too large.",
     "unsupported_media_type": "The media type is not supported.",
     "enhance_your_calm": "Please slow down.",
@@ -23,7 +23,6 @@
     "auth": {
       "incorrect_email_or_password": "Email or password is incorrect.",
       "email_in_use": "An account with this email already exists.",
-      "phone_number_in_use": "An account with this phone number already exists.",
       "token_invalid": "Your session is invalid.",
       "token_expired": "Your session has expired.",
       "token_not_found": "No session token was found.",
@@ -160,7 +159,7 @@
         "display_name": {
           "label": "Display name",
           "placeholder": "InigoMontoya",
-          "error": "Display name must be 2–30 characters."
+          "error": "Display name must be 2-30 characters."
         },
         "email": {
           "label": "Email",
@@ -172,7 +171,7 @@
           "placeholder_signin": "••••••••",
           "placeholder_signup": "At least 8 characters",
           "error_signin": "Password must be at least 8 characters.",
-          "error_signup": "Password must be 8–64 characters."
+          "error_signup": "Password must be 8-64 characters."
         }
       }
     },
