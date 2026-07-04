@@ -38,6 +38,18 @@ function loadRuntimeConfig() {
   return config;
 }
 
+function isDomain(host) {
+  if (!host || host.toLowerCase() === 'localhost') {
+    return false;
+  }
+
+  if (host.includes(':') || /^\d{1,3}(\.\d{1,3}){3}$/.test(host)) {
+    return false;
+  }
+
+  return host.includes('.');
+}
+
 function resolveApiBase(req) {
   const { API_BASE, SERVER_IP, SERVER_PORT } = process.env;
 
@@ -46,7 +58,9 @@ function resolveApiBase(req) {
   }
 
   if (SERVER_IP) {
-    return `http://${SERVER_IP}:${SERVER_PORT || '2221'}/api`;
+    return isDomain(SERVER_IP)
+      ? `//${SERVER_IP}/api`
+      : `http://${SERVER_IP}:${SERVER_PORT || '2221'}/api`;
   }
 
   const hostname = req.hostname || 'localhost';

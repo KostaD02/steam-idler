@@ -25,6 +25,7 @@
 - [Getting started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [How to set up](#how-to-set-up)
+  - [Configuration](#configuration)
 - [How does it work](#how-does-it-work)
 - [Development](#development)
 - [Usage](#usage)
@@ -138,6 +139,24 @@ Open `http://<host-ip>:2222` in the browser, other devices work out of the box t
 > [!CAUTION]
 > The compose file ships with default secrets so it works out of the box even without a `.env` file.
 > If the application is reachable by anyone but you, make sure `JWT_SECRET` and `CREDENTIALS_SECRET` are replaced with generated values as shown above.
+
+### Configuration
+
+Everything in `.env` is optional, the compose file has working defaults.
+
+| Variable                                                     | Default       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `SERVER_IP`                                                  | auto          | API host the browser talks to. Empty = auto-detect from the browser's URL. An IP gets `SERVER_PORT` appended, a full domain (e.g. `idler.example.com`) is used without a port. |
+| `SERVER_PORT`                                                | `2221`        | Port the API listens on, also used by the Docker port mapping.                                                                                                                 |
+| `CLIENT_PORT`                                                | `2222`        | Port the client is served on.                                                                                                                                                  |
+| `API_BASE`                                                   | empty         | Full API URL override, wins over everything else. Useful behind a reverse proxy, e.g. `https://idler.example.com/api`.                                                         |
+| `SERVER_LOG_TYPE` / `CLIENT_LOG_TYPE`                        | `2`           | Log verbosity: `0` = none, `1` = errors only, `2` = all.                                                                                                                       |
+| `JWT_EXPIRES_IN`                                             | `1`           | Session lifetime multiplier for auth cookies.                                                                                                                                  |
+| `JWT_SECRET`                                                 | dev default   | Signs auth tokens. Generate your own as shown above.                                                                                                                           |
+| `CREDENTIALS_SECRET`                                         | dev default   | Encrypts stored Steam refresh tokens and session cookies. Generate your own as shown above.                                                                                    |
+| `DATABASE_URL`                                               | local Mongo   | Only used outside Docker, the compose file wires MongoDB internally.                                                                                                           |
+| `REDIS_ENABLED`                                              | `true`        | Set to `false` to use an in-memory cache instead of Redis.                                                                                                                     |
+| `REDIS_HOST` / `REDIS_PORT` / `REDIS_PASSWORD` / `REDIS_TTL` | bundled Redis | Cache connection, only relevant outside Docker or with an external Redis. `REDIS_TTL` is in milliseconds.                                                                      |
 
 ## How does it work
 

@@ -72,12 +72,27 @@ function toLogType(value: string | undefined): number {
     : DEFAULT_LOG_TYPE;
 }
 
+function isDomain(host: string): boolean {
+  if (!host || host.toLowerCase() === 'localhost') {
+    return false;
+  }
+
+  if (host.includes(':') || /^\d{1,3}(\.\d{1,3}){3}$/.test(host)) {
+    return false;
+  }
+
+  return host.includes('.');
+}
+
 function buildConfig(env: Record<string, string>): ClientConfig {
   const serverIp = env['SERVER_IP'] || 'localhost';
   const serverPort = env['SERVER_PORT'] || '2221';
+  const apiBase = isDomain(serverIp)
+    ? `//${serverIp}/api`
+    : `http://${serverIp}:${serverPort}/api`;
 
   return {
-    apiBase: `http://${serverIp}:${serverPort}/api`,
+    apiBase,
     logType: toLogType(env['CLIENT_LOG_TYPE']),
     version: readVersion(),
   };
