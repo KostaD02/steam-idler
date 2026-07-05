@@ -31,11 +31,27 @@
     }
   }
 
+  &__brand {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
   &__logo {
     font-family: var(--kd-font-primary);
     font-size: var(--kd-font-size-md);
     font-weight: 600;
     letter-spacing: 0.5px;
+  }
+
+  &__version {
+    font-family: var(--kd-font-mono);
+    font-size: var(--kd-font-size-xxs);
+    color: var(--kd-text-muted);
+
+    @media (max-width: 600px) {
+      display: none;
+    }
   }
 
   &__actions {
@@ -190,6 +206,17 @@
 
   &--open {
     transform: translateX(0);
+  }
+
+  &__version {
+    position: absolute;
+    bottom: 24px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-family: var(--kd-font-mono);
+    font-size: var(--kd-font-size-xxs);
+    color: var(--kd-text-muted);
   }
 
   .header__nav {

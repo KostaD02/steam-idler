@@ -1,5 +1,6 @@
 export const API_CONFIG = {
   REQUEST_ID_HEADER: 'x-request-id',
+  CLIENT_VERSION_HEADER: 'x-client-version',
 } as const;
 
 export const API_PAGINATION = {

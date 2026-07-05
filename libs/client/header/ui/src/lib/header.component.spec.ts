@@ -5,7 +5,8 @@ import { Router, provideRouter } from '@angular/router';
 import { EMPTY, of, throwError } from 'rxjs';
 
 import { LayoutService, ThemeService } from '@steam-idler/client/infra/core';
-import { ThemeEnum } from '@steam-idler/client/infra/types';
+import { ConfigService } from '@steam-idler/client/infra/data-access';
+import { ConfigSchema, ThemeEnum } from '@steam-idler/client/infra/types';
 
 import { AuthService } from '@steam-idler/client/auth/data-access';
 import { I18nService } from '@steam-idler/client/i18n/data-access';
@@ -41,11 +42,17 @@ const buildI18nStub = () => ({
   setLocale: jest.fn().mockResolvedValue(true),
 });
 
+const DEFAULT_CONFIG: ConfigSchema = {
+  apiBase: 'http://localhost:2221/api',
+  version: '1.2.3',
+  logType: 2,
+};
+
 type ThemeStub = ReturnType<typeof buildThemeStub>;
 type LayoutStub = ReturnType<typeof buildLayoutStub>;
 type AuthStub = ReturnType<typeof buildAuthStub>;
 
-const setup = async () => {
+const setup = async (config: ConfigSchema | null = DEFAULT_CONFIG) => {
   const theme = buildThemeStub();
   const layout = buildLayoutStub();
   const auth = buildAuthStub();
@@ -59,6 +66,7 @@ const setup = async () => {
       { provide: LayoutService, useValue: layout },
       { provide: AuthService, useValue: auth },
       { provide: I18nService, useValue: i18n },
+      { provide: ConfigService, useValue: { config } },
     ],
   }).compileComponents();
 
@@ -85,6 +93,38 @@ describe('HeaderComponent', () => {
     const { fixture } = await setup();
 
     expect(fixture.nativeElement.textContent).toContain('Steam Idler');
+  });
+
+  describe('version', () => {
+    it('renders the config version with a v prefix', async () => {
+      const { fixture } = await setup();
+
+      const version =
+        fixture.nativeElement.querySelector<HTMLSpanElement>(
+          '.header__version',
+        );
+
+      expect(version?.textContent).toContain('v1.2.3');
+    });
+
+    it('renders non-numeric versions without a prefix', async () => {
+      const { fixture } = await setup({ ...DEFAULT_CONFIG, version: 'dev' });
+
+      const version =
+        fixture.nativeElement.querySelector<HTMLSpanElement>(
+          '.header__version',
+        );
+
+      expect(version?.textContent?.trim()).toBe('dev');
+    });
+
+    it('is hidden when the config is missing', async () => {
+      const { fixture } = await setup(null);
+
+      expect(
+        fixture.nativeElement.querySelector('.header__version'),
+      ).toBeNull();
+    });
   });
 
   describe('isDarkTheme', () => {
