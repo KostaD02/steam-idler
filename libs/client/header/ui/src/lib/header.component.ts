@@ -11,6 +11,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { catchError, EMPTY, finalize } from 'rxjs';
 
 import { LayoutService, ThemeService } from '@steam-idler/client/infra/core';
+import { ConfigService } from '@steam-idler/client/infra/data-access';
 import { ThemeEnum } from '@steam-idler/client/infra/types';
 
 import { AuthService } from '@steam-idler/client/auth/data-access';
@@ -37,8 +38,10 @@ export class HeaderComponent {
   private readonly themeService = inject(ThemeService);
   private readonly layoutService = inject(LayoutService);
   private readonly authService = inject(AuthService);
+  private readonly configService = inject(ConfigService);
   private readonly router = inject(Router);
 
+  readonly version = this.resolveVersion();
   readonly sizing = this.layoutService.sizing;
   readonly isMobileView = this.layoutService.isMobileView;
   readonly isSideNavOpen = signal(false);
@@ -56,6 +59,16 @@ export class HeaderComponent {
 
   toggleTheme(): void {
     this.themeService.toggleTheme();
+  }
+
+  private resolveVersion(): string | null {
+    const version = this.configService.config?.version;
+
+    if (!version) {
+      return null;
+    }
+
+    return /^\d/.test(version) ? `v${version}` : version;
   }
 
   signOut(): void {

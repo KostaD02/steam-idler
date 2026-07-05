@@ -6,13 +6,19 @@
   }"
 >
   <nav class="header__inner" [style.max-width]="sizing.maxContentWidth + 'px'">
-    <a
-      routerLink="/"
-      class="header__logo kd-header-anchor"
-      (click)="isSideNavOpen.set(false)"
-    >
-      Steam Idler
-    </a>
+    <div class="header__brand">
+      <a
+        routerLink="/"
+        class="header__logo kd-header-anchor"
+        (click)="isSideNavOpen.set(false)"
+      >
+        Steam Idler
+      </a>
+
+      @if (version; as appVersion) {
+        <span class="header__version">{{ appVersion }}</span>
+      }
+    </div>
 
     <div class="header__actions">
       @if (!isMobileView()) {
@@ -46,6 +52,10 @@
     [attr.aria-hidden]="!isSideNavOpen()"
   >
     <ng-container *ngTemplateOutlet="navigation"></ng-container>
+
+    @if (version; as appVersion) {
+      <span class="header-drawer__version">{{ appVersion }}</span>
+    }
   </aside>
 }
 

@@ -11,11 +11,10 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
-import { firstValueFrom } from 'rxjs';
-
 import {
   ConfigService,
   loggingInterceptor,
+  versionInterceptor,
 } from '@steam-idler/client/infra/data-access';
 
 import { authInterceptor } from '@steam-idler/client/auth/data-access';
@@ -29,7 +28,11 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes),
     provideHttpClient(
       withFetch(),
-      withInterceptors([loggingInterceptor, authInterceptor]),
+      withInterceptors([
+        loggingInterceptor,
+        versionInterceptor,
+        authInterceptor,
+      ]),
     ),
     provideAppInitializer(async () => {
       const configService = inject(ConfigService);
