@@ -1,3 +1,19 @@
+## 2.19.0 (2026-07-05)
+
+### 🚀 Features
+
+- enhance not found page with structured layout and multilingual support ([#97](https://github.com/KostaD02/steam-idler/pull/97))
+- version display ([#98](https://github.com/KostaD02/steam-idler/pull/98))
+
+### 📖 Documentation
+
+- add reverse proxy and cloudflare tunnel setup guide ([#92](https://github.com/KostaD02/steam-idler/pull/92))
+- update readme screenshots ([#99](https://github.com/KostaD02/steam-idler/pull/99))
+
+### ❤️ Thank You
+
+- Konstantine Datunishvili @KostaD02
+
 ## 2.18.1 (2026-07-04)
 
 ### 🩹 Fixes
