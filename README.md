@@ -83,7 +83,7 @@ The previous version is kept at [steam-idler-legacy](https://github.com/KostaD02
 
 |                     Light theme                      |             Translated UI (ქართული)              |
 | :--------------------------------------------------: | :----------------------------------------------: |
-| ![Light theme](./screenshots/dashboard-en-white.png) | ![Georgian](./screenshots/dashboard-ka-dark.png) |
+| ![Light theme](./screenshots/dashboard-en-light.png) | ![Georgian](./screenshots/dashboard-ka-dark.png) |
 
 |             Swagger API docs              |
 | :---------------------------------------: |
