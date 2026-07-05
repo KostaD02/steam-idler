@@ -402,7 +402,9 @@
       }
     },
     "not_found": {
-      "placeholder": "not-found funktioniert!"
+      "title": "Seite nicht gefunden",
+      "description": "Die gesuchte Seite existiert nicht oder wurde verschoben.",
+      "back_to_dashboard": "Zurück zum Dashboard"
     },
     "api": {
       "no_config": "API-Basis-URL ist nicht konfiguriert."

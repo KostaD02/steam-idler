@@ -402,7 +402,9 @@
       }
     },
     "not_found": {
-      "placeholder": "not-found works!"
+      "title": "Page introuvable",
+      "description": "La page que vous recherchez n'existe pas ou a été déplacée.",
+      "back_to_dashboard": "Retour au tableau de bord"
     },
     "api": {
       "no_config": "L'URL de base de l'API n'est pas configurée."

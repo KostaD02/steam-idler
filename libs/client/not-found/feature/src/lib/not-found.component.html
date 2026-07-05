@@ -1,1 +1,12 @@
-<p>{{ 'ui.not_found.placeholder' | translate }}</p>
+<section class="not-found" [style.min-height]="sizing.innerContentHeight()">
+  <si-card class="not-found__card">
+    <p class="not-found__code" aria-hidden="true">404</p>
+    <h2 class="not-found__title">{{ 'ui.not_found.title' | translate }}</h2>
+    <p class="not-found__description">
+      {{ 'ui.not_found.description' | translate }}
+    </p>
+    <a class="kd-btn kd-btn-primary" routerLink="/dashboard">
+      {{ 'ui.not_found.back_to_dashboard' | translate }}
+    </a>
+  </si-card>
+</section>

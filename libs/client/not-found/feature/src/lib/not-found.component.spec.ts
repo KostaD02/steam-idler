@@ -1,10 +1,20 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+
+import { LayoutService } from '@steam-idler/client/infra/core';
 
 import { I18nService } from '@steam-idler/client/i18n/data-access';
 import { Locale, TranslationParams } from '@steam-idler/client/i18n/types';
 
 import { NotFoundComponent } from './not-found.component';
+
+const sizing = {
+  header: 70,
+  innerPadding: 32,
+  maxContentWidth: 1400,
+  innerContentHeight: () => 'calc(100dvh - 134px)',
+};
 
 const buildI18nStub = () => ({
   locale: signal<Locale>('en'),
@@ -21,7 +31,11 @@ const setup = async (): Promise<{
 
   await TestBed.configureTestingModule({
     imports: [NotFoundComponent],
-    providers: [{ provide: I18nService, useValue: i18n }],
+    providers: [
+      provideRouter([]),
+      { provide: LayoutService, useValue: { sizing } },
+      { provide: I18nService, useValue: i18n },
+    ],
   }).compileComponents();
 
   const fixture = TestBed.createComponent(NotFoundComponent);
@@ -37,18 +51,52 @@ describe('NotFoundComponent', () => {
     expect(fixture.componentInstance).toBeInstanceOf(NotFoundComponent);
   });
 
-  it('renders the translated placeholder text', async () => {
+  it('renders the 404 code', async () => {
     const { fixture } = await setup();
 
-    const paragraph =
-      fixture.nativeElement.querySelector<HTMLParagraphElement>('p');
+    const code =
+      fixture.nativeElement.querySelector<HTMLParagraphElement>(
+        '.not-found__code',
+      );
 
-    expect(paragraph?.textContent?.trim()).toBe('ui.not_found.placeholder');
+    expect(code?.textContent?.trim()).toBe('404');
+    expect(code?.getAttribute('aria-hidden')).toBe('true');
   });
 
-  it('translates the placeholder key through the i18n service', async () => {
-    const { i18n } = await setup();
+  it('renders the translated title and description', async () => {
+    const { fixture, i18n } = await setup();
 
-    expect(i18n.t).toHaveBeenCalledWith('ui.not_found.placeholder', undefined);
+    const title =
+      fixture.nativeElement.querySelector<HTMLHeadingElement>(
+        '.not-found__title',
+      );
+    const description =
+      fixture.nativeElement.querySelector<HTMLParagraphElement>(
+        '.not-found__description',
+      );
+
+    expect(title?.textContent?.trim()).toBe('ui.not_found.title');
+    expect(description?.textContent?.trim()).toBe('ui.not_found.description');
+    expect(i18n.t).toHaveBeenCalledWith('ui.not_found.title', undefined);
+    expect(i18n.t).toHaveBeenCalledWith('ui.not_found.description', undefined);
+  });
+
+  it('links back to the dashboard', async () => {
+    const { fixture } = await setup();
+
+    const link =
+      fixture.nativeElement.querySelector<HTMLAnchorElement>('a.kd-btn');
+
+    expect(link?.getAttribute('href')).toBe('/dashboard');
+    expect(link?.textContent?.trim()).toBe('ui.not_found.back_to_dashboard');
+  });
+
+  it('fills the inner content height', async () => {
+    const { fixture } = await setup();
+
+    const section =
+      fixture.nativeElement.querySelector<HTMLElement>('.not-found');
+
+    expect(section?.style.minHeight).toBe('calc(100dvh - 134px)');
   });
 });

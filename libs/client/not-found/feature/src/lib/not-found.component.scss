@@ -1,0 +1,29 @@
+.not-found {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__card {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+  }
+
+  &__code {
+    margin: 0 0 8px;
+    font-family: var(--kd-font-mono);
+    font-size: clamp(56px, 10vw, 72px);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--kd-accent);
+  }
+
+  &__title {
+    margin: 0 0 16px;
+  }
+
+  &__description {
+    margin: 0 0 24px;
+    color: var(--kd-text-secondary);
+  }
+}

@@ -402,7 +402,9 @@
       }
     },
     "not_found": {
-      "placeholder": "not-found 正常工作！"
+      "title": "页面未找到",
+      "description": "你要查找的页面不存在或已被移动。",
+      "back_to_dashboard": "返回仪表盘"
     },
     "api": {
       "no_config": "尚未配置 API 基础 URL。"

@@ -402,7 +402,9 @@
       }
     },
     "not_found": {
-      "placeholder": "not-found works!"
+      "title": "Page not found",
+      "description": "The page you are looking for does not exist or has been moved.",
+      "back_to_dashboard": "Back to dashboard"
     },
     "api": {
       "no_config": "API base URL is not configured."

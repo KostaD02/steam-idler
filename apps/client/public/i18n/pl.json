@@ -402,7 +402,9 @@
       }
     },
     "not_found": {
-      "placeholder": "not-found działa!"
+      "title": "Nie znaleziono strony",
+      "description": "Strona, której szukasz, nie istnieje lub została przeniesiona.",
+      "back_to_dashboard": "Wróć do panelu"
     },
     "api": {
       "no_config": "Podstawowy adres URL API nie jest skonfigurowany."
