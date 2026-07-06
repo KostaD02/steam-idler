@@ -114,7 +114,7 @@
     "@swc-node/register": "~1.11.1",
     "@swc/cli": "~0.8.0",
     "@swc/core": "~1.15.5",
-    "@swc/helpers": "~0.5.18",
+    "@swc/helpers": "~0.5.23",
     "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
