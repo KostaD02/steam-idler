@@ -6,51 +6,97 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  lint:
-    uses: ./.github/workflows/lint.yml
-    secrets: inherit
-
   format:
-    uses: ./.github/workflows/format.yml
-    secrets: inherit
+    uses: KostaD02/ci/.github/workflows/node-run.yml@v1
+    with:
+      name: Format
+      run: pnpm run format:check
+      node-version: '20'
+      pnpm-version: '9'
+
+  lint:
+    uses: KostaD02/ci/.github/workflows/node-run.yml@v1
+    with:
+      name: Lint
+      run: pnpm run lint
+      run-on-push: pnpm run lint:all
+      fetch-depth: 0
+      nx-set-shas: true
+      node-version: '20'
+      pnpm-version: '9'
 
   test:
-    uses: ./.github/workflows/test.yml
-    secrets: inherit
+    uses: KostaD02/ci/.github/workflows/node-run.yml@v1
+    with:
+      name: Test
+      run: pnpm exec nx affected -t test --parallel=3 --ci
+      run-on-push: pnpm exec nx run-many -t test --parallel=3 --ci
+      fetch-depth: 0
+      nx-set-shas: true
+      node-version: '20'
+      pnpm-version: '9'
 
   i18n:
     permissions:
       contents: read
       pull-requests: write
-    uses: ./.github/workflows/i18n.yml
-    secrets: inherit
+    uses: KostaD02/ci/.github/workflows/node-run.yml@v1
+    with:
+      name: Validate i18n
+      run: pnpm run validate:i18n
+      comment-file: tmp/i18n-report.md
+      comment-marker: '<!-- i18n-coverage-report -->'
+      env: |
+        I18N_COMMIT_SHA=${{ github.event.pull_request.head.sha || github.sha }}
+        PR_COMMIT_COUNT=${{ github.event.pull_request.commits }}
+      node-version: '20'
+      pnpm-version: '9'
 
   build:
     needs: [lint]
-    uses: ./.github/workflows/build.yml
-    secrets: inherit
-
-  artifact:
-    if: github.event_name == 'pull_request'
-    needs: [build]
-    uses: ./.github/workflows/artifact.yml
+    uses: KostaD02/ci/.github/workflows/node-build.yml@v1
     with:
-      dist-artifact: ${{ needs.build.outputs.dist-artifact }}
-    secrets: inherit
+      run: |
+        pnpm exec nx run-many -t build --parallel=3
+        pnpm run g:config
+      pre-run: node .github/scripts/append-pr-version.cjs
+      pre-run-when: pull_request
+      fetch-depth: 0
+      nx-set-shas: true
+      node-version: '20'
+      pnpm-version: '9'
 
   docker:
     if: github.event_name == 'pull_request'
-    needs: [build, artifact]
+    needs: [build]
+    uses: ./.github/workflows/docker.yml
+    with:
+      dist-artifact: ${{ needs.build.outputs.artifact }}
+
+  artifact:
+    if: github.event_name == 'pull_request'
+    needs: [build, docker]
     permissions:
       contents: read
       pull-requests: write
-    uses: ./.github/workflows/docker.yml
+    uses: KostaD02/ci/.github/workflows/pr-artifact.yml@v1
     with:
-      dist-artifact: ${{ needs.build.outputs.dist-artifact }}
-      artifact-url: ${{ needs.artifact.outputs.artifact-url }}
-    secrets: inherit
+      internal-artifact: ${{ needs.build.outputs.artifact }}
+      prefix: Steam-Idler
+      title: '✅ Build artifacts'
+      links: >-
+        [{"label":"client image","url":"${{ needs.docker.outputs.client-url }}","note":"🐳"},
+         {"label":"server image","url":"${{ needs.docker.outputs.server-url }}","note":"🐳"}]
+      footer: |
+        ```bash
+        docker load -i ${{ needs.docker.outputs.client-tar }}
+        docker load -i ${{ needs.docker.outputs.server-tar }}
+        ```

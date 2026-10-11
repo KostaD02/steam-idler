@@ -5,16 +5,12 @@ on:
     types: [opened, edited, synchronize, reopened]
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   commitlint:
-    name: Commitlint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-
-      - uses: ./.github/actions/setup
-
-      - name: Lint PR title against commitlint
-        env:
-          PR_TITLE: ${{ github.event.pull_request.title }}
-        run: echo "$PR_TITLE" | pnpm exec commitlint
+    uses: KostaD02/ci/.github/workflows/pr-title.yml@v1
+    with:
+      node-version: '20'
+      pnpm-version: '9'
