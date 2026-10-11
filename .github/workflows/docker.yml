@@ -4,23 +4,41 @@ on:
   workflow_call:
     inputs:
       dist-artifact:
-        description: Name of the internal dist artifact uploaded by build.yml
+        description: Name of the internal dist artifact uploaded by the build
         required: true
         type: string
-      artifact-url:
-        description: Public URL of the PR dist artifact (for the PR comment)
-        required: true
-        type: string
+    outputs:
+      client-url:
+        value: ${{ jobs.docker.outputs.client-url }}
+      server-url:
+        value: ${{ jobs.docker.outputs.server-url }}
+      client-tar:
+        value: ${{ jobs.docker.outputs.client-tar }}
+      server-tar:
+        value: ${{ jobs.docker.outputs.server-tar }}
 
 jobs:
   docker:
     name: Docker
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
+    outputs:
+      client-url: ${{ steps.upload-client.outputs.artifact-url }}
+      server-url: ${{ steps.upload-server.outputs.artifact-url }}
+      client-tar: ${{ steps.names.outputs.client }}
+      server-tar: ${{ steps.names.outputs.server }}
     steps:
       - uses: actions/checkout@v7
+
+      - name: Compute names
+        id: names
+        env:
+          PR: ${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
+        run: |
+          {
+            echo "client=Steam-Idler-Client-PR-${PR}.tar"
+            echo "server=Steam-Idler-Server-PR-${PR}.tar"
+            echo "tag=pr-${PR}"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Download dist
         uses: actions/download-artifact@v8
@@ -28,8 +46,7 @@ jobs:
           name: ${{ inputs.dist-artifact }}
           path: dist
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
+      - uses: docker/setup-buildx-action@v4
 
       - name: Build client image
         uses: docker/build-push-action@v7
@@ -37,8 +54,8 @@ jobs:
           context: .
           file: Dockerfile.client
           push: false
-          tags: steam-idler-client:pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
-          outputs: type=docker,dest=/tmp/Steam-Idler-Client-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}.tar
+          tags: steam-idler-client:${{ steps.names.outputs.tag }}
+          outputs: type=docker,dest=/tmp/${{ steps.names.outputs.client }}
 
       - name: Build server image
         uses: docker/build-push-action@v7
@@ -46,35 +63,21 @@ jobs:
           context: .
           file: Dockerfile.server
           push: false
-          tags: steam-idler-server:pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
-          outputs: type=docker,dest=/tmp/Steam-Idler-Server-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}.tar
+          tags: steam-idler-server:${{ steps.names.outputs.tag }}
+          outputs: type=docker,dest=/tmp/${{ steps.names.outputs.server }}
 
       - name: Upload client image
         id: upload-client
         uses: actions/upload-artifact@v7
         with:
-          name: Steam-Idler-Client-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
-          path: /tmp/Steam-Idler-Client-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}.tar
+          name: ${{ steps.names.outputs.client }}
+          path: /tmp/${{ steps.names.outputs.client }}
           if-no-files-found: error
 
       - name: Upload server image
         id: upload-server
         uses: actions/upload-artifact@v7
         with:
-          name: Steam-Idler-Server-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
-          path: /tmp/Steam-Idler-Server-PR-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}.tar
+          name: ${{ steps.names.outputs.server }}
+          path: /tmp/${{ steps.names.outputs.server }}
           if-no-files-found: error
-
-      - name: Comment on PR
-        uses: actions/github-script@v9
-        env:
-          PR_COMMIT_COUNT: ${{ github.event.pull_request.commits }}
-          ARTIFACT_URL: ${{ inputs.artifact-url }}
-          CLIENT_IMAGE_TAG: steam-idler-client:pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
-          SERVER_IMAGE_TAG: steam-idler-server:pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.commits }}
-          CLIENT_IMAGE_URL: ${{ steps.upload-client.outputs.artifact-url }}
-          SERVER_IMAGE_URL: ${{ steps.upload-server.outputs.artifact-url }}
-        with:
-          script: |
-            const script = require('./.github/scripts/comment-pr.cjs');
-            await script({ github, context });
